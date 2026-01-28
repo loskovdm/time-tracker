@@ -16,8 +16,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import org.jetbrains.compose.resources.painterResource
 
-import timetracker.composeapp.generated.resources.Res
-import timetracker.composeapp.generated.resources.compose_multiplatform
+import timetracker.shared.generated.resources.Res
+import timetracker.shared.generated.resources.compose_multiplatform
 
 @Composable
 @Preview

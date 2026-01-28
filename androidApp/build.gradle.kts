@@ -29,7 +29,7 @@ android {
 }
 
 dependencies {
-    implementation(projects.composeApp)
+    implementation(projects.shared)
 
     implementation(platform(libs.androidx.compose.bom))
     debugImplementation(libs.androidx.compose.ui.tooling)
