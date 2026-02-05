@@ -1,7 +1,6 @@
 package io.github.loskovdm.timetracker.navigation
 
 import androidx.navigation3.runtime.NavKey
-import kotlin.text.get
 
 class Navigator(val state: NavigationState) {
 

@@ -69,10 +69,10 @@ fun rememberNavigationState(
 val serializersConfig = SavedStateConfiguration {
     serializersModule = SerializersModule {
         polymorphic(NavKey::class) {
-            subclass(Route.Timer::class, Route.Timer.serializer())
-            subclass(Route.Calendar::class, Route.Calendar.serializer())
-            subclass(Route.Reports::class, Route.Reports.serializer())
-            subclass(Route.Projects::class, Route.Projects.serializer())
+            subclass(Route.Home.Timer::class, Route.Home.Timer.serializer())
+            subclass(Route.Home.Calendar::class, Route.Home.Calendar.serializer())
+            subclass(Route.Home.Reports::class, Route.Home.Reports.serializer())
+            subclass(Route.Home.Projects::class, Route.Home.Projects.serializer())
         }
     }
 }

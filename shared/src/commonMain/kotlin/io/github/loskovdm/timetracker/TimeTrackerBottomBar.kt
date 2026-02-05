@@ -1,4 +1,4 @@
-package io.github.loskovdm.timetracker.component
+package io.github.loskovdm.timetracker
 
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Icon
@@ -9,6 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation3.runtime.NavKey
 import io.github.loskovdm.timetracker.navigation.TOP_LEVEL_DESTINATIONS
 import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun TimeTrackerBottomBar(
@@ -28,11 +29,11 @@ fun TimeTrackerBottomBar(
                 icon = {
                     Icon(
                         painter = painterResource(data.iconResource),
-                        contentDescription = data.title
+                        contentDescription = stringResource(data.titleResource)
                     )
                 },
                 label = {
-                    Text(data.title)
+                    Text(stringResource(data.titleResource))
                 }
             )
         }

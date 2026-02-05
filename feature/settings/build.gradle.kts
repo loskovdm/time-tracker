@@ -5,13 +5,12 @@ plugins {
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.composeHotReload)
-    alias(libs.plugins.kotlin.serialization)
 }
 
 kotlin {
 
     androidLibrary {
-        namespace = "io.github.loskovdm.timer"
+        namespace = "io.github.loskovdm.settings"
         compileSdk = 36
         minSdk = 24
     }
@@ -30,10 +29,6 @@ kotlin {
                 implementation(libs.compose.uiToolingPreview)
                 implementation(libs.androidx.lifecycle.viewmodelCompose)
                 implementation(libs.androidx.lifecycle.runtimeCompose)
-                implementation(libs.androidx.lifecycle.viewmodel)
-                implementation(libs.androidx.lifecycle.viewmodel.nav3)
-                implementation(libs.androidx.navigation3.ui)
-                implementation(libs.kotlinx.serialization.json)
             }
         }
 

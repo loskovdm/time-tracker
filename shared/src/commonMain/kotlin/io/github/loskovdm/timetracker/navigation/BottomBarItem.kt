@@ -2,6 +2,7 @@ package io.github.loskovdm.timetracker.navigation
 
 import androidx.navigation3.runtime.NavKey
 import org.jetbrains.compose.resources.DrawableResource
+import org.jetbrains.compose.resources.StringResource
 import timetracker.shared.generated.resources.Res
 import timetracker.shared.generated.resources.calendar
 import timetracker.shared.generated.resources.projects
@@ -10,24 +11,24 @@ import timetracker.shared.generated.resources.timer
 
 data class BottomBarItem(
     val iconResource: DrawableResource,
-    val title: String,
+    val titleResource: StringResource,
 )
 
 val TOP_LEVEL_DESTINATIONS = mapOf<NavKey, BottomBarItem>(
-    Route.Timer to BottomBarItem(
+    Route.Home.Timer to BottomBarItem(
         iconResource = Res.drawable.timer,
-        title = "Timer"
+        titleResource = Res.string.timer
     ),
-    Route.Calendar to BottomBarItem(
+    Route.Home.Calendar to BottomBarItem(
         iconResource = Res.drawable.calendar,
-        title = "Calendar"
+        titleResource = Res.string.calendar
     ),
-    Route.Projects to BottomBarItem(
+    Route.Home.Projects to BottomBarItem(
         iconResource = Res.drawable.projects,
-        title = "Projects"
+        titleResource = Res.string.projects
     ),
-    Route.Reports to BottomBarItem(
+    Route.Home.Reports to BottomBarItem(
         iconResource = Res.drawable.reports,
-        title = "Report"
+        titleResource = Res.string.reports
     ),
 )

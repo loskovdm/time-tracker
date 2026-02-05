@@ -1,7 +1,6 @@
-package io.github.loskovdm.timer
+package io.github.loskovdm.projects
 
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -13,6 +12,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextOverflow
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.painterResource
@@ -20,29 +20,34 @@ import org.jetbrains.compose.resources.stringResource
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TimerScreen(
+fun TasksScreen(
     modifier: Modifier = Modifier,
     appBottomBar: @Composable () -> Unit,
-    settingsIconResource: DrawableResource,
-    titleResource: StringResource,
-    onSettings: () -> Unit,
+    projectName: String,
+    backIconDescriptionResource: StringResource,
+    backIconResource: DrawableResource,
+    onBack: () -> Unit,
 ) {
     Scaffold(
         modifier = modifier.fillMaxSize(),
         topBar = {
             TopAppBar(
                 title = {
-                    Text(stringResource(titleResource))
+                    Text(
+                        text = projectName,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
                 },
-                actions = {
+                navigationIcon = {
                     IconButton(
                         onClick = {
-                            onSettings()
+                            onBack()
                         }
                     ) {
                         Icon(
-                            painter = painterResource(settingsIconResource),
-                            contentDescription = stringResource(titleResource)
+                            painter = painterResource(backIconResource),
+                            contentDescription = stringResource(backIconDescriptionResource)
                         )
                     }
                 }
@@ -54,15 +59,11 @@ fun TimerScreen(
     ) { innerPadding ->
         Box(
             modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding),
-            contentAlignment = Alignment.Center,
+                .padding(innerPadding)
+                .fillMaxSize(),
+            contentAlignment = Alignment.Center
         ) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
-                Text(stringResource(titleResource))
-            }
+            Text("Tasks")
         }
     }
 }

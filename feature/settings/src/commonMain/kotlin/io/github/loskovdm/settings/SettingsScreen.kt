@@ -1,4 +1,4 @@
-package io.github.loskovdm.timer
+package io.github.loskovdm.settings
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,54 +14,45 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import org.jetbrains.compose.resources.DrawableResource
-import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.painterResource
-import org.jetbrains.compose.resources.stringResource
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TimerScreen(
+fun SettingsScreen(
     modifier: Modifier = Modifier,
-    appBottomBar: @Composable () -> Unit,
-    settingsIconResource: DrawableResource,
-    titleResource: StringResource,
-    onSettings: () -> Unit,
+    arrowBackIconResource: DrawableResource,
+    onBack: () -> Unit,
 ) {
     Scaffold(
-        modifier = modifier.fillMaxSize(),
+        modifier = modifier,
         topBar = {
             TopAppBar(
                 title = {
-                    Text(stringResource(titleResource))
+                    Text("Settings")
                 },
-                actions = {
+                navigationIcon = {
                     IconButton(
-                        onClick = {
-                            onSettings()
-                        }
+                        onClick = { onBack() },
                     ) {
                         Icon(
-                            painter = painterResource(settingsIconResource),
-                            contentDescription = stringResource(titleResource)
+                            painter = painterResource(arrowBackIconResource),
+                            contentDescription = "Back"
                         )
                     }
                 }
             )
-        },
-        bottomBar = {
-            appBottomBar()
-        },
+        }
     ) { innerPadding ->
         Box(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxSize()
                 .padding(innerPadding),
-            contentAlignment = Alignment.Center,
+            contentAlignment = Alignment.Center
         ) {
             Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text(stringResource(titleResource))
+                Text("Settings")
             }
         }
     }
