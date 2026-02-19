@@ -13,14 +13,17 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
+import timetracker.designsystem.generated.resources.Res
+import timetracker.designsystem.generated.resources.ic_arrow_back
+import timetracker.designsystem.generated.resources.back
+import timetracker.designsystem.generated.resources.settings
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsScreen(
     modifier: Modifier = Modifier,
-    arrowBackIconResource: DrawableResource,
     onBack: () -> Unit,
 ) {
     Scaffold(
@@ -28,15 +31,15 @@ fun SettingsScreen(
         topBar = {
             TopAppBar(
                 title = {
-                    Text("Settings")
+                    Text(stringResource(Res.string.settings))
                 },
                 navigationIcon = {
                     IconButton(
                         onClick = { onBack() },
                     ) {
                         Icon(
-                            painter = painterResource(arrowBackIconResource),
-                            contentDescription = "Back"
+                            painter = painterResource(Res.drawable.ic_arrow_back),
+                            contentDescription = stringResource(Res.string.back)
                         )
                     }
                 }
@@ -52,7 +55,7 @@ fun SettingsScreen(
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text("Settings")
+                Text(stringResource(Res.string.settings))
             }
         }
     }

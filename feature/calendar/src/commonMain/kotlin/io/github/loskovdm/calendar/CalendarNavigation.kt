@@ -1,27 +1,33 @@
 package io.github.loskovdm.calendar
 
+import androidx.compose.material3.WideNavigationRailState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import org.jetbrains.compose.resources.DrawableResource
-import org.jetbrains.compose.resources.StringResource
+import androidx.navigation3.runtime.NavKey
+import io.github.loskovdm.designsystem.DeviceConfiguration
+import io.github.loskovdm.designsystem.NavigationItem
 
 @Composable
 fun CalendarNavigation(
     modifier: Modifier = Modifier,
-    appBottomBar: @Composable () -> Unit,
-    titleResource: StringResource,
-    settingsIconResource: DrawableResource,
+    railState: WideNavigationRailState,
+    deviceConfiguration: DeviceConfiguration,
+    navigationItems: Map<NavKey, NavigationItem>,
+    selectedNavigationItem: NavKey,
+    onSelectedNavigationItem: (NavKey) -> Unit,
     onSettings: () -> Unit,
 ) {
     CalendarScreen(
         modifier = modifier,
-        appBottomBar = {
-            appBottomBar()
+        railState = railState,
+        navigationItems = navigationItems,
+        selectedNavigationItem = selectedNavigationItem,
+        onSelectedNavigationItem = { item ->
+            onSelectedNavigationItem(item)
         },
-        titleResource = titleResource,
-        settingsIconResource = settingsIconResource,
         onSettings = {
             onSettings()
         },
+        deviceConfiguration = deviceConfiguration,
     )
 }

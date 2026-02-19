@@ -21,10 +21,13 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
+                implementation(projects.designSystem)
+
                 implementation(libs.kotlin.stdlib)
                 implementation(libs.compose.runtime)
                 implementation(libs.compose.foundation)
                 implementation(libs.compose.material3)
+                implementation(libs.compose.material3Adaptive)
                 implementation(libs.compose.ui)
                 implementation(libs.compose.components.resources)
                 implementation(libs.compose.uiToolingPreview)

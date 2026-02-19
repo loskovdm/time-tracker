@@ -1,23 +1,31 @@
 package io.github.loskovdm.timer
 
+import androidx.compose.material3.WideNavigationRailState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import org.jetbrains.compose.resources.DrawableResource
-import org.jetbrains.compose.resources.StringResource
+import androidx.navigation3.runtime.NavKey
+import io.github.loskovdm.designsystem.DeviceConfiguration
+import io.github.loskovdm.designsystem.NavigationItem
 
 @Composable
 fun TimerNavigation(
     modifier: Modifier = Modifier,
-    appBottomBar: @Composable () -> Unit,
-    settingsIconResource: DrawableResource,
-    titleResource: StringResource,
+    railState: WideNavigationRailState,
+    deviceConfiguration: DeviceConfiguration,
+    navigationItems: Map<NavKey, NavigationItem>,
+    selectedNavigationItem: NavKey,
+    onSelectedNavigationItem: (NavKey) -> Unit,
     onSettings: () -> Unit,
 ) {
     TimerScreen(
         modifier = modifier,
-        appBottomBar = appBottomBar,
-        settingsIconResource = settingsIconResource,
-        titleResource = titleResource,
+        railState = railState,
+        deviceConfiguration = deviceConfiguration,
+        navigationItems = navigationItems,
+        selectedNavigationItem = selectedNavigationItem,
+        onSelectedNavigationItem = { item ->
+            onSelectedNavigationItem(item)
+        },
         onSettings = {
             onSettings()
         },

@@ -9,14 +9,16 @@ import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
 import androidx.savedstate.serialization.SavedStateConfiguration
+import io.github.loskovdm.designsystem.DeviceConfiguration
 import io.github.loskovdm.settings.SettingsNavigation
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.polymorphic
-import timetracker.shared.generated.resources.Res
-import timetracker.shared.generated.resources.arrow_back
 
 @Composable
-fun RootNavigation(modifier: Modifier = Modifier) {
+fun RootNavigation(
+    modifier: Modifier = Modifier,
+    deviceConfiguration: DeviceConfiguration,
+) {
     val rootBackStack = rememberNavBackStack(
         configuration = SavedStateConfiguration {
             serializersModule = SerializersModule {
@@ -38,14 +40,16 @@ fun RootNavigation(modifier: Modifier = Modifier) {
         entryProvider = entryProvider {
             entry<Route.Home> {
                 HomeNavigation(
+                    deviceConfiguration = deviceConfiguration,
+                    navigationItems = TOP_LEVEL_DESTINATIONS,
                     onSettings = {
                         rootBackStack.add(Route.Settings)
-                    }
+                    },
                 )
             }
             entry<Route.Settings> {
                 SettingsNavigation(
-                    arrowBackIconResource = Res.drawable.arrow_back,
+                    deviceConfiguration = deviceConfiguration,
                     onBack = {
                         rootBackStack.remove(Route.Settings)
                     }

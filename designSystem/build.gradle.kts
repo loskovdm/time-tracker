@@ -4,16 +4,18 @@ plugins {
     alias(libs.plugins.androidLint)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
-    alias(libs.plugins.composeHotReload)
-    alias(libs.plugins.kotlin.serialization)
+}
+
+compose.resources {
+    publicResClass = true
 }
 
 kotlin {
-
     androidLibrary {
-        namespace = "io.github.loskovdm.reports"
+        namespace = "io.github.loskovdm.timetracker.designsystem"
         compileSdk = 36
         minSdk = 24
+        experimentalProperties["android.experimental.kmp.enableAndroidResources"] = true
     }
 
     jvm()
@@ -21,8 +23,6 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
-                implementation(projects.designSystem)
-
                 implementation(libs.kotlin.stdlib)
                 implementation(libs.compose.runtime)
                 implementation(libs.compose.foundation)
@@ -30,6 +30,7 @@ kotlin {
                 implementation(libs.compose.ui)
                 implementation(libs.compose.components.resources)
                 implementation(libs.compose.uiToolingPreview)
+                implementation(libs.compose.material3Adaptive)
                 implementation(libs.androidx.lifecycle.viewmodelCompose)
                 implementation(libs.androidx.lifecycle.runtimeCompose)
                 implementation(libs.androidx.lifecycle.viewmodel)
