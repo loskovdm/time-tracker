@@ -32,7 +32,7 @@ import timetracker.designsystem.generated.resources.ic_menu_open
 fun HomeNavigationRail(
     modifier: Modifier = Modifier,
     state: WideNavigationRailState,
-    deviceConfiguration: DeviceConfiguration,
+    isDesktop: Boolean,
     navigationItems: Map<NavKey, NavigationItem>,
     selectedNavigationItem: NavKey,
     onSelectedNavigationItem: (NavKey) -> Unit,
@@ -52,10 +52,7 @@ fun HomeNavigationRail(
         modifier = modifier,
         state = state,
         header = {
-            if (
-                deviceConfiguration != DeviceConfiguration.MOBILE_PORTRAIT
-                    && deviceConfiguration != DeviceConfiguration.MOBILE_LANDSCAPE
-            ) {
+            if (isDesktop) {
                 Column(
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
@@ -116,7 +113,7 @@ fun HomeNavigationRail(
             }
         },
         arrangement =
-            if (deviceConfiguration == DeviceConfiguration.DESKTOP)
+            if (isDesktop)
                 Arrangement.Top
             else Arrangement.Center,
     ) {
