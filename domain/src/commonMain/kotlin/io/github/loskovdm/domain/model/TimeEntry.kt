@@ -1,11 +1,15 @@
 package io.github.loskovdm.domain.model
 
-import kotlinx.datetime.LocalDateTime
+import kotlin.time.Instant
+import kotlin.uuid.ExperimentalUuidApi
+import kotlin.uuid.Uuid
 
+@OptIn(ExperimentalUuidApi::class)
 data class TimeEntry(
-    val id: Long = 0,
-    val startTime: LocalDateTime,
-    val endTime: LocalDateTime?,
-    val projectId: Long?,
-    val taskId: Long?,
+    val id: Uuid,
+    val startDateTime: Instant,
+    val endDateTime: Instant?,
+    val projectId: Uuid?,
+    val taskId: Uuid?,
+    val isSynced: Boolean,
 )

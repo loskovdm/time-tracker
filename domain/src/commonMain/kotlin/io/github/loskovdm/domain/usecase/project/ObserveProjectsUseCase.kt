@@ -4,10 +4,10 @@ import io.github.loskovdm.domain.model.Project
 import io.github.loskovdm.domain.repository.ProjectRepository
 import kotlinx.coroutines.flow.Flow
 
-class GetAllProjectsUseCase(
+class ObserveProjectsUseCase(
     private val repository: ProjectRepository,
 ) {
-    suspend operator fun invoke(): Flow<List<Project>> {
-        return repository.getAllProjects()
+    operator fun invoke(): Flow<List<Project>> {
+        return repository.observeProjects()
     }
 }

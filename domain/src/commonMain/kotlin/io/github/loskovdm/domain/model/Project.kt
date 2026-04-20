@@ -1,7 +1,11 @@
 package io.github.loskovdm.domain.model
 
-data class Project(
-    val id: Long = 0,
+import kotlin.uuid.ExperimentalUuidApi
+import kotlin.uuid.Uuid
+
+data class Project @OptIn(ExperimentalUuidApi::class) constructor(
+    val id: Uuid,
     val name: String,
-    val color: String,
+    val color: Long,
+    val isSynced: Boolean,
 )

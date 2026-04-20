@@ -2,25 +2,33 @@ package io.github.loskovdm.domain.usecase.timetracker
 
 import io.github.loskovdm.domain.model.TimeEntry
 import io.github.loskovdm.domain.repository.TimeEntryRepository
-import kotlinx.datetime.LocalDateTime
+import kotlin.time.Clock
+import kotlin.time.Instant
+import kotlin.uuid.ExperimentalUuidApi
+import kotlin.uuid.Uuid
 
 class UpdateTimeEntryUseCase(
     private val repository: TimeEntryRepository,
 ) {
+    @OptIn(ExperimentalUuidApi::class)
     suspend operator fun invoke(
-        id: Long,
-        startTime: LocalDateTime,
-        endTime: LocalDateTime,
-        projectId: Long,
-        taskId: Long,
+        id: Uuid,
+        startDateTime: Instant,
+        endDateTime: Instant,
+        projectId: Uuid,
+        taskId: Uuid,
     ) {
         val timeEntry = TimeEntry(
             id = id,
-            startTime = startTime,
-            endTime = endTime,
+            startDateTime = startDateTime,
+            endDateTime = endDateTime,
             projectId = projectId,
             taskId = taskId,
+            isSynced = false,
         )
-        repository.updateTimeEntry(timeEntry)
+        repository.updateTimeEntry(
+            timeEntry = timeEntry,
+            updatedAt = Clock.System.now(),
+        )
     }
 }

@@ -4,10 +4,10 @@ import io.github.loskovdm.domain.model.Task
 import io.github.loskovdm.domain.repository.TaskRepository
 import kotlinx.coroutines.flow.Flow
 
-class GetAllTasksUseCase(
+class ObserveTasksUseCase(
     private val repository: TaskRepository,
 ) {
-    suspend operator fun invoke(): Flow<List<Task>> {
-        return repository.getAllTasks()
+    operator fun invoke(): Flow<List<Task>> {
+        return repository.observeTasks()
     }
 }

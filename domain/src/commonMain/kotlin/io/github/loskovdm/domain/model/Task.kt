@@ -1,7 +1,11 @@
 package io.github.loskovdm.domain.model
 
-data class Task(
-    val id: Long = 0,
+import kotlin.uuid.ExperimentalUuidApi
+import kotlin.uuid.Uuid
+
+data class Task @OptIn(ExperimentalUuidApi::class) constructor(
+    val id: Uuid,
     val name: String,
-    val projectId: Long,
+    val projectId: Uuid,
+    val isSynced: Boolean,
 )

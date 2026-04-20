@@ -2,21 +2,23 @@ plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidKotlinMultiplatformLibrary)
     alias(libs.plugins.androidLint)
+    alias(libs.plugins.koin.compiler)
 }
 
 kotlin {
-    androidLibrary {
+    android {
         namespace = "io.github.loskovdm.timetracker.domain"
-        compileSdk = 36
+        compileSdk = 37
         minSdk = 24
     }
+
+    jvm()
 
     sourceSets {
         commonMain {
             dependencies {
-                implementation(libs.kotlin.stdlib)
+                implementation(libs.koin.core)
                 implementation(libs.kotlinx.coroutines.core)
-                implementation(libs.kotlinx.datetime)
             }
         }
 
