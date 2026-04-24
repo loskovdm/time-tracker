@@ -5,13 +5,14 @@ plugins {
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.composeHotReload)
     alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.koin.compiler)
 }
 
 kotlin {
 
-    androidLibrary {
+    android {
         namespace = "io.github.loskovdm.timetracker.shared"
-        compileSdk = 36
+        compileSdk = 37
         minSdk = 24
         experimentalProperties["android.experimental.kmp.enableAndroidResources"] = true
     }
@@ -26,6 +27,7 @@ kotlin {
             implementation(projects.feature.projects)
             implementation(projects.feature.settings)
             implementation(projects.designSystem)
+            implementation(projects.data.database)
 
             implementation(libs.compose.runtime)
             implementation(libs.compose.foundation)
@@ -40,9 +42,14 @@ kotlin {
             implementation(libs.androidx.lifecycle.viewmodel.nav3)
             implementation(libs.androidx.navigation3.ui)
             implementation(libs.kotlinx.serialization.json)
+            implementation(libs.koin.core)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
+        }
+
+        androidMain.dependencies {
+            implementation(libs.koin.android)
         }
     }
 }

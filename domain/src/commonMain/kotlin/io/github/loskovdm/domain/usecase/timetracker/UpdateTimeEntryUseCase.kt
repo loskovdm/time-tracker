@@ -14,9 +14,9 @@ class UpdateTimeEntryUseCase(
     suspend operator fun invoke(
         id: Uuid,
         startDateTime: Instant,
-        endDateTime: Instant,
-        projectId: Uuid,
-        taskId: Uuid,
+        endDateTime: Instant?,
+        projectId: Uuid?,
+        taskId: Uuid?,
     ) {
         val timeEntry = TimeEntry(
             id = id,

@@ -1,7 +1,7 @@
 package io.github.loskovdm.timetracker.navigation
 
 import androidx.navigation3.runtime.NavKey
-import io.github.loskovdm.designsystem.NavigationItem
+import io.github.loskovdm.designsystem.navigation.NavigationItem
 import timetracker.designsystem.generated.resources.Res
 import timetracker.designsystem.generated.resources.calendar
 import timetracker.designsystem.generated.resources.ic_calendar_filled

@@ -10,10 +10,10 @@ import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
 import androidx.savedstate.serialization.SavedStateConfiguration
-import io.github.loskovdm.designsystem.DeviceConfiguration
-import io.github.loskovdm.designsystem.NavigationItem
-import io.github.loskovdm.projects.ProjectsScreen
-import io.github.loskovdm.projects.TasksScreen
+import io.github.loskovdm.designsystem.util.DeviceConfiguration
+import io.github.loskovdm.designsystem.navigation.NavigationItem
+import io.github.loskovdm.projects.projects.ProjectsScreen
+import io.github.loskovdm.projects.tasks.TasksScreen
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.polymorphic
 

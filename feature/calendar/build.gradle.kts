@@ -10,9 +10,9 @@ plugins {
 
 kotlin {
 
-    androidLibrary {
+    android {
         namespace = "io.github.loskovdm.calendar"
-        compileSdk = 36
+        compileSdk = 37
         minSdk = 24
     }
 

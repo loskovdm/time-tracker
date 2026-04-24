@@ -1,4 +1,4 @@
-package io.github.loskovdm.designsystem
+package io.github.loskovdm.designsystem.util
 
 import androidx.window.core.layout.WindowSizeClass
 

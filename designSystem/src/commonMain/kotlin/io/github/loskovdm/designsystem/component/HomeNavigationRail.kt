@@ -1,4 +1,4 @@
-package io.github.loskovdm.designsystem
+package io.github.loskovdm.designsystem.component
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -8,8 +8,10 @@ import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.WideNavigationRail
+import androidx.compose.material3.WideNavigationRailColors
 import androidx.compose.material3.WideNavigationRailItem
 import androidx.compose.material3.WideNavigationRailState
 import androidx.compose.material3.WideNavigationRailValue
@@ -18,6 +20,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation3.runtime.NavKey
+import io.github.loskovdm.designsystem.navigation.NavigationItem
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.StringResource
@@ -116,6 +119,13 @@ fun HomeNavigationRail(
             if (isDesktop)
                 Arrangement.Top
             else Arrangement.Center,
+        colors = WideNavigationRailColors(
+            containerColor = MaterialTheme.colorScheme.surfaceContainer,
+            contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+            modalContainerColor = MaterialTheme.colorScheme.surfaceContainer,
+            modalScrimColor = MaterialTheme.colorScheme.surfaceContainer,
+            modalContentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
     ) {
         navigationItems.forEach { (item, data) ->
             val selected = item == selectedNavigationItem

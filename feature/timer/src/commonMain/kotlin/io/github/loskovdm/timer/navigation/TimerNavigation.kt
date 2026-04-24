@@ -1,11 +1,12 @@
-package io.github.loskovdm.timer
+package io.github.loskovdm.timer.navigation
 
 import androidx.compose.material3.WideNavigationRailState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation3.runtime.NavKey
-import io.github.loskovdm.designsystem.DeviceConfiguration
-import io.github.loskovdm.designsystem.NavigationItem
+import io.github.loskovdm.designsystem.util.DeviceConfiguration
+import io.github.loskovdm.designsystem.navigation.NavigationItem
+import io.github.loskovdm.timer.TimerScreen
 
 @Composable
 fun TimerNavigation(

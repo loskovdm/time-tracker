@@ -8,11 +8,11 @@ import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.ui.NavDisplay
 import io.github.loskovdm.calendar.CalendarNavigation
-import io.github.loskovdm.designsystem.DeviceConfiguration
-import io.github.loskovdm.designsystem.NavigationItem
+import io.github.loskovdm.designsystem.util.DeviceConfiguration
+import io.github.loskovdm.designsystem.navigation.NavigationItem
 import io.github.loskovdm.projects.navigation.ProjectsNavigation
 import io.github.loskovdm.reports.ReportsNavigation
-import io.github.loskovdm.timer.TimerNavigation
+import io.github.loskovdm.timer.navigation.TimerNavigation
 
 @Composable
 fun HomeNavigation(

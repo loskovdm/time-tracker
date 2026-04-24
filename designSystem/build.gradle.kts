@@ -1,9 +1,12 @@
+import org.gradle.kotlin.dsl.androidRuntimeClasspath
+
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidKotlinMultiplatformLibrary)
     alias(libs.plugins.androidLint)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
+    alias(libs.plugins.composeHotReload)
 }
 
 compose.resources {
@@ -11,9 +14,9 @@ compose.resources {
 }
 
 kotlin {
-    androidLibrary {
+    android {
         namespace = "io.github.loskovdm.timetracker.designsystem"
-        compileSdk = 36
+        compileSdk = 37
         minSdk = 24
         experimentalProperties["android.experimental.kmp.enableAndroidResources"] = true
     }
@@ -37,6 +40,7 @@ kotlin {
                 implementation(libs.androidx.lifecycle.viewmodel.nav3)
                 implementation(libs.androidx.navigation3.ui)
                 implementation(libs.kotlinx.serialization.json)
+                implementation(libs.kotlinx.datetime)
             }
         }
 
@@ -46,5 +50,8 @@ kotlin {
             }
         }
     }
+}
 
+dependencies {
+    androidRuntimeClasspath(libs.compose.uiTooling)
 }

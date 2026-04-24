@@ -1,3 +1,5 @@
+import org.gradle.kotlin.dsl.androidRuntimeClasspath
+
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidKotlinMultiplatformLibrary)
@@ -6,13 +8,14 @@ plugins {
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.composeHotReload)
     alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.koin.compiler)
 }
 
 kotlin {
 
-    androidLibrary {
+    android {
         namespace = "io.github.loskovdm.timer"
-        compileSdk = 36
+        compileSdk = 37
         minSdk = 24
     }
 
@@ -22,6 +25,7 @@ kotlin {
         commonMain {
             dependencies {
                 implementation(projects.designSystem)
+                implementation(projects.domain)
 
                 implementation(libs.kotlin.stdlib)
                 implementation(libs.compose.runtime)
@@ -37,6 +41,9 @@ kotlin {
                 implementation(libs.androidx.lifecycle.viewmodel.nav3)
                 implementation(libs.androidx.navigation3.ui)
                 implementation(libs.kotlinx.serialization.json)
+                implementation(libs.koin.core)
+                implementation(libs.koin.composeViewmodel)
+                implementation(libs.kotlinx.datetime)
             }
         }
 
@@ -47,4 +54,8 @@ kotlin {
         }
     }
 
+}
+
+dependencies {
+    androidRuntimeClasspath(libs.compose.uiTooling)
 }

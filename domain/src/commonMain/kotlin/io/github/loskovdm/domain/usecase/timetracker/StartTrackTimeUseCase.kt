@@ -1,7 +1,10 @@
 package io.github.loskovdm.domain.usecase.timetracker
 
+import io.github.loskovdm.domain.error.DomainError
+import io.github.loskovdm.domain.error.Result
 import io.github.loskovdm.domain.model.TimeEntry
 import io.github.loskovdm.domain.repository.TimeEntryRepository
+import kotlinx.coroutines.flow.first
 import kotlin.time.Clock
 import kotlin.time.Instant
 import kotlin.uuid.ExperimentalUuidApi
@@ -15,7 +18,15 @@ class StartTrackTimeUseCase(
         startDateTime: Instant,
         projectId: Uuid?,
         taskId: Uuid?,
-    ) {
+    ): Result<Unit> {
+        val hasActiveTimeEntry = repository.observeTimeEntries()
+            .first()
+            .any { entry -> entry.endDateTime == null }
+
+        if (hasActiveTimeEntry) {
+            return Result.Failure(DomainError.SecondActiveTimeEntry)
+        }
+
         val timeEntry = TimeEntry(
             id = Uuid.generateV7(),
             startDateTime = startDateTime,
@@ -28,5 +39,7 @@ class StartTrackTimeUseCase(
             timeEntry = timeEntry,
             addedAt = Clock.System.now(),
         )
+
+        return Result.Success(Unit)
     }
 }

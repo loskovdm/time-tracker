@@ -10,9 +10,9 @@ plugins {
 
 kotlin {
 
-    androidLibrary {
+    android {
         namespace = "io.github.loskovdm.reports"
-        compileSdk = 36
+        compileSdk = 37
         minSdk = 24
     }
 

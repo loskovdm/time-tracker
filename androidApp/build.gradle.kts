@@ -5,7 +5,7 @@ plugins {
 
 android {
     namespace = "io.github.loskovdm.androidapp"
-    compileSdk = 36
+    compileSdk = 37
 
     defaultConfig {
         minSdk = 24
@@ -47,4 +47,6 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.testExt.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    implementation(libs.koin.android)
 }
