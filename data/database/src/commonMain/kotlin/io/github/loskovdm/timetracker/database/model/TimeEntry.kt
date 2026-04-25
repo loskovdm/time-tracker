@@ -1,24 +1,26 @@
-package io.github.loskovdm.timetracker.database.entity
+package io.github.loskovdm.timetracker.database.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import io.github.loskovdm.timetracker.repository.model.TimeEntry
+import io.github.loskovdm.timetracker.repository.model.TimeEntry as RepoTimeEntry
 import kotlin.time.Instant
 import kotlin.uuid.Uuid
 
 @Entity
-data class TimeEntryEntity(
+data class TimeEntry(
     @PrimaryKey val id: Uuid,
     val startDateTime: Instant,
     val endDateTime: Instant?,
     val projectId: Uuid?,
     val taskId: Uuid?,
-    val isSynced: Boolean,
     val updatedAt: Instant,
+    val isSynced: Boolean,
+    val isArchived: Boolean,
+    val isDelete: Boolean,
 )
 
-fun TimeEntryEntity.toRepo() =
-    TimeEntry(
+fun TimeEntry.toRepo() =
+    RepoTimeEntry(
         id = id,
         startDateTime = startDateTime,
         endDateTime = endDateTime,
@@ -28,13 +30,15 @@ fun TimeEntryEntity.toRepo() =
         updatedAt = updatedAt,
     )
 
-fun TimeEntry.toEntity() =
-    TimeEntryEntity(
+fun RepoTimeEntry.toEntity(isArchived: Boolean = false, isDelete: Boolean = false) =
+    TimeEntry(
         id = id,
         startDateTime = startDateTime,
         endDateTime = endDateTime,
         projectId = projectId,
         taskId = taskId,
-        isSynced = isSynced,
         updatedAt = updatedAt,
+        isSynced = isSynced,
+        isArchived = isArchived,
+        isDelete = isDelete,
     )

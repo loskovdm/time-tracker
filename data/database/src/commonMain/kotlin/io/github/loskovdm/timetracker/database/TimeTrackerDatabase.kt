@@ -9,15 +9,16 @@ import io.github.loskovdm.timetracker.database.converter.Converters
 import io.github.loskovdm.timetracker.database.dao.ProjectDao
 import io.github.loskovdm.timetracker.database.dao.TaskDao
 import io.github.loskovdm.timetracker.database.dao.TimeEntryDao
-import io.github.loskovdm.timetracker.database.entity.ProjectEntity
-import io.github.loskovdm.timetracker.database.entity.TaskEntity
-import io.github.loskovdm.timetracker.database.entity.TimeEntryEntity
+import io.github.loskovdm.timetracker.database.dao.TimeEntryWithRelationsDao
+import io.github.loskovdm.timetracker.database.model.Project
+import io.github.loskovdm.timetracker.database.model.Task
+import io.github.loskovdm.timetracker.database.model.TimeEntry
 
 @Database(
     entities = [
-        ProjectEntity::class,
-        TaskEntity::class,
-        TimeEntryEntity::class,
+        Project::class,
+        Task::class,
+        TimeEntry::class,
     ],
     version = 1
 )
@@ -27,6 +28,7 @@ abstract class TimeTrackerDatabase : RoomDatabase() {
     abstract fun projectDao(): ProjectDao
     abstract fun taskDao(): TaskDao
     abstract fun timeEntryDao(): TimeEntryDao
+    abstract fun timeEntryWithRelations(): TimeEntryWithRelationsDao
 }
 
 @Suppress("KotlinNoActualForExpect")

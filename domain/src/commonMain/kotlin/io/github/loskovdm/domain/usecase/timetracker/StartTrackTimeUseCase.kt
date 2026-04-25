@@ -4,6 +4,7 @@ import io.github.loskovdm.domain.error.DomainError
 import io.github.loskovdm.domain.error.Result
 import io.github.loskovdm.domain.model.TimeEntry
 import io.github.loskovdm.domain.repository.TimeEntryRepository
+import io.github.loskovdm.domain.repository.TimeEntryWithRelationsRepository
 import kotlinx.coroutines.flow.first
 import kotlin.time.Clock
 import kotlin.time.Instant
@@ -11,7 +12,8 @@ import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
 class StartTrackTimeUseCase(
-    private val repository: TimeEntryRepository,
+    private val timeEntryWithRelationsRepository: TimeEntryWithRelationsRepository,
+    private val timeEntryRepository: TimeEntryRepository,
 ) {
     @OptIn(ExperimentalUuidApi::class)
     suspend operator fun invoke(
@@ -19,9 +21,9 @@ class StartTrackTimeUseCase(
         projectId: Uuid?,
         taskId: Uuid?,
     ): Result<Unit> {
-        val hasActiveTimeEntry = repository.observeTimeEntries()
+        val hasActiveTimeEntry = timeEntryWithRelationsRepository.getTimeEntriesWithRelations()
             .first()
-            .any { entry -> entry.endDateTime == null }
+            .any { timeEntryWithRelations -> timeEntryWithRelations.timeEntry.endDateTime == null }
 
         if (hasActiveTimeEntry) {
             return Result.Failure(DomainError.SecondActiveTimeEntry)
@@ -35,7 +37,7 @@ class StartTrackTimeUseCase(
             taskId = taskId,
             isSynced = false,
         )
-        repository.addTimeEntry(
+        timeEntryRepository.addTimeEntry(
             timeEntry = timeEntry,
             addedAt = Clock.System.now(),
         )

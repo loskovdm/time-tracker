@@ -8,8 +8,7 @@ import kotlin.uuid.Uuid
 interface TaskLocalDataSource {
     suspend fun addTask(task: Task)
     suspend fun updateTask(task: Task)
-    suspend fun deleteTask(task: Task)
     @OptIn(ExperimentalUuidApi::class)
     suspend fun getTaskById(id: Uuid): Task?
-    fun observeTasks(): Flow<List<Task>>
+    fun getTasks(): Flow<List<Task>>
 }

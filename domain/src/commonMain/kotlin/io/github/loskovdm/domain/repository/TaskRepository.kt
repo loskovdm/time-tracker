@@ -15,11 +15,7 @@ interface TaskRepository {
         task: Task,
         updatedAt: Instant,
     )
-    suspend fun deleteTask(
-        task: Task,
-        deletedAt: Instant,
-    )
     @OptIn(ExperimentalUuidApi::class)
     suspend fun getTaskById(id: Uuid): Task?
-    fun observeTasks(): Flow<List<Task>>
+    fun getTasks(): Flow<List<Task>>
 }

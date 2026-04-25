@@ -28,20 +28,13 @@ class ProjectRepositoryImpl(
         localDataSource.updateProject(project.toRepo(updatedAt))
     }
 
-    override suspend fun deleteProject(
-        project: Project,
-        deletedAt: Instant,
-    ) {
-        localDataSource.deleteProject(project.toRepo(deletedAt))
-    }
-
     @OptIn(ExperimentalUuidApi::class)
     override suspend fun getProjectById(id: Uuid): Project? {
         return localDataSource.getProjectById(id)?.toDomain()
     }
 
-    override fun observeProjects(): Flow<List<Project>> {
-        return localDataSource.observeProjects().map { repoProjects ->
+    override fun getProjects(): Flow<List<Project>> {
+        return localDataSource.getProjects().map { repoProjects ->
             repoProjects.map { repoProject -> repoProject.toDomain() }
         }
     }

@@ -21,9 +21,6 @@ class DeleteProjectUseCase(
             color = color,
             isSynced = false,
         )
-        repository.deleteProject(
-            project = project,
-            deletedAt = Clock.System.now(),
-        )
+        // TODO: Implement deleting
     }
 }

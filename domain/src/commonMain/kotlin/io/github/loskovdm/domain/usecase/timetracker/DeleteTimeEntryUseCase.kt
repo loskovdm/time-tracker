@@ -26,9 +26,6 @@ class DeleteTimeEntryUseCase(
             taskId = taskId,
             isSynced = false,
         )
-        repository.deleteTimeEntry(
-            timeEntry = timeEntry,
-            deletedAt = Clock.System.now(),
-        )
+        // TODO: Implement deleting
     }
 }

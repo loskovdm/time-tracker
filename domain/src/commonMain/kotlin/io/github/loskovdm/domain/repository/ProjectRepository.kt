@@ -15,11 +15,7 @@ interface ProjectRepository {
         project: Project,
         updatedAt: Instant,
     )
-    suspend fun deleteProject(
-        project: Project,
-        deletedAt: Instant,
-    )
     @OptIn(ExperimentalUuidApi::class)
     suspend fun getProjectById(id: Uuid): Project?
-    fun observeProjects(): Flow<List<Project>>
+    fun getProjects(): Flow<List<Project>>
 }

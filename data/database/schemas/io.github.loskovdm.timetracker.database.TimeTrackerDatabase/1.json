@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "b276c448eb5cfac38b626f1779a2e246",
+    "identityHash": "1e752f22337e1afc9c122b6d1bc7a371",
     "entities": [
       {
-        "tableName": "ProjectEntity",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` BLOB NOT NULL, `name` TEXT NOT NULL, `color` INTEGER NOT NULL, `isSynced` INTEGER NOT NULL, `updatedAt` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "tableName": "Project",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` BLOB NOT NULL, `name` TEXT NOT NULL, `color` INTEGER NOT NULL, `updatedAt` INTEGER NOT NULL, `isSynced` INTEGER NOT NULL, `isArchived` INTEGER NOT NULL, `isDelete` INTEGER NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -27,14 +27,26 @@
             "notNull": true
           },
           {
+            "fieldPath": "updatedAt",
+            "columnName": "updatedAt",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
             "fieldPath": "isSynced",
             "columnName": "isSynced",
             "affinity": "INTEGER",
             "notNull": true
           },
           {
-            "fieldPath": "updatedAt",
-            "columnName": "updatedAt",
+            "fieldPath": "isArchived",
+            "columnName": "isArchived",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isDelete",
+            "columnName": "isDelete",
             "affinity": "INTEGER",
             "notNull": true
           }
@@ -47,8 +59,8 @@
         }
       },
       {
-        "tableName": "TaskEntity",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` BLOB NOT NULL, `name` TEXT NOT NULL, `projectId` BLOB NOT NULL, `isSynced` INTEGER NOT NULL, `updatedAt` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "tableName": "Task",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` BLOB NOT NULL, `name` TEXT NOT NULL, `projectId` BLOB NOT NULL, `updatedAt` INTEGER NOT NULL, `isSynced` INTEGER NOT NULL, `isArchived` INTEGER NOT NULL, `isDelete` INTEGER NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -69,14 +81,26 @@
             "notNull": true
           },
           {
+            "fieldPath": "updatedAt",
+            "columnName": "updatedAt",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
             "fieldPath": "isSynced",
             "columnName": "isSynced",
             "affinity": "INTEGER",
             "notNull": true
           },
           {
-            "fieldPath": "updatedAt",
-            "columnName": "updatedAt",
+            "fieldPath": "isArchived",
+            "columnName": "isArchived",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isDelete",
+            "columnName": "isDelete",
             "affinity": "INTEGER",
             "notNull": true
           }
@@ -89,8 +113,8 @@
         }
       },
       {
-        "tableName": "TimeEntryEntity",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` BLOB NOT NULL, `startDateTime` INTEGER NOT NULL, `endDateTime` INTEGER, `projectId` BLOB, `taskId` BLOB, `isSynced` INTEGER NOT NULL, `updatedAt` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "tableName": "TimeEntry",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` BLOB NOT NULL, `startDateTime` INTEGER NOT NULL, `endDateTime` INTEGER, `projectId` BLOB, `taskId` BLOB, `updatedAt` INTEGER NOT NULL, `isSynced` INTEGER NOT NULL, `isArchived` INTEGER NOT NULL, `isDelete` INTEGER NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -120,14 +144,26 @@
             "affinity": "BLOB"
           },
           {
+            "fieldPath": "updatedAt",
+            "columnName": "updatedAt",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
             "fieldPath": "isSynced",
             "columnName": "isSynced",
             "affinity": "INTEGER",
             "notNull": true
           },
           {
-            "fieldPath": "updatedAt",
-            "columnName": "updatedAt",
+            "fieldPath": "isArchived",
+            "columnName": "isArchived",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isDelete",
+            "columnName": "isDelete",
             "affinity": "INTEGER",
             "notNull": true
           }
@@ -142,7 +178,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'b276c448eb5cfac38b626f1779a2e246')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '1e752f22337e1afc9c122b6d1bc7a371')"
     ]
   }
 }

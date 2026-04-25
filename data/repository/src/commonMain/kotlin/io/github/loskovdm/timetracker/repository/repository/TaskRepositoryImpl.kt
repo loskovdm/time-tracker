@@ -28,20 +28,13 @@ class TaskRepositoryImpl(
         localDataSource.updateTask(task.toRepo(updatedAt))
     }
 
-    override suspend fun deleteTask(
-        task: Task,
-        deletedAt: Instant
-    ) {
-        localDataSource.deleteTask(task.toRepo(deletedAt))
-    }
-
     @OptIn(ExperimentalUuidApi::class)
     override suspend fun getTaskById(id: Uuid): Task? {
         return localDataSource.getTaskById(id)?.toDomain()
     }
 
-    override fun observeTasks(): Flow<List<Task>> {
-        return localDataSource.observeTasks().map { repoTasks ->
+    override fun getTasks(): Flow<List<Task>> {
+        return localDataSource.getTasks().map { repoTasks ->
             repoTasks.map { repoTask -> repoTask.toDomain() }
         }
     }

@@ -2,16 +2,16 @@ package io.github.loskovdm.domain.di
 
 import io.github.loskovdm.domain.usecase.project.AddProjectUseCase
 import io.github.loskovdm.domain.usecase.project.DeleteProjectUseCase
-import io.github.loskovdm.domain.usecase.project.ObserveProjectsUseCase
+import io.github.loskovdm.domain.usecase.project.GetProjectsUseCase
 import io.github.loskovdm.domain.usecase.project.UpdateProjectUseCase
 import io.github.loskovdm.domain.usecase.task.AddTaskUseCase
 import io.github.loskovdm.domain.usecase.task.DeleteTaskUseCase
-import io.github.loskovdm.domain.usecase.task.ObserveTasksUseCase
+import io.github.loskovdm.domain.usecase.task.GetTasksUseCase
 import io.github.loskovdm.domain.usecase.task.UpdateTaskUseCase
 import io.github.loskovdm.domain.usecase.timetracker.AddTimeEntryUseCase
 import io.github.loskovdm.domain.usecase.timetracker.DeleteTimeEntryUseCase
-import io.github.loskovdm.domain.usecase.timetracker.ObserveActiveTimeEntryUseCase
-import io.github.loskovdm.domain.usecase.timetracker.ObserveCompletedTimeEntriesUseCase
+import io.github.loskovdm.domain.usecase.timetracker.GetActiveTimeEntryUseCase
+import io.github.loskovdm.domain.usecase.timetracker.GetCompletedTimeEntriesUseCase
 import io.github.loskovdm.domain.usecase.timetracker.StartTrackTimeUseCase
 import io.github.loskovdm.domain.usecase.timetracker.StopTrackTimeUseCase
 import io.github.loskovdm.domain.usecase.timetracker.UpdateTimeEntryUseCase
@@ -23,22 +23,21 @@ val domainModule = module {
     // Project use cases
     factory<AddProjectUseCase>()
     factory<DeleteProjectUseCase>()
-    factory<ObserveProjectsUseCase>()
+    factory<GetProjectsUseCase>()
     factory<UpdateProjectUseCase>()
 
     // Task use cases
     factory<AddTaskUseCase>()
     factory<DeleteTaskUseCase>()
-    factory<ObserveTasksUseCase>()
+    factory<GetTasksUseCase>()
     factory<UpdateTaskUseCase>()
 
     // Time tracker use cases
     factory<AddTimeEntryUseCase>()
     factory<DeleteTimeEntryUseCase>()
-    factory<ObserveActiveTimeEntryUseCase>()
-    factory<ObserveCompletedTimeEntriesUseCase>()
+    factory<GetActiveTimeEntryUseCase>()
+    factory<GetCompletedTimeEntriesUseCase>()
     factory<StartTrackTimeUseCase>()
     factory<StopTrackTimeUseCase>()
     factory<UpdateTimeEntryUseCase>()
-
 }

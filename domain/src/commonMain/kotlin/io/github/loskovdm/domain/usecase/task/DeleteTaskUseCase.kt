@@ -21,9 +21,6 @@ class DeleteTaskUseCase(
             projectId = projectId,
             isSynced = false,
         )
-        repository.deleteTask(
-            task = task,
-            deletedAt = Clock.System.now(),
-        )
+        // TODO: Implement deleting
     }
 }
