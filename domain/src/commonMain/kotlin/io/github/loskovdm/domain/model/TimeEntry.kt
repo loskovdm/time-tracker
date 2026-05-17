@@ -11,5 +11,4 @@ data class TimeEntry(
     val endDateTime: Instant?,
     val projectId: Uuid?,
     val taskId: Uuid?,
-    val isSynced: Boolean,
 )

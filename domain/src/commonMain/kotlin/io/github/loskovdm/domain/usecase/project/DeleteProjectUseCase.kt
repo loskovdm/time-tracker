@@ -19,7 +19,6 @@ class DeleteProjectUseCase(
             id = id,
             name = name,
             color = color,
-            isSynced = false,
         )
         // TODO: Implement deleting
     }

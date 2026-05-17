@@ -1,0 +1,34 @@
+plugins {
+    alias(libs.plugins.kotlinMultiplatform)
+    alias(libs.plugins.androidKotlinMultiplatformLibrary)
+}
+
+kotlin {
+
+    android {
+        namespace = "io.github.loskovdm.timetracker.feature.tasks.api"
+        compileSdk = 37
+        minSdk = 24
+        experimentalProperties["android.experimental.kmp.enableAndroidResources"] = true
+    }
+
+    jvm()
+
+    sourceSets {
+        commonMain {
+            dependencies {
+                implementation(projects.feature.navigation.api)
+                implementation(projects.feature.projects.api)
+
+                implementation(libs.kotlin.stdlib)
+                implementation(libs.androidx.lifecycle.viewmodel)
+            }
+        }
+
+        commonTest {
+            dependencies {
+                implementation(libs.kotlin.test)
+            }
+        }
+    }
+}

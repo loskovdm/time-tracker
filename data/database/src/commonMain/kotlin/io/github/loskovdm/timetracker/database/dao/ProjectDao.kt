@@ -16,9 +16,9 @@ interface ProjectDao {
     @Update
     suspend fun updateProject(project: Project)
 
-    @Query("SELECT * FROM Project WHERE id = :id AND isDelete = 0 LIMIT 1")
+    @Query("SELECT * FROM Project WHERE id = :id LIMIT 1")
     suspend fun getProjectById(id: Uuid): Project?
 
-    @Query("SELECT * FROM Project WHERE isDelete = 0")
-    fun getProjects(): Flow<List<Project>>
+    @Query("SELECT * FROM Project WHERE isArchived = :isArchived")
+    fun getProjects(isArchived: Boolean): Flow<List<Project>>
 }

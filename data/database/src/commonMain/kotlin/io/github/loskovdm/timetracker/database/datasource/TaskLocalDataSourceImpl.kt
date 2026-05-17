@@ -1,30 +1,30 @@
 package io.github.loskovdm.timetracker.database.datasource
 
 import io.github.loskovdm.timetracker.database.dao.TaskDao
-import io.github.loskovdm.timetracker.database.model.toEntity
-import io.github.loskovdm.timetracker.database.model.toRepo
+import io.github.loskovdm.timetracker.database.mapper.TaskMapper
 import io.github.loskovdm.timetracker.repository.datasource.TaskLocalDataSource
 import io.github.loskovdm.timetracker.repository.model.Task
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlin.uuid.Uuid
 
-class TaskLocalDataSourceImpl(private val dao: TaskDao): TaskLocalDataSource {
+internal class TaskLocalDataSourceImpl(
+    private val dao: TaskDao,
+    private val mapper: TaskMapper,
+): TaskLocalDataSource {
     override suspend fun addTask(task: Task) {
-        dao.insertTask(task.toEntity())
+        dao.insertTask(mapper.toEntity(task))
     }
 
     override suspend fun updateTask(task: Task) {
-        dao.updateTask(task.toEntity())
+        dao.updateTask(mapper.toEntity(task))
     }
 
     override suspend fun getTaskById(id: Uuid): Task? {
-        return dao.getTaskById(id)?.toRepo()
+        return dao.getTaskById(id)?.let { mapper.toRepo(it) }
     }
 
-    override fun getTasks(): Flow<List<Task>> {
-        return dao.getTasks().map { taskEntities ->
-            taskEntities.map { taskEntity -> taskEntity.toRepo() }
-        }
+    override fun getTasks(projectId: Uuid): Flow<List<Task>> {
+        return dao.getTasks(projectId).map { mapper.toRepo(it)}
     }
 }

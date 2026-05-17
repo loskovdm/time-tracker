@@ -2,20 +2,13 @@ package io.github.loskovdm.domain.repository
 
 import io.github.loskovdm.domain.model.Task
 import kotlinx.coroutines.flow.Flow
-import kotlin.time.Instant
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
+@OptIn(ExperimentalUuidApi::class)
 interface TaskRepository {
-    suspend fun addTask(
-        task: Task,
-        addedAt: Instant,
-    )
-    suspend fun updateTask(
-        task: Task,
-        updatedAt: Instant,
-    )
-    @OptIn(ExperimentalUuidApi::class)
+    suspend fun addTask(task: Task)
+    suspend fun updateTask(task: Task)
     suspend fun getTaskById(id: Uuid): Task?
-    fun getTasks(): Flow<List<Task>>
+    fun getTasks(projectId: Uuid): Flow<List<Task>>
 }

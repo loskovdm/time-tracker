@@ -16,9 +16,9 @@ interface TaskDao {
     @Update
     suspend fun updateTask(task: Task)
 
-    @Query("SELECT * FROM Task WHERE id = :id AND isDelete = 0 LIMIT 1")
+    @Query("SELECT * FROM Task WHERE id = :id LIMIT 1")
     suspend fun getTaskById(id: Uuid): Task?
 
-    @Query("SELECT * FROM Task WHERE isDelete = 0")
-    fun getTasks(): Flow<List<Task>>
+    @Query("SELECT * FROM Task WHERE projectId = :projectId")
+    fun getTasks(projectId: Uuid): Flow<List<Task>>
 }

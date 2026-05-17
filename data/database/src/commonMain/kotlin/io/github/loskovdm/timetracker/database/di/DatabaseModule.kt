@@ -11,6 +11,10 @@ import io.github.loskovdm.timetracker.database.datasource.TaskLocalDataSourceImp
 import io.github.loskovdm.timetracker.database.datasource.TimeEntryLocalDataSourceImpl
 import io.github.loskovdm.timetracker.database.datasource.TimeEntryWithRelationsDataSourceImpl
 import io.github.loskovdm.timetracker.database.getDatabaseBuilder
+import io.github.loskovdm.timetracker.database.mapper.ProjectMapper
+import io.github.loskovdm.timetracker.database.mapper.TaskMapper
+import io.github.loskovdm.timetracker.database.mapper.TimeEntryMapper
+import io.github.loskovdm.timetracker.database.mapper.TimeEntryWithRelationsMapper
 import io.github.loskovdm.timetracker.repository.datasource.ProjectLocalDataSource
 import io.github.loskovdm.timetracker.repository.datasource.TaskLocalDataSource
 import io.github.loskovdm.timetracker.repository.datasource.TimeEntryLocalDataSource
@@ -18,6 +22,7 @@ import io.github.loskovdm.timetracker.repository.datasource.TimeEntryWithRelatio
 import io.github.loskovdm.timetracker.repository.di.repositoryModule
 import kotlinx.coroutines.Dispatchers
 import org.koin.dsl.module
+import org.koin.plugin.module.dsl.single
 
 val databaseModule = module {
     single<TimeTrackerDatabase> {
@@ -40,10 +45,35 @@ val databaseModule = module {
         get<TimeTrackerDatabase>().timeEntryWithRelations()
     }
 
-    single<ProjectLocalDataSource> { ProjectLocalDataSourceImpl(get()) }
-    single<TaskLocalDataSource> { TaskLocalDataSourceImpl(get()) }
-    single<TimeEntryLocalDataSource> { TimeEntryLocalDataSourceImpl(get()) }
-    single<TimeEntryWithRelationsDataSource> { TimeEntryWithRelationsDataSourceImpl(get()) }
+    single<ProjectMapper>()
+    single<TaskMapper>()
+    single<TimeEntryMapper>()
+    single<TimeEntryWithRelationsMapper>()
+
+    single<ProjectLocalDataSource> {
+        ProjectLocalDataSourceImpl(
+            dao = get(),
+            mapper = get(),
+        )
+    }
+    single<TaskLocalDataSource> {
+        TaskLocalDataSourceImpl(
+            dao = get(),
+            mapper = get(),
+        )
+    }
+    single<TimeEntryLocalDataSource> {
+        TimeEntryLocalDataSourceImpl(
+            dao = get(),
+            mapper = get(),
+        )
+    }
+    single<TimeEntryWithRelationsDataSource> {
+        TimeEntryWithRelationsDataSourceImpl(
+            dao = get(),
+            mapper = get(),
+        )
+    }
 
     includes(repositoryModule)
 }

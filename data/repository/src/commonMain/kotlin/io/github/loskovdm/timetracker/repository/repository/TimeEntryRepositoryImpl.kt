@@ -3,31 +3,21 @@ package io.github.loskovdm.timetracker.repository.repository
 import io.github.loskovdm.domain.model.TimeEntry
 import io.github.loskovdm.domain.repository.TimeEntryRepository
 import io.github.loskovdm.timetracker.repository.datasource.TimeEntryLocalDataSource
-import io.github.loskovdm.timetracker.repository.model.toDomain
-import io.github.loskovdm.timetracker.repository.model.toRepo
-import kotlin.time.Instant
-import kotlin.uuid.ExperimentalUuidApi
-import kotlin.uuid.Uuid
+import io.github.loskovdm.timetracker.repository.mapper.TimeEntryMapper
 
-class TimeEntryRepositoryImpl (
+internal class TimeEntryRepositoryImpl (
     private val localDataSource: TimeEntryLocalDataSource,
+    private val mapper: TimeEntryMapper,
 ): TimeEntryRepository {
-    override suspend fun addTimeEntry(
-        timeEntry: TimeEntry,
-        addedAt: Instant
-    ) {
-        localDataSource.addTimeEntry(timeEntry.toRepo(addedAt))
+    override suspend fun addTimeEntry(timeEntry: TimeEntry) {
+        localDataSource.addTimeEntry(mapper.toRepo(timeEntry))
     }
 
-    override suspend fun updateTimeEntry(
-        timeEntry: TimeEntry,
-        updatedAt: Instant
-    ) {
-        localDataSource.updateTimeEntry(timeEntry.toRepo(updatedAt))
+    override suspend fun updateTimeEntry(timeEntry: TimeEntry) {
+        localDataSource.updateTimeEntry(mapper.toRepo(timeEntry))
     }
 
-    @OptIn(ExperimentalUuidApi::class)
-    override suspend fun getTimeEntryById(id: Uuid): TimeEntry? {
-        return localDataSource.getTimeEntryById(id)?.toDomain()
+    override suspend fun deleteTimeEntry(timeEntry: TimeEntry) {
+        localDataSource.deleteTimeEntry(mapper.toRepo(timeEntry))
     }
 }

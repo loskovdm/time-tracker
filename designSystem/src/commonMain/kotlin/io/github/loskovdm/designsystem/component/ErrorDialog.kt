@@ -6,6 +6,10 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
+import org.jetbrains.compose.resources.stringResource
+import timetracker.designsystem.generated.resources.Res
+import timetracker.designsystem.generated.resources.error
+import timetracker.designsystem.generated.resources.ok
 
 @Composable
 fun ErrorDialog(
@@ -16,7 +20,7 @@ fun ErrorDialog(
 		onDismissRequest = onDismiss,
 		title = {
 			Text(
-				text = "Error", // TODO:
+				text = stringResource(Res.string.error),
 				style = MaterialTheme.typography.titleLarge,
 			)
 		},
@@ -28,7 +32,7 @@ fun ErrorDialog(
 		},
 		confirmButton = {
 			TextButton(onClick = onDismiss) {
-				Text("OK")
+				Text(stringResource(Res.string.ok))
 			}
 		},
 	)

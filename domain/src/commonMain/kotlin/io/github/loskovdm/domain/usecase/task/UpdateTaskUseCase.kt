@@ -2,7 +2,6 @@ package io.github.loskovdm.domain.usecase.task
 
 import io.github.loskovdm.domain.model.Task
 import io.github.loskovdm.domain.repository.TaskRepository
-import kotlin.time.Clock
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
@@ -19,11 +18,7 @@ class UpdateTaskUseCase(
             id = id,
             name = name,
             projectId = projectId,
-            isSynced = false,
         )
-        repository.updateTask(
-            task = task,
-            updatedAt = Clock.System.now(),
-        )
+        repository.updateTask(task = task)
     }
 }

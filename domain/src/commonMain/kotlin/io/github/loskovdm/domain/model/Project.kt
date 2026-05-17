@@ -7,5 +7,4 @@ data class Project @OptIn(ExperimentalUuidApi::class) constructor(
     val id: Uuid,
     val name: String,
     val color: Long,
-    val isSynced: Boolean,
 )

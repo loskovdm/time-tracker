@@ -21,13 +21,26 @@ kotlin {
     
     sourceSets {
         commonMain.dependencies {
-            implementation(projects.feature.timer)
-            implementation(projects.feature.calendar)
-            implementation(projects.feature.reports)
-            implementation(projects.feature.projects)
-            implementation(projects.feature.settings)
+//            implementation(projects.feature.timer_deprecated)
+//            implementation(projects.feature.timer.api)
+//            implementation(projects.feature.calendar)
+//            implementation(projects.feature.reports)
+//            implementation(projects.feature.projects)
+//            implementation(projects.feature.settings)
             implementation(projects.designSystem)
             implementation(projects.data.database)
+            implementation(projects.feature.navigation.impl)
+            implementation(projects.feature.navigation.api)
+            implementation(projects.feature.timeentry.api)
+            implementation(projects.feature.timeentry.impl)
+            implementation(projects.feature.projects.api)
+            implementation(projects.feature.projects.impl)
+            implementation(projects.feature.tasks.api)
+            implementation(projects.feature.tasks.impl)
+            implementation(projects.feature.reports.api)
+            implementation(projects.feature.reports.impl)
+            implementation(projects.feature.settings.api)
+            implementation(projects.feature.settings.impl)
 
             implementation(libs.compose.runtime)
             implementation(libs.compose.foundation)
@@ -43,6 +56,7 @@ kotlin {
             implementation(libs.androidx.navigation3.ui)
             implementation(libs.kotlinx.serialization.json)
             implementation(libs.koin.core)
+            implementation(libs.koin.navigation3)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

@@ -3,39 +3,38 @@ package io.github.loskovdm.timetracker.repository.repository
 import io.github.loskovdm.domain.model.Project
 import io.github.loskovdm.domain.repository.ProjectRepository
 import io.github.loskovdm.timetracker.repository.datasource.ProjectLocalDataSource
-import io.github.loskovdm.timetracker.repository.model.toDomain
-import io.github.loskovdm.timetracker.repository.model.toRepo
+import io.github.loskovdm.timetracker.repository.mapper.ProjectMapper
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import kotlin.time.Instant
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
-class ProjectRepositoryImpl(
+internal class ProjectRepositoryImpl(
     private val localDataSource: ProjectLocalDataSource,
+    private val mapper: ProjectMapper,
 ): ProjectRepository {
-    override suspend fun addProject(
-        project: Project,
-        addedAt: Instant,
-    ) {
-        localDataSource.addProject(project.toRepo(addedAt))
+    override suspend fun addProject(project: Project) {
+        localDataSource.addProject(mapper.toRepo(project))
     }
 
-    override suspend fun updateProject(
-        project: Project,
-        updatedAt: Instant,
-    ) {
-        localDataSource.updateProject(project.toRepo(updatedAt))
+    override suspend fun updateProject(project: Project) {
+        localDataSource.updateProject(mapper.toRepo(project))
+    }
+
+    override suspend fun archiveProject(project: Project) {
+        localDataSource.archiveProject(mapper.toRepo(project))
+    }
+
+    override suspend fun unarchiveProject(project: Project) {
+        localDataSource.unarchiveProject(mapper.toRepo(project))
     }
 
     @OptIn(ExperimentalUuidApi::class)
     override suspend fun getProjectById(id: Uuid): Project? {
-        return localDataSource.getProjectById(id)?.toDomain()
+        return localDataSource.getProjectById(id)?.let { mapper.toDomain(it) }
     }
 
-    override fun getProjects(): Flow<List<Project>> {
-        return localDataSource.getProjects().map { repoProjects ->
-            repoProjects.map { repoProject -> repoProject.toDomain() }
-        }
+    override fun getProjects(isArchived: Boolean): Flow<List<Project>> {
+        return localDataSource.getProjects(isArchived).map { mapper.toDomain(it) }
     }
 }

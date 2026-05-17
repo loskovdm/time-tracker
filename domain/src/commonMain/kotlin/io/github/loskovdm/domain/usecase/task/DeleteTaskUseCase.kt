@@ -19,7 +19,6 @@ class DeleteTaskUseCase(
             id = id,
             name = name,
             projectId = projectId,
-            isSynced = false,
         )
         // TODO: Implement deleting
     }
