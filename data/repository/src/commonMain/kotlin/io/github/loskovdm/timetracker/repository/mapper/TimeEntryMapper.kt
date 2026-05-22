@@ -23,4 +23,7 @@ internal class TimeEntryMapper {
             projectId = repoTimeEntry.projectId,
             taskId = repoTimeEntry.taskId,
         )
+
+    fun toDomain(repoTimeEntries: List<RepoTimeEntry>): List<DomainTimeEntry> =
+        repoTimeEntries.map { toDomain(it) }
 }

@@ -18,7 +18,6 @@ kotlin {
         commonMain {
             dependencies {
                 implementation(projects.feature.navigation.api)
-                implementation(projects.feature.projects.api)
 
                 implementation(libs.kotlin.stdlib)
                 implementation(libs.androidx.lifecycle.viewmodel)

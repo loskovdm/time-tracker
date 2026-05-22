@@ -18,7 +18,8 @@ class UnarchiveProjectUseCase(
             id = id,
             name = name,
             color = color,
+            isArchived = false
         )
-        repository.unarchiveProject(project = project)
+        repository.updateProject(project = project)
     }
 }

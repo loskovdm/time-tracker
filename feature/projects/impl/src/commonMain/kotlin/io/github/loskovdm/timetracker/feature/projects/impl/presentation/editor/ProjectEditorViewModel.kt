@@ -13,9 +13,9 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.StringResource
 import timetracker.designsystem.generated.resources.Res
-import timetracker.designsystem.generated.resources.project_name_empty_error
-import timetracker.designsystem.generated.resources.project_name_invalid_characters
-import timetracker.designsystem.generated.resources.project_name_longer_100_characters
+import timetracker.designsystem.generated.resources.invalid_characters_error
+import timetracker.designsystem.generated.resources.longer_100_characters_error
+import timetracker.designsystem.generated.resources.name_empty_error
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
@@ -48,6 +48,7 @@ internal class ProjectEditorViewModel(
                         ProjectEditorState(
                             name = project.name,
                             color = ProjectColor.fromArgb(project.color) ?: ProjectColor.random(),
+                            isArchived = project.isArchived,
                             isNew = false,
                         )
                     }
@@ -56,21 +57,22 @@ internal class ProjectEditorViewModel(
         }
     }
 
-    fun onSaveProject(): Boolean {
+    fun saveProject(): Boolean {
         val error = validateName(state.value.name)
 
         if (error == null) {
             viewModelScope.launch {
                 if (projectId == null) {
                     addProjectUseCase(
-                        name = state.value.name,
+                        name = state.value.name.trim(),
                         color = state.value.color.argb,
                     )
                 } else {
                     updateProjectUseCase(
                         id = projectId,
-                        name = state.value.name,
+                        name = state.value.name.trim(),
                         color = state.value.color.argb,
+                        isArchived = state.value.isArchived,
                     )
                 }
             }
@@ -81,25 +83,24 @@ internal class ProjectEditorViewModel(
         }
     }
 
-    fun onNameChanged(changedName: String) {
-        val newName = changedName.trim()
+    fun changeName(changedName: String) {
         _state.update {
             it.copy(
-                name = newName,
-                validationError = validateName(newName),
+                name = changedName,
+                validationError = validateName(changedName),
             )
         }
     }
 
-    fun onColorChanged(changedColor: ProjectColor) {
+    fun colorChange(changedColor: ProjectColor) {
         _state.update { it.copy(color = changedColor) }
     }
 
     private fun validateName(name: String): StringResource? {
         return when {
-            name.isEmpty() -> Res.string.project_name_empty_error
-            name.length >= 100 -> Res.string.project_name_longer_100_characters
-            name.any { it in "/\\\"?*%&@<>|"} -> Res.string.project_name_invalid_characters
+            name.isEmpty() -> Res.string.name_empty_error
+            name.length >= 100 -> Res.string.longer_100_characters_error
+            name.any { it in "/\\\"?*%&@<>|"} -> Res.string.invalid_characters_error
             else -> null
         }
     }

@@ -16,7 +16,7 @@ import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import timetracker.designsystem.generated.resources.Res
 import timetracker.designsystem.generated.resources.ic_settings_filled
-import timetracker.designsystem.generated.resources.ic_settings_outlined
+import timetracker.designsystem.generated.resources.reports
 import timetracker.designsystem.generated.resources.settings
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -30,7 +30,7 @@ fun ReportsTopBar(
 
     TopAppBar(
         modifier = modifier,
-        title = { Text("Reports") },
+        title = { Text(stringResource(Res.string.reports)) },
         scrollBehavior = scrollBehavior,
         actions = {
             IconButton(

@@ -11,6 +11,7 @@ internal class TaskMapper {
             id = domainTask.id,
             name = domainTask.name,
             projectId = domainTask.projectId,
+            isCompleted = domainTask.isCompleted
         )
 
     fun toView(domainTasks: List<DomainTask>): List<ViewTask> =

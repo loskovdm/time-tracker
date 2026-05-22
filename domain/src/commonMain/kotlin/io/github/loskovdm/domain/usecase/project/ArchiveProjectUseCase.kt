@@ -18,7 +18,8 @@ class ArchiveProjectUseCase(
             id = id,
             name = name,
             color = color,
+            isArchived = true,
         )
-        repository.archiveProject(project = project)
+        repository.updateProject(project = project)
     }
 }

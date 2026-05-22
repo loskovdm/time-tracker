@@ -25,6 +25,7 @@ import androidx.navigation3.scene.SceneDecoratorStrategy
 import androidx.navigation3.scene.SceneDecoratorStrategyScope
 import io.github.loskovdm.designsystem.local.LocalDeviceConfiguration
 import io.github.loskovdm.designsystem.util.DeviceConfiguration
+import io.github.loskovdm.timetracker.feature.navigation.api.Navigator
 import io.github.loskovdm.timetracker.feature.navigation.api.SceneMetadata
 import io.github.loskovdm.timetracker.feature.navigation.api.SceneType
 import io.github.loskovdm.timetracker.feature.navigation.api.TimeTrackerDestination
@@ -37,8 +38,13 @@ import io.github.loskovdm.timetracker.feature.navigation.impl.component.fab.Stop
 import io.github.loskovdm.timetracker.feature.navigation.impl.component.navbar.NavigationBar
 import io.github.loskovdm.timetracker.feature.navigation.impl.component.navbar.NavigationRail
 import io.github.loskovdm.timetracker.feature.navigation.impl.util.NavigationItem
+import io.github.loskovdm.timetracker.feature.tasks.api.destination.TaskEditorDestination
 import io.github.loskovdm.timetracker.feature.timeentry.api.presentation.TimerState
+import org.koin.compose.koinInject
+import kotlin.uuid.ExperimentalUuidApi
+import kotlin.uuid.Uuid
 
+@OptIn(ExperimentalUuidApi::class)
 internal data class AdaptiveNavigationScene<T : TimeTrackerDestination>(
     private val scene: Scene<T>,
     private val deviceConfiguration: DeviceConfiguration,
@@ -51,7 +57,6 @@ internal data class AdaptiveNavigationScene<T : TimeTrackerDestination>(
     private val onStopTimer: () -> Unit,
     private val onAddTimeEntry: () -> Unit,
     private val onAddProject: () -> Unit,
-    private val onAddTask: () -> Unit,
     private val onShareReport: () -> Unit,
 ) : Scene<T> by scene {
     override val key = scene::class to scene.key
@@ -64,6 +69,8 @@ internal data class AdaptiveNavigationScene<T : TimeTrackerDestination>(
         val timerIsActive = timerState.value is TimerState.Loaded
 
         val extendedFab: @Composable (isExpanded: Boolean) -> Unit = { isExpanded ->
+            val navigator: Navigator = koinInject()
+
             when (scene.metadata[SceneMetadata.SceneTypeKey]) {
                 SceneType.Timer -> {
                     if (timerIsActive) {
@@ -82,12 +89,20 @@ internal data class AdaptiveNavigationScene<T : TimeTrackerDestination>(
                     onClick = onAddTimeEntry,
                     isExpanded = isExpanded,
                 )
-                SceneType.Projects -> AddProjectFab(
+                SceneType.ActiveProjects -> AddProjectFab(
                     onClick = onAddProject,
                     isExpanded = isExpanded,
                 )
                 SceneType.Tasks -> AddTaskFab(
-                    onClick = onAddTask,
+                    onClick = {
+                        val projectId = extractProjectId(scene.key)
+                        projectId?.let {
+                            navigator.goTo(TaskEditorDestination(
+                                projectId = it,
+                                taskId = null
+                            ))
+                        }
+                    },
                     isExpanded = isExpanded,
                 )
                 SceneType.Reports -> ShareFab(
@@ -159,7 +174,6 @@ fun <T : TimeTrackerDestination> rememberAdaptiveNavigationSceneDecoratorStrateg
     onStopTimer: () -> Unit,
     onAddTimeEntry: () -> Unit,
     onAddProject: () -> Unit,
-    onAddTask: () -> Unit,
     onShareReport: () -> Unit,
 ): AdaptiveNavigationSceneDecoratorStrategy<T> {
     val timerStateHolder = rememberUpdatedState(timerState)
@@ -182,7 +196,6 @@ fun <T : TimeTrackerDestination> rememberAdaptiveNavigationSceneDecoratorStrateg
             onStopTimer = onStopTimer,
             onAddTimeEntry = onAddTimeEntry,
             onAddProject = onAddProject,
-            onAddTask = onAddTask,
             onShareReport = onShareReport,
         )
     }
@@ -199,14 +212,14 @@ class AdaptiveNavigationSceneDecoratorStrategy<T : TimeTrackerDestination>(
     private val onStopTimer: () -> Unit,
     private val onAddTimeEntry: () -> Unit,
     private val onAddProject: () -> Unit,
-    private val onAddTask: () -> Unit,
     private val onShareReport: () -> Unit,
 ) : SceneDecoratorStrategy<T> {
     override fun SceneDecoratorStrategyScope<T>.decorateScene(scene: Scene<T>): Scene<T> {
         return when (scene.metadata[SceneMetadata.SceneTypeKey]) {
             SceneType.Timer,
             SceneType.Calendar,
-            SceneType.Projects,
+            SceneType.ActiveProjects,
+            SceneType.ArchivedProjects,
             SceneType.Tasks,
             SceneType.Reports -> AdaptiveNavigationScene(
                 scene = scene,
@@ -220,7 +233,6 @@ class AdaptiveNavigationSceneDecoratorStrategy<T : TimeTrackerDestination>(
                 onStopTimer = onStopTimer,
                 onAddTimeEntry = onAddTimeEntry,
                 onAddProject = onAddProject,
-                onAddTask = onAddTask,
                 onShareReport = onShareReport,
             )
             else -> if (deviceConfiguration != DeviceConfiguration.MOBILE_PORTRAIT) {
@@ -229,5 +241,27 @@ class AdaptiveNavigationSceneDecoratorStrategy<T : TimeTrackerDestination>(
                 scene
             }
         }
+    }
+}
+
+@OptIn(ExperimentalUuidApi::class)
+private fun extractProjectId(sceneKey: Any): Uuid? {
+    var current: Any = sceneKey
+    while (current is Pair<*, *>) {
+        current = current.second ?: return null
+    }
+    val str = current.toString()
+    // Format: "TasksListDestination(projectId=019e..., projectName=...)"
+    val marker = "projectId="
+    val start = str.indexOf(marker)
+    if (start == -1) return null
+    val valueStart = start + marker.length
+    val end = str.indexOf(',', valueStart).takeIf { it != -1 } ?: str.indexOf(')', valueStart)
+    if (end == -1) return null
+    val idStr = str.substring(valueStart, end).trim()
+    return try {
+        Uuid.parse(idStr)
+    } catch (_: Exception) {
+        null
     }
 }

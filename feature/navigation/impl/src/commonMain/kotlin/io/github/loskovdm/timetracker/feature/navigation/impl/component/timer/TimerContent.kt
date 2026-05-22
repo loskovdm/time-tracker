@@ -52,7 +52,7 @@ internal fun MobilePortraitTimer(
     Card(
         modifier = modifier
             .fillMaxWidth()
-            .height(80.dp),
+            .height(90.dp),
         onClick = onClick,
         shape = shape,
         colors = CardDefaults.cardColors(

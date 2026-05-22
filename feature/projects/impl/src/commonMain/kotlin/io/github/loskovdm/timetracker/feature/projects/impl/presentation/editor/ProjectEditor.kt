@@ -57,7 +57,7 @@ internal fun ProjectEditor(
         EditorHeader(
             onClose = onClose,
             onSave = {
-                val result = editorViewModel.onSaveProject()
+                val result = editorViewModel.saveProject()
                 if (result) {
                     onClose()
                 }
@@ -82,13 +82,13 @@ internal fun ProjectEditor(
                     .focusRequester(focusRequester),
                 label = stringResource(Res.string.project),
                 text = state.name,
-                onTextChange = editorViewModel::onNameChanged,
+                onTextChange = editorViewModel::changeName,
                 error = state.validationError,
             )
             ColorSelector(
                 colorList = colorList,
                 selectedColor = state.color,
-                onColorChange = editorViewModel::onColorChanged,
+                onColorChange = editorViewModel::colorChange,
             )
         }
     }

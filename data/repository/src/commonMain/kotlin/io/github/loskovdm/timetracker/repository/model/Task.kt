@@ -7,4 +7,5 @@ data class Task @OptIn(ExperimentalUuidApi::class) constructor(
     val id: Uuid,
     val name: String,
     val projectId: Uuid,
+    val isCompleted: Boolean,
 )

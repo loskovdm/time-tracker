@@ -37,14 +37,3 @@ fun ErrorDialog(
 		},
 	)
 }
-
-@Preview
-@Composable
-fun ErrorDialogPreview() {
-	MaterialTheme {
-		ErrorDialog(
-			message = "An error occurred while fetching data.",
-			onDismiss = {},
-		)
-	}
-}

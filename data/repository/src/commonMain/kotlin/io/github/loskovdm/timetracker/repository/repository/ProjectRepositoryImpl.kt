@@ -21,14 +21,6 @@ internal class ProjectRepositoryImpl(
         localDataSource.updateProject(mapper.toRepo(project))
     }
 
-    override suspend fun archiveProject(project: Project) {
-        localDataSource.archiveProject(mapper.toRepo(project))
-    }
-
-    override suspend fun unarchiveProject(project: Project) {
-        localDataSource.unarchiveProject(mapper.toRepo(project))
-    }
-
     @OptIn(ExperimentalUuidApi::class)
     override suspend fun getProjectById(id: Uuid): Project? {
         return localDataSource.getProjectById(id)?.let { mapper.toDomain(it) }

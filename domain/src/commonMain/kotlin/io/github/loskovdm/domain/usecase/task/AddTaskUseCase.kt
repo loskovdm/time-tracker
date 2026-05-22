@@ -5,10 +5,10 @@ import io.github.loskovdm.domain.repository.TaskRepository
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
+@OptIn(ExperimentalUuidApi::class)
 class AddTaskUseCase(
     private val repository: TaskRepository,
 ) {
-    @OptIn(ExperimentalUuidApi::class)
     suspend operator fun invoke(
         name: String,
         projectId: Uuid,
@@ -17,6 +17,7 @@ class AddTaskUseCase(
             id = Uuid.generateV7(),
             name = name,
             projectId = projectId,
+            isCompleted = false
         )
         repository.addTask(task = task)
     }

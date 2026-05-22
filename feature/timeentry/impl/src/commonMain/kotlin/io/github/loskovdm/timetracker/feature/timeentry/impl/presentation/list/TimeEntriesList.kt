@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -21,9 +20,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
-import androidx.compose.material3.LoadingIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -38,12 +35,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import io.github.loskovdm.designsystem.component.EmptyScreen
+import io.github.loskovdm.designsystem.component.LoadingScreen
 import io.github.loskovdm.designsystem.local.LocalFabPadding
 import io.github.loskovdm.designsystem.util.formatDateToString
 import io.github.loskovdm.designsystem.util.formatTimeToHmsString
 import io.github.loskovdm.timetracker.feature.projects.api.model.Project
 import io.github.loskovdm.timetracker.feature.tasks.api.model.Task
-import io.github.loskovdm.timetracker.feature.timeentry.api.destination.TimeEntryEditorDestination
 import io.github.loskovdm.timetracker.feature.timeentry.api.model.TimeEntry
 import io.github.loskovdm.timetracker.feature.timeentry.api.model.TimeEntryWithRelations
 import io.github.loskovdm.timetracker.feature.timeentry.api.presentation.TimerViewModel
@@ -72,14 +70,19 @@ import kotlin.uuid.Uuid
 @OptIn(ExperimentalUuidApi::class)
 @Composable
 internal fun TimeEntriesList(
-    onTimeEntryClicked: (TimeEntryEditorDestination) -> Unit,
+    onTimeEntryClicked: (Uuid) -> Unit,
     listViewModel: TimeEntriesListViewModel = koinViewModel(),
     timerViewModel: TimerViewModel = koinInject(),
 ) {
     val listState by listViewModel.state.collectAsStateWithLifecycle()
 
     when (val currentState = listState) {
-        TimeEntriesListState.Empty -> EmptyTimeEntriesList()
+        TimeEntriesListState.Loading -> LoadingScreen()
+        TimeEntriesListState.Empty -> EmptyScreen(
+            icon = vectorResource(Res.drawable.ic_timer_outlined),
+            headline = stringResource(Res.string.no_time_entries),
+            hint = stringResource(Res.string.start_tracking_time_hint),
+        )
         is TimeEntriesListState.Loaded -> TimeEntriesList(
             timeEntriesList = currentState.completedTimeEntries,
             onTimeEntryClick = onTimeEntryClicked,
@@ -87,53 +90,6 @@ internal fun TimeEntriesList(
                 timerViewModel.startTimer(projectId, taskId)
             },
         )
-        TimeEntriesListState.Loading -> LoadingTimeEntriesList()
-    }
-}
-
-@Composable
-private fun EmptyTimeEntriesList(modifier: Modifier = Modifier) {
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.surface)
-            .padding(horizontal = 32.dp),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
-        Icon(
-            modifier = Modifier.size(64.dp),
-            imageVector = vectorResource(Res.drawable.ic_timer_outlined),
-            contentDescription = null,
-            tint = MaterialTheme.colorScheme.onSurfaceVariant,
-        )
-        Spacer(modifier = Modifier.height(24.dp))
-        Text(
-            text = stringResource(Res.string.no_time_entries),
-            style = MaterialTheme.typography.headlineSmall,
-            color = MaterialTheme.colorScheme.onSurface,
-            textAlign = TextAlign.Center,
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-        Text(
-            text = stringResource(Res.string.start_tracking_time_hint),
-            style = MaterialTheme.typography.bodyLarge,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            textAlign = TextAlign.Center,
-        )
-    }
-}
-
-@OptIn(ExperimentalMaterial3ExpressiveApi::class)
-@Composable
-private fun LoadingTimeEntriesList(modifier: Modifier = Modifier) {
-    Box(
-        modifier = modifier
-            .fillMaxSize().
-            background(MaterialTheme.colorScheme.surface),
-        contentAlignment = Alignment.Center,
-    ) {
-        LoadingIndicator()
     }
 }
 
@@ -142,7 +98,7 @@ private fun LoadingTimeEntriesList(modifier: Modifier = Modifier) {
 private fun TimeEntriesList(
     modifier: Modifier = Modifier,
     timeEntriesList: List<TimeEntryWithRelations>,
-    onTimeEntryClick: (TimeEntryEditorDestination) -> Unit,
+    onTimeEntryClick: (Uuid) -> Unit,
     onStartTimeEntry: (projectId: Uuid?, taskId: Uuid?) -> Unit,
 ) {
     val timeZone = remember { TimeZone.currentSystemDefault() }
@@ -239,7 +195,7 @@ private fun TimeEntriesGroupHeader(
 private fun TimeEntriesGroup(
     modifier: Modifier = Modifier,
     timeEntriesWithRelations: List<TimeEntryWithRelations>,
-    onTimeEntryClick: (TimeEntryEditorDestination) -> Unit,
+    onTimeEntryClick: (Uuid) -> Unit,
     onStartTimeEntry: (projectId: Uuid?, taskId: Uuid?) -> Unit,
 ) {
     Card(
@@ -256,10 +212,7 @@ private fun TimeEntriesGroup(
                 TimeEntryItem(
                     timeEntryWithRelations = timeEntryWithRelations,
                     onClick = {
-                        val timeEntryEditorDestination = TimeEntryEditorDestination(
-                            timeEntryId = timeEntryWithRelations.timeEntry.id,
-                        )
-                        onTimeEntryClick(timeEntryEditorDestination)
+                        onTimeEntryClick(timeEntryWithRelations.timeEntry.id)
                     },
                     onStart = {
                         onStartTimeEntry(

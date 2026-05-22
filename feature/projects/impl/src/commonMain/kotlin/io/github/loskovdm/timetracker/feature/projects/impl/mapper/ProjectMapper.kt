@@ -11,6 +11,7 @@ internal class ProjectMapper {
             id = domainProject.id,
             name = domainProject.name,
             color = domainProject.color,
+            isArchived = domainProject.isArchived
         )
 
     fun toView(domainProjects: List<DomainProject>): List<ViewProject> =

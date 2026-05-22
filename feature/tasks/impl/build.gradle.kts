@@ -23,6 +23,7 @@ kotlin {
         commonMain {
             dependencies {
                 implementation(projects.feature.tasks.api)
+                implementation(projects.feature.projects.api)
                 implementation(projects.feature.navigation.api)
                 implementation(projects.designSystem)
                 implementation(projects.domain)
@@ -43,6 +44,7 @@ kotlin {
                 implementation(libs.koin.core)
                 implementation(libs.koin.navigation3)
                 implementation(libs.koin.composeViewmodel)
+                implementation(libs.koin.annotations)
             }
         }
 

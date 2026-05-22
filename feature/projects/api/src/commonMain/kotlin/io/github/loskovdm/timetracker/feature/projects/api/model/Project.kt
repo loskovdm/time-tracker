@@ -8,4 +8,5 @@ data class Project (
     val id: Uuid,
     val name: String,
     val color: Long,
+    val isArchived: Boolean,
 )

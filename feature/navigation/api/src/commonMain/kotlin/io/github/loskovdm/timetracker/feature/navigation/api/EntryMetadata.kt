@@ -7,7 +7,8 @@ object EntryMetadata {
     object TimeEntriesListKey : NavMetadataKey<Boolean>
     object TimeEntryCalendarKey : NavMetadataKey<Boolean>
     object EditorKey: NavMetadataKey<Boolean>
-    object ProjectsListKey : NavMetadataKey<Boolean>
+    object ActiveProjectsListKey : NavMetadataKey<Boolean>
+    object ArchivedProjectsListKey : NavMetadataKey<Boolean>
     object TasksListKey : NavMetadataKey<Boolean>
     object ReportsKey : NavMetadataKey<Boolean>
     object SettingsKey : NavMetadataKey<Boolean>
@@ -23,8 +24,11 @@ object EntryMetadataBuilder {
     fun editor() = metadata {
         put(EntryMetadata.EditorKey, true)
     }
-    fun projectsList() = metadata {
-        put(EntryMetadata.ProjectsListKey, true)
+    fun activeProjectsList() = metadata {
+        put(EntryMetadata.ActiveProjectsListKey, true)
+    }
+    fun archivedProjectsList() = metadata {
+        put(EntryMetadata.ArchivedProjectsListKey, true)
     }
     fun tasksList() = metadata {
         put(EntryMetadata.TasksListKey, true)

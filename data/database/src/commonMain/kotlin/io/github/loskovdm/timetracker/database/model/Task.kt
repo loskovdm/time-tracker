@@ -9,5 +9,5 @@ data class Task(
     @PrimaryKey val id: Uuid,
     val name: String,
     val projectId: Uuid,
-    val isArchived: Boolean,
+    val isCompleted: Boolean,
 )

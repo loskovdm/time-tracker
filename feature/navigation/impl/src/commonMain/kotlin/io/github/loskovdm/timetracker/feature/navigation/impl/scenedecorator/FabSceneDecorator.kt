@@ -26,6 +26,7 @@ import androidx.navigation3.scene.SceneDecoratorStrategyScope
 import io.github.loskovdm.designsystem.local.LocalDeviceConfiguration
 import io.github.loskovdm.designsystem.local.LocalFabPadding
 import io.github.loskovdm.designsystem.util.DeviceConfiguration
+import io.github.loskovdm.timetracker.feature.navigation.api.Navigator
 import io.github.loskovdm.timetracker.feature.navigation.api.SceneMetadata
 import io.github.loskovdm.timetracker.feature.navigation.api.SceneType
 import io.github.loskovdm.timetracker.feature.navigation.api.TimeTrackerDestination
@@ -34,10 +35,15 @@ import io.github.loskovdm.timetracker.feature.navigation.impl.component.fab.AddT
 import io.github.loskovdm.timetracker.feature.navigation.impl.component.fab.AddTimeEntryFab
 import io.github.loskovdm.timetracker.feature.navigation.impl.component.fab.ShareFab
 import io.github.loskovdm.timetracker.feature.navigation.impl.component.fab.StartTimerFab
+import io.github.loskovdm.timetracker.feature.tasks.api.destination.TaskEditorDestination
 import io.github.loskovdm.timetracker.feature.timeentry.api.presentation.TimerState
 import kotlinx.coroutines.delay
+import org.koin.compose.koinInject
 import kotlin.math.abs
+import kotlin.uuid.ExperimentalUuidApi
+import kotlin.uuid.Uuid
 
+@OptIn(ExperimentalUuidApi::class)
 internal data class FabScene<T : TimeTrackerDestination>(
     private val scene: Scene<T>,
     private val deviceConfiguration: DeviceConfiguration,
@@ -45,7 +51,6 @@ internal data class FabScene<T : TimeTrackerDestination>(
     private val onStartTimer: () -> Unit,
     private val onAddTimeEntry: () -> Unit,
     private val onAddProject: () -> Unit,
-    private val onAddTask: () -> Unit,
     private val onShareReport: () -> Unit,
 ) : Scene<T> by scene {
     override val key = scene::class to scene.key
@@ -82,6 +87,8 @@ internal data class FabScene<T : TimeTrackerDestination>(
             isScrollingDown.value = isScrollingDownRaw.value
         }
 
+        val navigator: Navigator = koinInject()
+
         val isExpanded = !isScrollingDown.value
         Box(modifier = Modifier.fillMaxSize().nestedScroll(scrollConnection)) {
             if (deviceConfiguration != DeviceConfiguration.DESKTOP && !timerIsActive) {
@@ -112,12 +119,20 @@ internal data class FabScene<T : TimeTrackerDestination>(
                         onClick = onAddTimeEntry,
                         isExpanded = isExpanded,
                     )
-                    SceneType.Projects -> AddProjectFab(
+                    SceneType.ActiveProjects -> AddProjectFab(
                         isExpanded = isExpanded,
                         onClick = onAddProject,
                     )
                     SceneType.Tasks -> AddTaskFab(
-                        onClick = onAddTask,
+                        onClick = {
+                            val projectId = extractProjectId(scene.key)
+                            projectId?.let {
+                                navigator.goTo(TaskEditorDestination(
+                                    projectId = it,
+                                    taskId = null
+                                ))
+                            }
+                        },
                         isExpanded = isExpanded,
                     )
                     SceneType.Reports -> ShareFab(
@@ -137,7 +152,6 @@ fun <T : TimeTrackerDestination> rememberFabSceneDecoratorStrategy(
     onStartTimer: () -> Unit,
     onAddTimeEntry: () -> Unit,
     onAddProject: () -> Unit,
-    onAddTask: () -> Unit,
     onShareReport: () -> Unit,
 ) : FabSceneDecoratorStrategy<T> {
     val timerStateHolder = rememberUpdatedState(timerState)
@@ -152,8 +166,7 @@ fun <T : TimeTrackerDestination> rememberFabSceneDecoratorStrategy(
             onStartTimer = onStartTimer,
             onAddTimeEntry = onAddTimeEntry,
             onAddProject = onAddProject,
-            onAddTask = onAddTask,
-            onShareReport = onShareReport
+            onShareReport = onShareReport,
         )
     }
 }
@@ -164,7 +177,6 @@ class FabSceneDecoratorStrategy<T : TimeTrackerDestination>(
     private val onStartTimer: () -> Unit,
     private val onAddTimeEntry: () -> Unit,
     private val onAddProject: () -> Unit,
-    private val onAddTask: () -> Unit,
     private val onShareReport: () -> Unit,
 ) : SceneDecoratorStrategy<T> {
     override fun SceneDecoratorStrategyScope<T>.decorateScene(scene: Scene<T>): Scene<T> {
@@ -182,9 +194,30 @@ class FabSceneDecoratorStrategy<T : TimeTrackerDestination>(
                 onStartTimer = onStartTimer,
                 onAddTimeEntry = onAddTimeEntry,
                 onAddProject = onAddProject,
-                onAddTask = onAddTask,
                 onShareReport = onShareReport,
             )
         }
+    }
+}
+
+@OptIn(ExperimentalUuidApi::class)
+private fun extractProjectId(sceneKey: Any): Uuid? {
+    var current: Any = sceneKey
+    while (current is Pair<*, *>) {
+        current = current.second ?: return null
+    }
+    val str = current.toString()
+    // Format: "TasksListDestination(projectId=019e..., projectName=...)"
+    val marker = "projectId="
+    val start = str.indexOf(marker)
+    if (start == -1) return null
+    val valueStart = start + marker.length
+    val end = str.indexOf(',', valueStart).takeIf { it != -1 } ?: str.indexOf(')', valueStart)
+    if (end == -1) return null
+    val idStr = str.substring(valueStart, end).trim()
+    return try {
+        Uuid.parse(idStr)
+    } catch (_: Exception) {
+        null
     }
 }

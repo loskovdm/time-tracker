@@ -24,18 +24,20 @@ import androidx.navigation3.runtime.contains
 import androidx.navigation3.scene.Scene
 import androidx.navigation3.scene.SceneStrategy
 import androidx.navigation3.scene.SceneStrategyScope
-import io.github.loskovdm.designsystem.component.ErrorDialog
 import io.github.loskovdm.designsystem.local.LocalDeviceConfiguration
 import io.github.loskovdm.designsystem.util.DeviceConfiguration
 import io.github.loskovdm.timetracker.feature.navigation.api.EntryMetadata
+import io.github.loskovdm.timetracker.feature.navigation.api.Navigator
 import io.github.loskovdm.timetracker.feature.navigation.api.SceneMetadataBuilder
 import io.github.loskovdm.timetracker.feature.navigation.api.TimeTrackerDestination
+import io.github.loskovdm.timetracker.feature.navigation.api.TimerErrorDialogDestination
 import io.github.loskovdm.timetracker.feature.navigation.impl.component.timer.ExpandedTimer
 import io.github.loskovdm.timetracker.feature.navigation.impl.component.timer.MobileLandscapeTimer
 import io.github.loskovdm.timetracker.feature.navigation.impl.component.timer.MobilePortraitTimer
 import io.github.loskovdm.timetracker.feature.timeentry.api.destination.TimeEntryEditorDestination
 import io.github.loskovdm.timetracker.feature.timeentry.api.presentation.TimerState
 import org.jetbrains.compose.resources.stringResource
+import org.koin.compose.koinInject
 import kotlin.uuid.ExperimentalUuidApi
 
 @Composable
@@ -105,9 +107,12 @@ data class TimerScene<T : Any>(
                 }
             }
             is TimerState.Error -> {
-                ErrorDialog(
-                    message = stringResource(currentTimerState.message),
-                    onDismiss = onClearTimerError,
+                val navigator: Navigator = koinInject()
+                navigator.goTo(
+                    TimerErrorDialogDestination(
+                        errorMessage = stringResource(currentTimerState.message),
+                        clearError = onClearTimerError,
+                    )
                 )
             }
             is TimerState.Loaded -> {

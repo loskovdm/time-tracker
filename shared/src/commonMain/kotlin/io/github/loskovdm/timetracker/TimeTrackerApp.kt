@@ -24,10 +24,10 @@ import io.github.loskovdm.timetracker.feature.navigation.impl.scenedecorator.rem
 import io.github.loskovdm.timetracker.feature.navigation.impl.scenedecorator.rememberFabSceneDecoratorStrategy
 import io.github.loskovdm.timetracker.feature.navigation.impl.scenedecorator.rememberSafeAreaContentSceneDecoratorStrategy
 import io.github.loskovdm.timetracker.feature.navigation.impl.scenedecorator.rememberTopBarSceneDecoratorStrategy
+import io.github.loskovdm.timetracker.feature.projects.api.destination.ArchivedProjectsListDestination
 import io.github.loskovdm.timetracker.feature.projects.api.destination.ProjectEditorDestination
 import io.github.loskovdm.timetracker.feature.settings.api.SettingsDestination
 import io.github.loskovdm.timetracker.feature.timeentry.api.destination.TimeEntryEditorDestination
-import io.github.loskovdm.timetracker.feature.timeentry.api.presentation.TimerState
 import io.github.loskovdm.timetracker.feature.timeentry.api.presentation.TimerViewModel
 import io.github.loskovdm.timetracker.util.isDesktopPlatform
 import org.koin.compose.koinInject
@@ -75,33 +75,16 @@ fun TimeTrackerApp() {
             val fabSceneDecoratorStrategy =
                 rememberFabSceneDecoratorStrategy<TimeTrackerDestination>(
                     timerState = timerState,
-                    onStartTimer = {
-
-                        timerViewModel.startTimer()
-
-
-
-                        when (val currentTimerState = timerState) {
-                            is TimerState.Loaded -> {
-                                navigator.goTo(
-                                    TimeEntryEditorDestination(
-                                        currentTimerState.timeEntryWithRelations.timeEntry.id
-                                    )
-                                )
-                            }
-                            is TimerState.Error -> {}
-                            TimerState.Empty -> {}
-                        }
-                    },
+                    onStartTimer = { timerViewModel.startTimer() },
                     onAddTimeEntry = { navigator.goTo(TimeEntryEditorDestination()) },
                     onAddProject = { navigator.goTo(ProjectEditorDestination()) },
-                    onAddTask = {},
                     onShareReport = {}
                 )
             val topBarSceneDecoratorStrategy =
                 rememberTopBarSceneDecoratorStrategy<TimeTrackerDestination>(
                     onSettings = { navigator.goTo(SettingsDestination) },
                     onAddEntry = { navigator.goTo(TimeEntryEditorDestination()) },
+                    onArchivedProjects = { navigator.goTo(ArchivedProjectsListDestination) }
                 )
             val adaptiveNavigationSceneDecoratorStrategy =
                 rememberAdaptiveNavigationSceneDecoratorStrategy<TimeTrackerDestination>(
@@ -110,11 +93,10 @@ fun TimeTrackerApp() {
                     topLevelDestinations = TOP_LEVEL_DESTINATIONS,
                     selectedDestination = navigator.currentTopLevelDestination,
                     onSelectedDestination = { navigator.goTo(it) },
-                    onStartTimer = {},
-                    onStopTimer = {},
+                    onStartTimer = { timerViewModel.startTimer() },
+                    onStopTimer = { timerViewModel.stopTimer() },
                     onAddTimeEntry = { navigator.goTo(TimeEntryEditorDestination()) },
-                    onAddProject = {},
-                    onAddTask = {},
+                    onAddProject = { navigator.goTo(ProjectEditorDestination()) },
                     onShareReport = {}
                 )
 

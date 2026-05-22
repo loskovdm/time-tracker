@@ -9,6 +9,8 @@ import kotlin.uuid.Uuid
 interface TaskRepository {
     suspend fun addTask(task: Task)
     suspend fun updateTask(task: Task)
+    suspend fun deleteTask(task: Task)
     suspend fun getTaskById(id: Uuid): Task?
-    fun getTasks(projectId: Uuid): Flow<List<Task>>
+    fun getActiveTasks(projectId: Uuid): Flow<List<Task>>
+    fun getCompletedTasks(projectId: Uuid): Flow<List<Task>>
 }

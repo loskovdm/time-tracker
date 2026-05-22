@@ -19,6 +19,9 @@ interface TimeEntryDao {
     @Update
     suspend fun updateTimeEntry(timeEntry: TimeEntry)
 
-    @Query("SELECT * FROM TimeEntry WHERE id = :id LIMIT 1")
-    suspend fun getTimeEntryById(id: Uuid): TimeEntry?
+    @Query("DELETE FROM TimeEntry WHERE taskId = :taskId")
+    suspend fun deleteTimeEntryByTaskId(taskId: Uuid)
+
+    @Query("UPDATE TimeEntry SET taskId = NULL WHERE taskId = :taskId")
+    suspend fun setTaskIdToNull(taskId: Uuid)
 }

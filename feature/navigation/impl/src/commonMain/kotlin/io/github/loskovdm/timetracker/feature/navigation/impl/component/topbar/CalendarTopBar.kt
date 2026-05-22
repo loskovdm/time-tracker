@@ -15,8 +15,8 @@ import io.github.loskovdm.designsystem.util.DeviceConfiguration
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import timetracker.designsystem.generated.resources.Res
+import timetracker.designsystem.generated.resources.calendar
 import timetracker.designsystem.generated.resources.ic_settings_filled
-import timetracker.designsystem.generated.resources.ic_settings_outlined
 import timetracker.designsystem.generated.resources.settings
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -31,7 +31,7 @@ fun CalendarTopBar(
     TopAppBar(
         modifier = modifier,
         scrollBehavior = scrollBehavior,
-        title = { Text("Calendar") },
+        title = { Text(stringResource(Res.string.calendar)) },
         actions = {
             IconButton(
                 onClick = onSettings,

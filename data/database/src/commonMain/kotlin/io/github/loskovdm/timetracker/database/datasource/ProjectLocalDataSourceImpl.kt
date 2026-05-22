@@ -20,19 +20,6 @@ internal class ProjectLocalDataSourceImpl(
         dao.updateProject(mapper.toEntity(project))
     }
 
-    override suspend fun archiveProject(project: Project) {
-        dao.updateProject(
-            mapper.toEntity(
-                repoProject = project,
-                isArchived = true,
-            )
-        )
-    }
-
-    override suspend fun unarchiveProject(project: Project) {
-        dao.updateProject(mapper.toEntity(repoProject = project))
-    }
-
     override suspend fun getProjectById(id: Uuid): Project? {
         return dao.getProjectById(id)?.let { mapper.toRepo(it) }
     }

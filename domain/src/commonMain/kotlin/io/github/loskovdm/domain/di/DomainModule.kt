@@ -3,14 +3,18 @@ package io.github.loskovdm.domain.di
 import io.github.loskovdm.domain.usecase.project.AddProjectUseCase
 import io.github.loskovdm.domain.usecase.project.ArchiveProjectUseCase
 import io.github.loskovdm.domain.usecase.project.DeleteProjectUseCase
-import io.github.loskovdm.domain.usecase.project.GetProjectByIdUseCase
 import io.github.loskovdm.domain.usecase.project.GetActiveProjectsUseCase
 import io.github.loskovdm.domain.usecase.project.GetArchivedProjectsUseCase
+import io.github.loskovdm.domain.usecase.project.GetProjectByIdUseCase
 import io.github.loskovdm.domain.usecase.project.UnarchiveProjectUseCase
 import io.github.loskovdm.domain.usecase.project.UpdateProjectUseCase
+import io.github.loskovdm.domain.usecase.task.ActivateTaskUseCase
 import io.github.loskovdm.domain.usecase.task.AddTaskUseCase
+import io.github.loskovdm.domain.usecase.task.CompleteTaskUseCase
 import io.github.loskovdm.domain.usecase.task.DeleteTaskUseCase
-import io.github.loskovdm.domain.usecase.task.GetTasksUseCase
+import io.github.loskovdm.domain.usecase.task.GetActiveTasksUseCase
+import io.github.loskovdm.domain.usecase.task.GetCompletedTasksUseCase
+import io.github.loskovdm.domain.usecase.task.GetTaskByIdUseCase
 import io.github.loskovdm.domain.usecase.task.UpdateTaskUseCase
 import io.github.loskovdm.domain.usecase.timeentry.AddTimeEntryUseCase
 import io.github.loskovdm.domain.usecase.timeentry.DeleteTimeEntryUseCase
@@ -27,18 +31,22 @@ val domainModule = module {
 
     // Project use cases
     factory<AddProjectUseCase>()
-    factory<DeleteProjectUseCase>()
     factory<ArchiveProjectUseCase>()
-    factory<UnarchiveProjectUseCase>()
+    factory<DeleteProjectUseCase>()
     factory<GetActiveProjectsUseCase>()
     factory<GetArchivedProjectsUseCase>()
     factory<GetProjectByIdUseCase>()
+    factory<UnarchiveProjectUseCase>()
     factory<UpdateProjectUseCase>()
 
     // Task use cases
+    factory<ActivateTaskUseCase>()
     factory<AddTaskUseCase>()
+    factory<CompleteTaskUseCase>()
     factory<DeleteTaskUseCase>()
-    factory<GetTasksUseCase>()
+    factory<GetActiveTasksUseCase>()
+    factory<GetCompletedTasksUseCase>()
+    factory<GetTaskByIdUseCase>()
     factory<UpdateTaskUseCase>()
 
     // Time tracker use cases

@@ -34,7 +34,8 @@ val timeEntryModule = module {
         metadata = EntryMetadataBuilder.timeEntriesList()
     ) {
         TimeEntriesList(
-            onTimeEntryClicked = { timeEntryEditorDestination ->
+            onTimeEntryClicked = { timeEntryId ->
+                val timeEntryEditorDestination = TimeEntryEditorDestination(timeEntryId)
                 get<Navigator>().goTo(timeEntryEditorDestination)
             }
         )
@@ -44,7 +45,8 @@ val timeEntryModule = module {
         metadata = EntryMetadataBuilder.timeEntryCalendar()
     ) {
         TimeEntryCalendar(
-            onTimeEntryEditorClicked = { timeEntryEditorDestination ->
+            onTimeEntryEditorClicked = { timeEntryId ->
+                val timeEntryEditorDestination = TimeEntryEditorDestination(timeEntryId)
                 get<Navigator>().goTo(timeEntryEditorDestination)
             }
         )

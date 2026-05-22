@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "63ffa4be1a29a15f708a14b3890973a7",
+    "identityHash": "749002c70f71fb2d56607c01e61d81f2",
     "entities": [
       {
         "tableName": "Project",
@@ -42,7 +42,7 @@
       },
       {
         "tableName": "Task",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` BLOB NOT NULL, `name` TEXT NOT NULL, `projectId` BLOB NOT NULL, `isArchived` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` BLOB NOT NULL, `name` TEXT NOT NULL, `projectId` BLOB NOT NULL, `isCompleted` INTEGER NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -63,8 +63,8 @@
             "notNull": true
           },
           {
-            "fieldPath": "isArchived",
-            "columnName": "isArchived",
+            "fieldPath": "isCompleted",
+            "columnName": "isCompleted",
             "affinity": "INTEGER",
             "notNull": true
           }
@@ -124,7 +124,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '63ffa4be1a29a15f708a14b3890973a7')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '749002c70f71fb2d56607c01e61d81f2')"
     ]
   }
 }

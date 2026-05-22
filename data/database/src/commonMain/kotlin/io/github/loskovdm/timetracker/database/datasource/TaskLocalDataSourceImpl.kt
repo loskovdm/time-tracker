@@ -20,11 +20,19 @@ internal class TaskLocalDataSourceImpl(
         dao.updateTask(mapper.toEntity(task))
     }
 
+    override suspend fun deleteTask(task: Task) {
+        dao.deleteTask(mapper.toEntity(task))
+    }
+
     override suspend fun getTaskById(id: Uuid): Task? {
         return dao.getTaskById(id)?.let { mapper.toRepo(it) }
     }
 
-    override fun getTasks(projectId: Uuid): Flow<List<Task>> {
-        return dao.getTasks(projectId).map { mapper.toRepo(it)}
+    override fun getActiveTasks(projectId: Uuid): Flow<List<Task>> {
+        return dao.getActiveTasks(projectId).map { mapper.toRepo(it)}
+    }
+
+    override fun getCompletedTasks(projectId: Uuid): Flow<List<Task>> {
+        return dao.getCompletedTasks(projectId).map { mapper.toRepo(it)}
     }
 }

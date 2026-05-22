@@ -4,15 +4,12 @@ import io.github.loskovdm.timetracker.database.model.Project as EntityProject
 import io.github.loskovdm.timetracker.repository.model.Project as RepoProject
 
 internal class ProjectMapper {
-    fun toEntity(
-        repoProject: RepoProject,
-        isArchived: Boolean = false,
-    ): EntityProject =
+    fun toEntity(repoProject: RepoProject): EntityProject =
         EntityProject(
             id = repoProject.id,
             name = repoProject.name,
             color = repoProject.color,
-            isArchived = isArchived,
+            isArchived = repoProject.isArchived,
         )
 
     fun toRepo(entityProject: EntityProject): RepoProject =
@@ -20,6 +17,7 @@ internal class ProjectMapper {
             id = entityProject.id,
             name = entityProject.name,
             color = entityProject.color,
+            isArchived = entityProject.isArchived,
         )
 
     fun toRepo(entityProjects: List<EntityProject>): List<RepoProject> =

@@ -10,45 +10,52 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextOverflow
 import io.github.loskovdm.designsystem.local.LocalDeviceConfiguration
 import io.github.loskovdm.designsystem.util.DeviceConfiguration
-import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 import timetracker.designsystem.generated.resources.Res
-import timetracker.designsystem.generated.resources.ic_settings_filled
-import timetracker.designsystem.generated.resources.ic_settings_outlined
-import timetracker.designsystem.generated.resources.settings
+import timetracker.designsystem.generated.resources.back
+import timetracker.designsystem.generated.resources.ic_arrow_back
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ProjectsTopBar(
+fun TasksTopBar(
     modifier: Modifier = Modifier,
     scrollBehavior: TopAppBarScrollBehavior,
-    onSettings: () -> Unit,
+    projectName: String?,
+    onBack: () -> Unit,
 ) {
     val deviceConfiguration = LocalDeviceConfiguration.current
 
     TopAppBar(
         modifier = modifier,
-        title = { Text("Projects") },
         scrollBehavior = scrollBehavior,
-        actions = {
+        title = {
+            Text(
+                text = projectName ?: "",
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+            )
+        },
+        navigationIcon = {
             IconButton(
-                onClick = onSettings,
+                onClick = onBack
             ) {
                 Icon(
-                    painter = painterResource(Res.drawable.ic_settings_filled),
-                    contentDescription = stringResource(Res.string.settings)
+                    imageVector = vectorResource(Res.drawable.ic_arrow_back),
+                    contentDescription = stringResource(Res.string.back)
                 )
             }
         },
         colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = if (deviceConfiguration == DeviceConfiguration.MOBILE_PORTRAIT) {
-                MaterialTheme.colorScheme.surface
-            } else {
-                MaterialTheme.colorScheme.surfaceContainer
-            },
-            scrolledContainerColor = MaterialTheme.colorScheme.surfaceContainer,
+        containerColor = if (deviceConfiguration == DeviceConfiguration.MOBILE_PORTRAIT) {
+            MaterialTheme.colorScheme.surface
+        } else {
+            MaterialTheme.colorScheme.surfaceContainer
+        },
+        scrolledContainerColor = MaterialTheme.colorScheme.surfaceContainer,
         ),
     )
 }

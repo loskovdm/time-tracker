@@ -1,6 +1,6 @@
 package io.github.loskovdm.timetracker
 import io.github.loskovdm.timetracker.feature.navigation.impl.util.NavigationItem
-import io.github.loskovdm.timetracker.feature.projects.api.destination.ProjectsListDestination
+import io.github.loskovdm.timetracker.feature.projects.api.destination.ActiveProjectsListDestination
 import io.github.loskovdm.timetracker.feature.reports.api.ReportsDestination
 import io.github.loskovdm.timetracker.feature.timeentry.api.destination.TimeEntriesListDestination
 import io.github.loskovdm.timetracker.feature.timeentry.api.destination.TimeEntryCalendarDestination
@@ -29,7 +29,7 @@ val TOP_LEVEL_DESTINATIONS = mapOf(
         iconOutlined = Res.drawable.ic_calendar_outlined,
         iconFilled = Res.drawable.ic_calendar_filled
     ),
-    ProjectsListDestination to NavigationItem(
+    ActiveProjectsListDestination to NavigationItem(
         title = Res.string.projects,
         iconOutlined = Res.drawable.ic_projects_outlined,
         iconFilled = Res.drawable.ic_projects_filled

@@ -17,6 +17,7 @@ class AddProjectUseCase(
             id = Uuid.generateV7(),
             name = name,
             color = color,
+            isArchived = false,
         )
         repository.addProject(project = project)
     }

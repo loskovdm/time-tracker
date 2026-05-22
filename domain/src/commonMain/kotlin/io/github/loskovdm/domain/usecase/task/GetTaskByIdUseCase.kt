@@ -2,15 +2,14 @@ package io.github.loskovdm.domain.usecase.task
 
 import io.github.loskovdm.domain.model.Task
 import io.github.loskovdm.domain.repository.TaskRepository
-import kotlinx.coroutines.flow.Flow
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
 @OptIn(ExperimentalUuidApi::class)
-class GetTasksUseCase(
+class GetTaskByIdUseCase(
     private val repository: TaskRepository,
 ) {
-    operator fun invoke(projectId: Uuid): Flow<List<Task>> {
-        return repository.getTasks(projectId)
+    suspend operator fun invoke(id: Uuid): Task? {
+        return repository.getTaskById(id)
     }
 }

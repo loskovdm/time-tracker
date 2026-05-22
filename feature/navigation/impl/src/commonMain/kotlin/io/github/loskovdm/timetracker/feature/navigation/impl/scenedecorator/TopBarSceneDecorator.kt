@@ -25,11 +25,14 @@ import androidx.navigation3.scene.SceneDecoratorStrategyScope
 import io.github.loskovdm.timetracker.feature.navigation.api.SceneMetadata
 import io.github.loskovdm.timetracker.feature.navigation.api.SceneType
 import io.github.loskovdm.timetracker.feature.navigation.api.TimeTrackerDestination
+import io.github.loskovdm.timetracker.feature.navigation.impl.component.topbar.ActiveProjectsTopBar
+import io.github.loskovdm.timetracker.feature.navigation.impl.component.topbar.ArchivedProjectsTopBar
 import io.github.loskovdm.timetracker.feature.navigation.impl.component.topbar.CalendarTopBar
-import io.github.loskovdm.timetracker.feature.navigation.impl.component.topbar.ProjectsTopBar
 import io.github.loskovdm.timetracker.feature.navigation.impl.component.topbar.ReportsTopBar
 import io.github.loskovdm.timetracker.feature.navigation.impl.component.topbar.SettingsTopBar
+import io.github.loskovdm.timetracker.feature.navigation.impl.component.topbar.TasksTopBar
 import io.github.loskovdm.timetracker.feature.navigation.impl.component.topbar.TimerTopBar
+import kotlin.uuid.ExperimentalUuidApi
 
 @OptIn(ExperimentalMaterial3Api::class)
 internal data class TopBarScene<T : TimeTrackerDestination>(
@@ -38,11 +41,13 @@ internal data class TopBarScene<T : TimeTrackerDestination>(
     private val onBack: () -> Unit,
     private val onSettings: () -> Unit,
     private val onAddEntry: () -> Unit,
+    private val onArchivedProjects: () -> Unit,
 ) : Scene<T> by scene {
 	override val key = scene::class to scene.key
 
     override val metadata = scene.metadata
 
+    @OptIn(ExperimentalUuidApi::class)
     override val content = @Composable {
         val scrollBehavior = rememberSceneScrollBehavior(
             sceneKey = scene.key,
@@ -66,12 +71,28 @@ internal data class TopBarScene<T : TimeTrackerDestination>(
                     scrollBehavior = scrollBehavior,
                     onSettings = onSettings,
                 )
-                SceneType.Projects -> ProjectsTopBar(
+                SceneType.ActiveProjects -> ActiveProjectsTopBar(
                     modifier = Modifier.consumeWindowInsets(
                         WindowInsets.safeDrawing.only(WindowInsetsSides.Start)
                     ),
                     scrollBehavior = scrollBehavior,
+                    onArchivedProjects = onArchivedProjects,
                     onSettings = onSettings,
+                )
+                SceneType.ArchivedProjects -> ArchivedProjectsTopBar(
+                    modifier = Modifier.consumeWindowInsets(
+                        WindowInsets.safeDrawing.only(WindowInsetsSides.Start)
+                    ),
+                    scrollBehavior = scrollBehavior,
+                    onBack = onBack,
+                )
+                SceneType.Tasks -> TasksTopBar(
+                    modifier = Modifier.consumeWindowInsets(
+                        WindowInsets.safeDrawing.only(WindowInsetsSides.Start)
+                    ),
+                    scrollBehavior = scrollBehavior,
+                    onBack = onBack,
+                    projectName = extractProjectName(scene.key),
                 )
                 SceneType.Reports -> ReportsTopBar(
                     modifier = Modifier.consumeWindowInsets(
@@ -111,15 +132,17 @@ internal data class TopBarScene<T : TimeTrackerDestination>(
 fun <T : TimeTrackerDestination> rememberTopBarSceneDecoratorStrategy(
     onSettings: () -> Unit,
     onAddEntry: () -> Unit,
+    onArchivedProjects: () -> Unit,
 ): TopBarSceneDecoratorStrategy<T> {
     val scrollBehaviorStore = remember { mutableMapOf<Any, TopAppBarScrollBehavior>() }
     return remember(
-        scrollBehaviorStore
+        scrollBehaviorStore,
     ) {
         TopBarSceneDecoratorStrategy(
             scrollBehaviorStore = scrollBehaviorStore,
             onSettings = onSettings,
             onAddEntry = onAddEntry,
+            onArchivedProjects = onArchivedProjects,
         )
     }
 }
@@ -129,6 +152,7 @@ class TopBarSceneDecoratorStrategy<T : TimeTrackerDestination>(
     private val scrollBehaviorStore: MutableMap<Any, TopAppBarScrollBehavior>,
     private val onSettings: () -> Unit,
     private val onAddEntry: () -> Unit,
+    private val onArchivedProjects: () -> Unit,
 ) : SceneDecoratorStrategy<T> {
     override fun SceneDecoratorStrategyScope<T>.decorateScene(scene: Scene<T>): Scene<T> {
         return if (!scene.metadata.contains(SceneMetadata.SceneTypeKey)) {
@@ -140,6 +164,7 @@ class TopBarSceneDecoratorStrategy<T : TimeTrackerDestination>(
                 onBack = onBack,
                 onSettings = onSettings,
                 onAddEntry = onAddEntry,
+                onArchivedProjects = onArchivedProjects,
             )
         }
     }
@@ -160,4 +185,28 @@ private fun rememberSceneScrollBehavior(
         scrollBehaviorStore[sceneKey] = created
     }
     return created
+}
+
+private fun extractProjectName(sceneKey: Any): String? {
+    var current = sceneKey
+    while (current is Pair<*, *>) {
+        current = current.second ?: return null
+    }
+    val str = current.toString()
+    // Format: "TasksListDestination(projectId=..., projectName=...)"
+    val marker = "projectName="
+    val start = str.indexOf(marker)
+    if (start == -1) return null
+    val valueStart = start + marker.length
+    // Looking for a closing parenthesis or comma
+    val end = str
+        .indexOf(',', valueStart)
+        .takeIf { it != -1 } ?: str.indexOf(')', valueStart)
+    if (end == -1) return null
+    var result = str.substring(valueStart, end).trim()
+    // Remove quotation marks if there are any
+    if (result.startsWith('"') && result.endsWith('"')) {
+        result = result.substring(1, result.length - 1)
+    }
+    return result.takeIf { it.isNotEmpty() }
 }

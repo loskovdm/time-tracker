@@ -11,6 +11,7 @@ internal class ProjectMapper {
             id = domainProject.id,
             name = domainProject.name,
             color = domainProject.color,
+            isArchived = domainProject.isArchived,
         )
 
     fun toDomain(repoProject: RepoProject): DomainProject =
@@ -18,6 +19,7 @@ internal class ProjectMapper {
             id = repoProject.id,
             name = repoProject.name,
             color = repoProject.color,
+            isArchived = repoProject.isArchived,
         )
 
     fun toDomain(repoProjects: List<RepoProject>): List<DomainProject> =

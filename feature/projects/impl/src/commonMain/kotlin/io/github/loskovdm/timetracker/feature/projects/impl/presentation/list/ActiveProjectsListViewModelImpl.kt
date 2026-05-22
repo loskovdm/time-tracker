@@ -5,8 +5,8 @@ import io.github.loskovdm.domain.usecase.project.ArchiveProjectUseCase
 import io.github.loskovdm.domain.usecase.project.DeleteProjectUseCase
 import io.github.loskovdm.domain.usecase.project.GetActiveProjectsUseCase
 import io.github.loskovdm.timetracker.feature.projects.api.model.Project
+import io.github.loskovdm.timetracker.feature.projects.api.presentation.ActiveProjectsListViewModel
 import io.github.loskovdm.timetracker.feature.projects.api.presentation.ProjectsListState
-import io.github.loskovdm.timetracker.feature.projects.api.presentation.ProjectsListViewModel
 import io.github.loskovdm.timetracker.feature.projects.impl.mapper.ProjectMapper
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -16,12 +16,12 @@ import kotlinx.coroutines.launch
 import kotlin.uuid.ExperimentalUuidApi
 
 @OptIn(ExperimentalUuidApi::class)
-internal class ProjectsListViewModelImpl(
+internal class ActiveProjectsListViewModelImpl(
     private val mapper: ProjectMapper,
     getActiveProjectsUseCase: GetActiveProjectsUseCase,
     private val archiveProjectUseCase: ArchiveProjectUseCase,
     private val deleteProjectUseCase: DeleteProjectUseCase,
-) : ProjectsListViewModel() {
+) : ActiveProjectsListViewModel() {
     override val state: StateFlow<ProjectsListState> = getActiveProjectsUseCase()
         .map { projects ->
             if (projects.isEmpty()) {
@@ -43,7 +43,8 @@ internal class ProjectsListViewModelImpl(
             deleteProjectUseCase(
                 id = project.id,
                 name = project.name,
-                color = project.color
+                color = project.color,
+                isArchived = project.isArchived,
             )
         }
     }

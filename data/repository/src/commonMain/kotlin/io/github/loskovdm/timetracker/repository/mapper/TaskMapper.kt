@@ -11,6 +11,7 @@ internal class TaskMapper {
             id = domainTask.id,
             name = domainTask.name,
             projectId = domainTask.projectId,
+            isCompleted = domainTask.isCompleted,
         )
 
     fun toDomain(repoTask: RepoTask): DomainTask =
@@ -18,6 +19,7 @@ internal class TaskMapper {
             id = repoTask.id,
             name = repoTask.name,
             projectId = repoTask.projectId,
+            isCompleted = repoTask.isCompleted,
         )
 
     fun toDomain(repoTasks: List<RepoTask>): List<DomainTask> =

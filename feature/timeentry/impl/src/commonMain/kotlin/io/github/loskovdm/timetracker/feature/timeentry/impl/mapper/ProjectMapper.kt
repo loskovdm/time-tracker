@@ -11,5 +11,6 @@ internal class ProjectMapper {
             id = domainProject.id,
             name = domainProject.name,
             color = domainProject.color,
+            isArchived = domainProject.isArchived,
         )
 }

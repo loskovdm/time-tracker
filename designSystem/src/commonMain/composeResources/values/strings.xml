@@ -31,7 +31,13 @@
     <string name="error">Error</string>
     <string name="edit">Edit</string>
     <string name="archive">Archive</string>
+    <string name="unarchive">Unarchive</string>
+    <string name="active">Active</string>
+    <string name="completed">Completed</string>
+    <string name="mark_as_done">Mark as done</string>
+    <string name="mark_as_active">Mark as active</string>
     <string name="active_timer">Active timer</string>
+    <string name="more_options">More options</string>
 
     <string name="purple">Purple</string>
     <string name="pink">Pink</string>
@@ -42,16 +48,21 @@
     <string name="blue">Blue</string>
     <string name="teal">Teal</string>
 
-    <string name="project_name_empty_error">Project name cannot be empty</string>
-    <string name="project_name_longer_100_characters">Maximum 100 characters</string>
-    <string name="project_name_invalid_characters">Contains invalid characters</string>
+    <string name="name_empty_error">Name cannot be empty</string>
+    <string name="longer_100_characters_error">Maximum 100 characters</string>
+    <string name="invalid_characters_error">Contains invalid characters</string>
 
     <string name="no_time_entries">No time entries yet</string>
     <string name="no_projects">No projects yet</string>
     <string name="without_project">Without project</string>
+    <string name="without_task">Without task</string>
+    <string name="no_tasks">No tasks yet</string>
+    <string name="no_completed_tasks">No completed tasks yet</string>
+    <string name="empty_archive">The archive is empty</string>
 
     <string name="start_tracking_time_hint">Start tracking your time using the button below</string>
     <string name="add_project_hint">Add your first project using the button below</string>
+    <string name="add_task_hint">Add first task using the button below</string>
 
     <string name="second_active_timer_error">A timer is already running. Stop it before starting a new one.</string>
 

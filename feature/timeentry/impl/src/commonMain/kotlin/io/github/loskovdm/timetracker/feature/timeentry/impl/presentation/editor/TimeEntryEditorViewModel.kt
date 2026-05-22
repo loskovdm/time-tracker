@@ -114,7 +114,7 @@ internal class TimeEntryEditorViewModel(
         }
     }
 
-    fun onSaveTimeEntry() {
+    fun saveTimeEntry() {
         viewModelScope.launch {
             if (timeEntryId == null) {
                 val endDateTime = state.value.endDateTime ?: return@launch
@@ -136,7 +136,7 @@ internal class TimeEntryEditorViewModel(
         }
     }
 
-    fun onDeleteTimeEntry() {
+    fun deleteTimeEntry() {
         viewModelScope.launch {
             val endDateTime = state.value.endDateTime
             if (timeEntryId != null && endDateTime != null) {
@@ -151,7 +151,7 @@ internal class TimeEntryEditorViewModel(
         }
     }
 
-    fun onStartDateTimeChanged(changedStartDateTime: Instant) {
+    fun changeStartDateTime(changedStartDateTime: Instant) {
         val endDateTime = _editableState.value.endDateTime
 
         _editableState.update {
@@ -166,7 +166,7 @@ internal class TimeEntryEditorViewModel(
         }
     }
 
-    fun onEndDateTimeChanged(changedEndDateTime: Instant) {
+    fun changeEndDateTime(changedEndDateTime: Instant) {
         val startDateTime = _editableState.value.startDateTime
 
         _editableState.update {
@@ -177,11 +177,11 @@ internal class TimeEntryEditorViewModel(
         }
     }
 
-    fun onProjectSelected(project: Project?) {
-        _editableState.update { it.copy(project = project) }
+    fun selectProject(project: Project?) {
+        _editableState.update { it.copy(project = project, task = null) }
     }
 
-    fun onTaskSelected(task: Task) {
-
+    fun selectTask(task: Task?) {
+        _editableState.update { it.copy(task = task) }
     }
 }

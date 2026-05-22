@@ -4,15 +4,12 @@ import io.github.loskovdm.timetracker.database.model.Task as EntityTask
 import io.github.loskovdm.timetracker.repository.model.Task as RepoTask
 
 internal class TaskMapper {
-    fun toEntity(
-        repoTask: RepoTask,
-        isArchived: Boolean = false,
-    ): EntityTask =
+    fun toEntity(repoTask: RepoTask): EntityTask =
         EntityTask(
             id = repoTask.id,
             name = repoTask.name,
             projectId = repoTask.projectId,
-            isArchived = isArchived,
+            isCompleted = repoTask.isCompleted,
         )
 
     fun toRepo(entityTask: EntityTask): RepoTask =
@@ -20,6 +17,7 @@ internal class TaskMapper {
             id = entityTask.id,
             name = entityTask.name,
             projectId = entityTask.projectId,
+            isCompleted = entityTask.isCompleted
         )
 
     fun toRepo(entityTasks: List<EntityTask>): List<RepoTask> =

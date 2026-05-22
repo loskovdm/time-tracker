@@ -5,4 +5,4 @@ import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
 @OptIn(ExperimentalUuidApi::class)
-data class TasksListDestination(val projectId: Uuid) : TimeTrackerDestination
+data class TasksListDestination(val projectId: Uuid, val projectName: String) : TimeTrackerDestination

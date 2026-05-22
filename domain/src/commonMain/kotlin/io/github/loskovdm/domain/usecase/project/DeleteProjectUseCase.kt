@@ -14,11 +14,13 @@ class DeleteProjectUseCase(
         id: Uuid,
         name: String,
         color: Long,
+        isArchived: Boolean,
     ) {
         val project = Project(
             id = id,
             name = name,
             color = color,
+            isArchived = isArchived,
         )
         // TODO: Implement deleting
     }

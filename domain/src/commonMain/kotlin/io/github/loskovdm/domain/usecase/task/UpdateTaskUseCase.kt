@@ -13,11 +13,13 @@ class UpdateTaskUseCase(
         id: Uuid,
         name: String,
         projectId: Uuid,
+        isCompleted: Boolean,
     ) {
         val task = Task(
             id = id,
             name = name,
             projectId = projectId,
+            isCompleted = isCompleted,
         )
         repository.updateTask(task = task)
     }

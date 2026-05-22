@@ -3,13 +3,10 @@ package io.github.loskovdm.timetracker.feature.projects.impl.presentation.list
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -20,32 +17,24 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.LoadingIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import io.github.loskovdm.designsystem.local.LocalFabPadding
-import io.github.loskovdm.timetracker.feature.projects.api.destination.ProjectEditorDestination
+import io.github.loskovdm.designsystem.local.LocalDeviceConfiguration
+import io.github.loskovdm.designsystem.util.DeviceConfiguration
 import io.github.loskovdm.timetracker.feature.projects.api.model.Project
-import io.github.loskovdm.timetracker.feature.projects.api.presentation.ProjectsListState
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
-import org.koin.compose.viewmodel.koinViewModel
 import timetracker.designsystem.generated.resources.Res
-import timetracker.designsystem.generated.resources.add_project_hint
 import timetracker.designsystem.generated.resources.archive
 import timetracker.designsystem.generated.resources.delete
 import timetracker.designsystem.generated.resources.edit
@@ -53,90 +42,21 @@ import timetracker.designsystem.generated.resources.ic_archive_outlined
 import timetracker.designsystem.generated.resources.ic_delete_outlined
 import timetracker.designsystem.generated.resources.ic_edit_outlined
 import timetracker.designsystem.generated.resources.ic_more_vert
-import timetracker.designsystem.generated.resources.ic_projects_outlined
-import timetracker.designsystem.generated.resources.no_projects
+import timetracker.designsystem.generated.resources.ic_unarchive_outlined
+import timetracker.designsystem.generated.resources.more_options
+import timetracker.designsystem.generated.resources.unarchive
 import kotlin.uuid.ExperimentalUuidApi
-
-@Composable
-internal fun ProjectsList(
-    onEditProjectClick: (ProjectEditorDestination) -> Unit,
-    viewModel: ProjectsListViewModelImpl = koinViewModel(),
-) {
-    val state by viewModel.state.collectAsStateWithLifecycle()
-
-    when (val currentState = state) {
-        ProjectsListState.Loading -> LoadingProjectsList()
-        ProjectsListState.Empty -> EmptyProjectsList()
-        is ProjectsListState.Loaded -> {
-            LoadedProjectsList(
-                projectsList = currentState.projects,
-                onProjectClick = {},
-                onEditClick = onEditProjectClick,
-                onArchivedClick = { project ->
-                    viewModel.archiveProject(project)
-                },
-                onDeleteClick = { project ->
-                    viewModel.deleteProject(project)
-                },
-            )
-        }
-    }
-}
-
-@OptIn(ExperimentalMaterial3ExpressiveApi::class)
-@Composable
-private fun LoadingProjectsList(modifier: Modifier = Modifier) {
-    Box(
-        modifier = modifier
-            .fillMaxSize().
-            background(MaterialTheme.colorScheme.surface),
-        contentAlignment = Alignment.Center,
-    ) {
-        LoadingIndicator()
-    }
-}
-
-@Composable
-private fun EmptyProjectsList(modifier: Modifier = Modifier) {
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.surface)
-            .padding(horizontal = 32.dp),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
-        Icon(
-            modifier = Modifier.size(64.dp),
-            imageVector = vectorResource(Res.drawable.ic_projects_outlined),
-            contentDescription = null,
-            tint = MaterialTheme.colorScheme.onSurfaceVariant,
-        )
-        Spacer(modifier = Modifier.height(24.dp))
-        Text(
-            text = stringResource(Res.string.no_projects),
-            style = MaterialTheme.typography.headlineSmall,
-            color = MaterialTheme.colorScheme.onSurface,
-            textAlign = TextAlign.Center,
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-        Text(
-            text = stringResource(Res.string.add_project_hint),
-            style = MaterialTheme.typography.bodyLarge,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            textAlign = TextAlign.Center,
-        )
-    }
-}
+import kotlin.uuid.Uuid
 
 @OptIn(ExperimentalUuidApi::class)
 @Composable
-private fun LoadedProjectsList(
+fun ProjectsList(
     modifier: Modifier = Modifier,
     projectsList: List<Project>,
     onProjectClick: (Project) -> Unit,
-    onEditClick: (ProjectEditorDestination) -> Unit,
-    onArchivedClick: (Project) -> Unit,
+    onEditClick: (Uuid) -> Unit,
+    onArchivedClick: ((Project) -> Unit)?,
+    onUnarchiveClick: ((Project) -> Unit)?,
     onDeleteClick: (Project) -> Unit,
 ) {
     LazyColumn(
@@ -146,7 +66,11 @@ private fun LoadedProjectsList(
             top = 16.dp,
             start = 16.dp,
             end = 16.dp,
-            bottom = LocalFabPadding.current.calculateBottomPadding()
+            bottom = if (LocalDeviceConfiguration.current != DeviceConfiguration.DESKTOP) {
+                80.dp
+            } else {
+                0.dp
+            }
         ),
     ) {
         projectsList.forEach { project ->
@@ -156,12 +80,10 @@ private fun LoadedProjectsList(
                     color = project.color,
                     onClick = { onProjectClick(project) },
                     onEditClick = {
-                        val projectEditorDestination = ProjectEditorDestination(
-                            projectsId = project.id
-                        )
-                        onEditClick(projectEditorDestination)
+                        onEditClick(project.id)
                     },
-                    onArchivedClick = { onArchivedClick(project) },
+                    onArchivedClick = onArchivedClick?.let { { it(project) } },
+                    onUnarchiveClick = onUnarchiveClick?.let { { it(project) } },
                     onDeleteClick = { onDeleteClick(project) }
                 )
             }
@@ -176,7 +98,8 @@ private fun ProjectItem(
     color: Long,
     onClick: () -> Unit,
     onEditClick: () -> Unit,
-    onArchivedClick: () -> Unit,
+    onArchivedClick: (() -> Unit)?,
+    onUnarchiveClick: (() -> Unit)?,
     onDeleteClick: () -> Unit,
 ) {
     Card(
@@ -196,6 +119,7 @@ private fun ProjectItem(
             color = color,
             onEditClick = onEditClick,
             onArchivedClick = onArchivedClick,
+            onUnarchiveClick = onUnarchiveClick,
             onDeleteClick = onDeleteClick,
         )
     }
@@ -207,7 +131,8 @@ private fun ProjectItemContent(
     name: String,
     color: Long,
     onEditClick: () -> Unit,
-    onArchivedClick: () -> Unit,
+    onArchivedClick: (() -> Unit)?,
+    onUnarchiveClick: (() -> Unit)?,
     onDeleteClick: () -> Unit,
 ) {
     Row(
@@ -232,6 +157,7 @@ private fun ProjectItemContent(
         MenuButton(
             onEditClick = onEditClick,
             onArchivedClick = onArchivedClick,
+            onUnarchiveClick = onUnarchiveClick,
             onDeleteClick = onDeleteClick,
         )
     }
@@ -241,7 +167,8 @@ private fun ProjectItemContent(
 private fun MenuButton(
     modifier: Modifier = Modifier,
     onEditClick: () -> Unit,
-    onArchivedClick: () -> Unit,
+    onArchivedClick: (() -> Unit)?,
+    onUnarchiveClick: (() -> Unit)?,
     onDeleteClick: () -> Unit,
 ) {
     val isVisibleMenu = rememberSaveable { mutableStateOf(false) }
@@ -253,7 +180,7 @@ private fun MenuButton(
         ) {
             Icon(
                 imageVector = vectorResource(Res.drawable.ic_more_vert),
-                contentDescription = "More options",
+                contentDescription = stringResource(Res.string.more_options),
                 tint = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
@@ -265,6 +192,7 @@ private fun MenuButton(
             MenuContent(
                 onEditClick = onEditClick,
                 onArchivedClick = onArchivedClick,
+                onUnarchiveClick = onUnarchiveClick,
                 onDeleteClick = onDeleteClick,
                 onClose = { isVisibleMenu.value = false },
             )
@@ -275,7 +203,8 @@ private fun MenuButton(
 @Composable
 private fun MenuContent(
     onEditClick: () -> Unit,
-    onArchivedClick: () -> Unit,
+    onArchivedClick: (() -> Unit)?,
+    onUnarchiveClick: (() -> Unit)?,
     onDeleteClick: () -> Unit,
     onClose: () -> Unit,
 ) {
@@ -297,17 +226,33 @@ private fun MenuContent(
 
     DropdownMenuItem(
         text = {
-            Text(stringResource(Res.string.archive))
+            if (onArchivedClick != null) {
+                Text(stringResource(Res.string.archive))
+            } else {
+                Text(stringResource(Res.string.unarchive))
+            }
         },
         leadingIcon = {
-            Icon(
-                imageVector = vectorResource(Res.drawable.ic_archive_outlined),
-                contentDescription = null,
-            )
+            if (onArchivedClick != null) {
+                Icon(
+                    imageVector = vectorResource(Res.drawable.ic_archive_outlined),
+                    contentDescription = null,
+                )
+            } else {
+                Icon(
+                    imageVector = vectorResource(Res.drawable.ic_unarchive_outlined),
+                    contentDescription = null,
+                )
+            }
         },
         onClick = {
-            onArchivedClick()
-            onClose()
+            if (onArchivedClick != null) {
+                onArchivedClick()
+                onClose()
+            } else {
+                onUnarchiveClick?.invoke()
+                onClose()
+            }
         }
     )
 

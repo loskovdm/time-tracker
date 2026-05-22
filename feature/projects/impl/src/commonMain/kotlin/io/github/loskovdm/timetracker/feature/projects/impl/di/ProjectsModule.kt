@@ -3,14 +3,18 @@ package io.github.loskovdm.timetracker.feature.projects.impl.di
 import io.github.loskovdm.domain.di.domainModule
 import io.github.loskovdm.timetracker.feature.navigation.api.EntryMetadataBuilder
 import io.github.loskovdm.timetracker.feature.navigation.api.Navigator
+import io.github.loskovdm.timetracker.feature.projects.api.destination.ActiveProjectsListDestination
+import io.github.loskovdm.timetracker.feature.projects.api.destination.ArchivedProjectsListDestination
 import io.github.loskovdm.timetracker.feature.projects.api.destination.ProjectEditorDestination
-import io.github.loskovdm.timetracker.feature.projects.api.destination.ProjectsListDestination
-import io.github.loskovdm.timetracker.feature.projects.api.presentation.ProjectsListViewModel
+import io.github.loskovdm.timetracker.feature.projects.api.presentation.ActiveProjectsListViewModel
 import io.github.loskovdm.timetracker.feature.projects.impl.mapper.ProjectMapper
 import io.github.loskovdm.timetracker.feature.projects.impl.presentation.editor.ProjectEditor
 import io.github.loskovdm.timetracker.feature.projects.impl.presentation.editor.ProjectEditorViewModel
-import io.github.loskovdm.timetracker.feature.projects.impl.presentation.list.ProjectsList
-import io.github.loskovdm.timetracker.feature.projects.impl.presentation.list.ProjectsListViewModelImpl
+import io.github.loskovdm.timetracker.feature.projects.impl.presentation.list.ActiveProjectsList
+import io.github.loskovdm.timetracker.feature.projects.impl.presentation.list.ActiveProjectsListViewModelImpl
+import io.github.loskovdm.timetracker.feature.projects.impl.presentation.list.ArchivedProjectsList
+import io.github.loskovdm.timetracker.feature.projects.impl.presentation.list.ArchivedProjectsListViewModel
+import io.github.loskovdm.timetracker.feature.tasks.api.destination.TasksListDestination
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
 import org.koin.core.parameter.parametersOf
@@ -24,12 +28,34 @@ import kotlin.uuid.ExperimentalUuidApi
 @OptIn(KoinExperimentalAPI::class, ExperimentalUuidApi::class)
 val projectsModule = module {
 
-    navigation<ProjectsListDestination>(
-        metadata = EntryMetadataBuilder.projectsList()
+    navigation<ActiveProjectsListDestination>(
+        metadata = EntryMetadataBuilder.activeProjectsList()
     ) {
-        ProjectsList(
-            onEditProjectClick = { projectEditorDestination ->
+        ActiveProjectsList(
+            viewModel = get(),
+            onEditProjectClick = { projectId ->
+                val projectEditorDestination = ProjectEditorDestination(projectId)
                 get<Navigator>().goTo(projectEditorDestination)
+            },
+            onProjectClick = { projectId, projectName ->
+                val tasksListDestination = TasksListDestination(projectId, projectName)
+                get<Navigator>().goTo(tasksListDestination)
+            }
+        )
+    }
+
+    navigation<ArchivedProjectsListDestination>(
+        metadata = EntryMetadataBuilder.archivedProjectsList()
+    ) {
+        ArchivedProjectsList(
+            viewModel = get(),
+            onEditProjectClick = { projectId ->
+                val projectEditorDestination = ProjectEditorDestination(projectId)
+                get<Navigator>().goTo(projectEditorDestination)
+            },
+            onProjectClick = { projectId, projectName ->
+                val tasksListDestination = TasksListDestination(projectId, projectName)
+                get<Navigator>().goTo(tasksListDestination)
             }
         )
     }
@@ -47,7 +73,8 @@ val projectsModule = module {
 
     single<ProjectMapper>()
 
-    viewModel<ProjectsListViewModelImpl>() bind ProjectsListViewModel::class
+    viewModel<ActiveProjectsListViewModelImpl>() bind ActiveProjectsListViewModel::class
+    viewModel<ArchivedProjectsListViewModel>()
     viewModel<ProjectEditorViewModel>()
 
     includes(domainModule)

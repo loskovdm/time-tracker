@@ -25,4 +25,7 @@ internal class TimeEntryMapper {
             projectId = entityTimeEntry.projectId,
             taskId = entityTimeEntry.taskId,
         )
+
+    fun toRepo(entityTimeEntries: List<EntityTimeEntry>): List<RepoTimeEntry> =
+        entityTimeEntries.map { toRepo(it) }
 }

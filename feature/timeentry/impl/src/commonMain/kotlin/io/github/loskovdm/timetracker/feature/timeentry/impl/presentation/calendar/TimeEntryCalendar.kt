@@ -9,9 +9,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import io.github.loskovdm.timetracker.feature.timeentry.api.destination.TimeEntryEditorDestination
+import kotlin.uuid.ExperimentalUuidApi
+import kotlin.uuid.Uuid
 
+@OptIn(ExperimentalUuidApi::class)
 @Composable
-fun TimeEntryCalendar(onTimeEntryEditorClicked: (TimeEntryEditorDestination) -> Unit) {
+fun TimeEntryCalendar(onTimeEntryEditorClicked: (Uuid) -> Unit) {
     LazyColumn {
         items(25) {
             Text(

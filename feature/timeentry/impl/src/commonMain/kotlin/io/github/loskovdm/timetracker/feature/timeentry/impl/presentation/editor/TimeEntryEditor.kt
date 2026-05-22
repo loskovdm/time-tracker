@@ -1,6 +1,5 @@
 package io.github.loskovdm.timetracker.feature.timeentry.impl.presentation.editor
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -11,11 +10,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CalendarLocale
@@ -30,7 +27,6 @@ import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -48,27 +44,26 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import io.github.loskovdm.designsystem.component.EditorHeader
 import io.github.loskovdm.designsystem.component.TimeEntryProject
-import io.github.loskovdm.designsystem.component.TimeEntryTask
 import io.github.loskovdm.designsystem.local.LocalDeviceConfiguration
 import io.github.loskovdm.designsystem.util.DeviceConfiguration
 import io.github.loskovdm.designsystem.util.formatDateToString
 import io.github.loskovdm.designsystem.util.formatLocalTimeToHmString
 import io.github.loskovdm.designsystem.util.formatTimeToHmsString
 import io.github.loskovdm.timetracker.feature.projects.api.model.Project
+import io.github.loskovdm.timetracker.feature.projects.api.presentation.ActiveProjectsListViewModel
 import io.github.loskovdm.timetracker.feature.projects.api.presentation.ProjectsListState
-import io.github.loskovdm.timetracker.feature.projects.api.presentation.ProjectsListViewModel
 import io.github.loskovdm.timetracker.feature.tasks.api.model.Task
+import io.github.loskovdm.timetracker.feature.tasks.api.presentation.ActiveTasksListViewModel
 import io.github.loskovdm.timetracker.feature.tasks.api.presentation.TasksListState
-import io.github.loskovdm.timetracker.feature.tasks.api.presentation.TasksListViewModel
 import io.github.loskovdm.timetracker.feature.timeentry.api.presentation.TimerViewModel
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
@@ -79,29 +74,30 @@ import kotlinx.datetime.toInstant
 import kotlinx.datetime.toLocalDateTime
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
+import org.koin.compose.getKoin
 import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
+import org.koin.core.parameter.parametersOf
 import timetracker.designsystem.generated.resources.Res
 import timetracker.designsystem.generated.resources.cancel
-import timetracker.designsystem.generated.resources.close
 import timetracker.designsystem.generated.resources.delete
 import timetracker.designsystem.generated.resources.end
 import timetracker.designsystem.generated.resources.ic_arrow_drop_down
 import timetracker.designsystem.generated.resources.ic_arrow_drop_up
 import timetracker.designsystem.generated.resources.ic_calendar_outlined
-import timetracker.designsystem.generated.resources.ic_close
 import timetracker.designsystem.generated.resources.ic_projects_outlined
 import timetracker.designsystem.generated.resources.ic_task_outlined
 import timetracker.designsystem.generated.resources.no_projects
+import timetracker.designsystem.generated.resources.no_tasks
 import timetracker.designsystem.generated.resources.ok
 import timetracker.designsystem.generated.resources.project
-import timetracker.designsystem.generated.resources.save
 import timetracker.designsystem.generated.resources.select_project
 import timetracker.designsystem.generated.resources.select_task
 import timetracker.designsystem.generated.resources.start
 import timetracker.designsystem.generated.resources.stop_timer
 import timetracker.designsystem.generated.resources.task
 import timetracker.designsystem.generated.resources.without_project
+import timetracker.designsystem.generated.resources.without_task
 import kotlin.time.Duration
 import kotlin.time.Instant
 import kotlin.uuid.ExperimentalUuidApi
@@ -112,12 +108,10 @@ internal fun TimeEntryEditor(
     onClose: () -> Unit,
     editorViewModel: TimeEntryEditorViewModel,
     timerViewModel: TimerViewModel = koinInject(),
-    projectsListViewModel: ProjectsListViewModel = koinViewModel(),
-    tasksListViewModel: TasksListViewModel = koinViewModel(),
+    projectsListViewModel: ActiveProjectsListViewModel = koinViewModel(),
 ) {
     val editorState by editorViewModel.state.collectAsStateWithLifecycle()
     val projectsListState by projectsListViewModel.state.collectAsStateWithLifecycle()
-    val tasksListState by tasksListViewModel.state.collectAsStateWithLifecycle()
 
     val zone = TimeZone.currentSystemDefault()
 
@@ -130,7 +124,7 @@ internal fun TimeEntryEditor(
         EditorHeader(
             onClose = onClose,
             onSave = {
-                editorViewModel.onSaveTimeEntry()
+                editorViewModel.saveTimeEntry()
                 onClose()
             },
             isAvailableSave = editorState.isDateTimeValid,
@@ -161,12 +155,12 @@ internal fun TimeEntryEditor(
                 startLocalDateTime = editorState.startDateTime.toLocalDateTime(zone),
                 endLocalDateTime = editorState.endDateTime?.toLocalDateTime(zone),
                 onStartLocalDateTimeChange = { changedLocalDateTime ->
-                    editorViewModel.onStartDateTimeChanged(
+                    editorViewModel.changeStartDateTime(
                         changedLocalDateTime.toInstant(zone)
                     )
                 },
                 onEndLocalDateTimeChange = { changedLocalDateTime ->
-                    editorViewModel.onEndDateTimeChanged(
+                    editorViewModel.changeEndDateTime(
                         changedLocalDateTime.toInstant(zone)
                     )
                 }
@@ -181,16 +175,19 @@ internal fun TimeEntryEditor(
                     }),
                 projectsListState = projectsListState,
                 currentProject = editorState.project,
-                onSelect = editorViewModel::onProjectSelected,
+                onSelect = editorViewModel::selectProject,
                 removeProject = {
-                    editorViewModel.onProjectSelected(project = null)
+                    editorViewModel.selectProject(project = null)
                 }
             )
             TaskSection(
                 modifier = Modifier.height(60.dp),
-                tasksListState = tasksListState,
+                currentProject = editorState.project,
                 currentTask = editorState.task,
-                onSelect = {},
+                onSelectTask = editorViewModel::selectTask,
+                onRemoveTask = {
+                    editorViewModel.selectTask(task = null)
+                },
             )
             HorizontalDivider(modifier = Modifier.padding(vertical = 4.dp))
             ActionSection(
@@ -211,7 +208,7 @@ internal fun TimeEntryEditor(
                         if (editorState.endDateTime == null) {
                             timerViewModel.stopTimer()
                         } else {
-                            editorViewModel.onDeleteTimeEntry()
+                            editorViewModel.deleteTimeEntry()
                         }
                     }
                 },
@@ -685,18 +682,73 @@ private fun ProjectsMenuContent(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalUuidApi::class)
 @Composable
 private fun TaskSection(
     modifier: Modifier = Modifier,
-    tasksListState: TasksListState,
+    currentProject: Project?,
     currentTask: Task?,
-    onSelect: (Task) -> Unit,
+    onSelectTask: (Task) -> Unit,
+    onRemoveTask: () -> Unit,
 ) {
-    val isVisibleMenu = rememberSaveable { mutableStateOf(false) }
+    val isMenuExpanded = rememberSaveable { mutableStateOf(false) }
+    val isEnabled = currentProject != null
 
+    val activeTasksViewModel = if (isEnabled) {
+        val projectId = currentProject.id
+        koinViewModel<ActiveTasksListViewModel>(
+            key = projectId.toString(),
+            parameters = { parametersOf(projectId) }
+        )
+    } else null
+
+    val tasksState by activeTasksViewModel?.state?.collectAsStateWithLifecycle()
+        ?: remember { mutableStateOf(null) }
+
+    Box {
+        TaskSelector(
+            modifier = modifier,
+            currentTask = currentTask,
+            isEnabled = isEnabled,
+            onClick = {
+                if (isEnabled) isMenuExpanded.value = !isMenuExpanded.value
+            },
+            isMenuExpanded = isMenuExpanded.value,
+        )
+
+        if (isEnabled && tasksState != null) {
+            val maxVisibleItems = 5
+            DropdownMenu(
+                modifier = Modifier
+                    .widthIn(max = 600.dp)
+                    .heightIn(max = (48 * maxVisibleItems).dp),
+                expanded = isMenuExpanded.value,
+                onDismissRequest = { isMenuExpanded.value = false },
+                shape = RoundedCornerShape(16.dp)
+            ) {
+                TaskMenuContent(
+                    tasksState = tasksState!!,
+                    currentTask = currentTask,
+                    onSelectTask = onSelectTask,
+                    onClearTask = onRemoveTask,
+                    onClose = { isMenuExpanded.value = false }
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun TaskSelector(
+    modifier: Modifier = Modifier,
+    currentTask: Task?,
+    isEnabled: Boolean,
+    onClick: () -> Unit,
+    isMenuExpanded: Boolean,
+) {
     Card(
         modifier = modifier,
-        onClick = {},
+        onClick = onClick,
         colors = CardDefaults.cardColors(
             containerColor = Color.Transparent,
         ),
@@ -705,44 +757,120 @@ private fun TaskSection(
             focusedElevation = 0.dp,
             hoveredElevation = 0.dp,
             pressedElevation = 0.dp
-        )
+        ),
     ) {
         Row(
-            modifier = modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(16.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Icon(
                 imageVector = vectorResource(Res.drawable.ic_task_outlined),
                 contentDescription = null,
+                tint = if (isEnabled) MaterialTheme.colorScheme.onSurface
+                    else MaterialTheme.colorScheme.onSurfaceVariant
             )
             Column(
                 modifier = Modifier.weight(1f),
             ) {
                 Text(
                     text = stringResource(Res.string.task),
-                    style = MaterialTheme.typography.bodyLarge
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = if (isEnabled) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurfaceVariant
                 )
                 if (currentTask == null) {
                     Text(
                         text = stringResource(Res.string.select_task),
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        color = if (isEnabled) MaterialTheme.colorScheme.onSurfaceVariant
+                            else MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
                         style = MaterialTheme.typography.bodyMedium
                     )
                 } else {
-                    TimeEntryTask(name = currentTask.name)
+                    TaskName(name = currentTask.name)
                 }
             }
             Icon(
-                imageVector = if (isVisibleMenu.value) {
+                imageVector = if (isMenuExpanded) {
                     vectorResource(Res.drawable.ic_arrow_drop_up)
                 } else {
                     vectorResource(Res.drawable.ic_arrow_drop_down)
                 },
                 contentDescription = null,
+                tint = if (isEnabled) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
     }
+}
+
+@Composable
+private fun TaskMenuContent(
+    tasksState: TasksListState,
+    currentTask: Task?,
+    onSelectTask: (Task) -> Unit,
+    onClearTask: () -> Unit,
+    onClose: () -> Unit,
+) {
+    when (tasksState) {
+        TasksListState.Loading -> {}
+        is TasksListState.Empty -> {
+            DropdownMenuItem(
+                text = {
+                    Text(
+                        text = stringResource(Res.string.no_tasks),
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                },
+                onClick = {},
+                enabled = false,
+            )
+        }
+        is TasksListState.Loaded -> {
+            if (currentTask != null) {
+                DropdownMenuItem(
+                    text = {
+                        Text(
+                            text = stringResource(Res.string.without_task),
+                            color = MaterialTheme.colorScheme.onSurface,
+                            style = MaterialTheme.typography.bodyMedium
+                        )
+                    },
+                    onClick = {
+                        onClearTask()
+                        onClose()
+                    },
+                )
+            }
+            tasksState.tasks
+                .filter { task -> task != currentTask }
+                .forEach { task ->
+                    DropdownMenuItem(
+                        text = {
+                            TaskName(name = task.name)
+                        },
+                        onClick = {
+                            onSelectTask(task)
+                            onClose()
+                        }
+                    )
+                }
+        }
+    }
+}
+
+@Composable
+private fun TaskName(
+    modifier: Modifier = Modifier,
+    name: String,
+) {
+    Text(
+        modifier = modifier,
+        text = name,
+        style = MaterialTheme.typography.bodyMedium,
+        color = MaterialTheme.colorScheme.onSurface,
+        maxLines = 1,
+        overflow = TextOverflow.Ellipsis,
+    )
 }
 
 @Composable

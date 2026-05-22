@@ -6,7 +6,8 @@ import androidx.navigation3.runtime.metadata
 enum class SceneType {
     Timer,
     Calendar,
-    Projects,
+    ActiveProjects,
+    ArchivedProjects,
     Tasks,
     Reports,
     Settings
@@ -25,8 +26,12 @@ object SceneMetadataBuilder {
         put(SceneMetadata.SceneTypeKey, SceneType.Calendar)
     }
 
-    fun projects() = metadata {
-        put(SceneMetadata.SceneTypeKey, SceneType.Projects)
+    fun activeProjects() = metadata {
+        put(SceneMetadata.SceneTypeKey, SceneType.ActiveProjects)
+    }
+
+    fun archivedProjects() = metadata {
+        put(SceneMetadata.SceneTypeKey, SceneType.ArchivedProjects)
     }
 
     fun tasks() = metadata {

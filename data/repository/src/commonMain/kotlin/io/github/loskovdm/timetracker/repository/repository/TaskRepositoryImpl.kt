@@ -22,11 +22,19 @@ internal class TaskRepositoryImpl(
         localDataSource.updateTask(mapper.toRepo(task))
     }
 
+    override suspend fun deleteTask(task: Task) {
+        localDataSource.deleteTask(mapper.toRepo(task))
+    }
+
     override suspend fun getTaskById(id: Uuid): Task? {
         return localDataSource.getTaskById(id)?.let { mapper.toDomain(it) }
     }
 
-    override fun getTasks(projectId: Uuid): Flow<List<Task>> {
-        return localDataSource.getTasks(projectId).map { mapper.toDomain(it)}
+    override fun getActiveTasks(projectId: Uuid): Flow<List<Task>> {
+        return localDataSource.getActiveTasks(projectId).map { mapper.toDomain(it)}
+    }
+
+    override fun getCompletedTasks(projectId: Uuid): Flow<List<Task>> {
+        return localDataSource.getCompletedTasks(projectId).map { mapper.toDomain(it)}
     }
 }
