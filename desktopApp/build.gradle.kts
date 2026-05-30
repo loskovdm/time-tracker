@@ -10,6 +10,7 @@ plugins {
 kotlin {
     dependencies {
         implementation(projects.shared)
+        implementation(projects.data.supabaseclient)
         implementation(projects.domain)
         implementation(projects.designSystem)
 

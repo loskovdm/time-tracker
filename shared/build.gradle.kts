@@ -26,6 +26,8 @@ kotlin {
             implementation(projects.domain)
             implementation(projects.data.datastore)
             implementation(projects.data.database)
+            implementation(projects.data.supabaseclient)
+            implementation(projects.data.powersyncclient)
             implementation(projects.feature.navigation.impl)
             implementation(projects.feature.navigation.api)
             implementation(projects.feature.timeentry.api)
@@ -38,6 +40,8 @@ kotlin {
             implementation(projects.feature.reports.impl)
             implementation(projects.feature.settings.api)
             implementation(projects.feature.settings.impl)
+            implementation(projects.feature.auth.api)
+            implementation(projects.feature.auth.impl)
 
             implementation(libs.compose.runtime)
             implementation(libs.compose.foundation)

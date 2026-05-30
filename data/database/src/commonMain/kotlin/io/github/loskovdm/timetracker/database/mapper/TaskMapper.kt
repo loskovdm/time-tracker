@@ -1,20 +1,33 @@
 package io.github.loskovdm.timetracker.database.mapper
 
-import kotlin.uuid.ExperimentalUuidApi
+import io.github.loskovdm.domain.auth.CurrentUserIdProvider
 import io.github.loskovdm.timetracker.database.model.Task as EntityTask
 import io.github.loskovdm.timetracker.repository.model.Task as RepoTask
+import kotlin.uuid.ExperimentalUuidApi
 
 @OptIn(ExperimentalUuidApi::class)
-internal class TaskMapper {
-    fun toEntity(repoTask: RepoTask): EntityTask {
-        return EntityTask(
+internal class TaskMapper(
+    private val currentUserIdProvider: CurrentUserIdProvider,
+) {
+    fun toEntityForInsert(repoTask: RepoTask): EntityTask =
+        EntityTask(
             id = repoTask.id.toString(),
-            name = repoTask.name,
+            userId = currentUserIdProvider.getUserIdForNewRecords(),
             projectId = repoTask.projectId.toString(),
+            name = repoTask.name,
             isCompleted = repoTask.isCompleted,
-            userId = ""
         )
-    }
+
+    fun toEntityForUpdate(repoTask: RepoTask, existing: EntityTask): EntityTask =
+        EntityTask(
+            id = repoTask.id.toString(),
+            userId = existing.userId,
+            projectId = repoTask.projectId.toString(),
+            name = repoTask.name,
+            isCompleted = repoTask.isCompleted,
+        )
+
+    fun toEntity(repoTask: RepoTask): EntityTask = toEntityForInsert(repoTask)
 
     fun toRepo(entityTask: EntityTask): RepoTask =
         RepoTask(

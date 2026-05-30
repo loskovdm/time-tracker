@@ -8,7 +8,7 @@ import io.github.loskovdm.domain.repository.UserSettingsRepository
 
 import io.github.loskovdm.timetracker.di.initKoin
 
-import io.github.loskovdm.timetracker.supabase.RemoteConfig
+import io.github.loskovdm.timetracker.remote.RemoteConfig
 
 import kotlinx.coroutines.flow.first
 

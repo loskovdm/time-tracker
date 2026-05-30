@@ -38,4 +38,13 @@ interface TaskDao {
 
     @Query("DELETE FROM tasks WHERE project_id = :projectId")
     suspend fun deleteTasksByProjectId(projectId: Uuid)
+
+    @Query("DELETE FROM tasks")
+    suspend fun deleteAllTasks()
+
+    @Query("SELECT COUNT(*) FROM tasks WHERE user_id = :guestUserId")
+    suspend fun countGuestTasks(guestUserId: String): Int
+
+    @Query("SELECT * FROM tasks WHERE user_id = :userId")
+    suspend fun getTasksByUserId(userId: String): List<Task>
 }

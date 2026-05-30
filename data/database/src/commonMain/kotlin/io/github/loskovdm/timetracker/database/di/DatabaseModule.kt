@@ -1,7 +1,10 @@
 package io.github.loskovdm.timetracker.database.di
 
 import androidx.sqlite.driver.bundled.BundledSQLiteDriver
+import io.github.loskovdm.domain.auth.CurrentUserIdProvider
+import io.github.loskovdm.domain.repository.GuestDataRepository
 import io.github.loskovdm.timetracker.database.TimeTrackerDatabase
+import io.github.loskovdm.timetracker.database.auth.GuestCurrentUserIdProvider
 import io.github.loskovdm.timetracker.database.dao.ProjectDao
 import io.github.loskovdm.timetracker.database.dao.TaskDao
 import io.github.loskovdm.timetracker.database.dao.TimeEntryDao
@@ -15,6 +18,8 @@ import io.github.loskovdm.timetracker.database.mapper.ProjectMapper
 import io.github.loskovdm.timetracker.database.mapper.TaskMapper
 import io.github.loskovdm.timetracker.database.mapper.TimeEntryMapper
 import io.github.loskovdm.timetracker.database.mapper.TimeEntryWithRelationsMapper
+import io.github.loskovdm.timetracker.database.migration.ALL_MIGRATIONS
+import io.github.loskovdm.timetracker.database.repository.GuestDataRepositoryImpl
 import io.github.loskovdm.timetracker.repository.datasource.ProjectLocalDataSource
 import io.github.loskovdm.timetracker.repository.datasource.TaskLocalDataSource
 import io.github.loskovdm.timetracker.repository.datasource.TimeEntryLocalDataSource
@@ -23,14 +28,7 @@ import io.github.loskovdm.timetracker.repository.di.repositoryModule
 import kotlinx.coroutines.Dispatchers
 import org.koin.dsl.module
 
-val databaseModule = module {
-    single<TimeTrackerDatabase> {
-        getDatabaseBuilder()
-            .setDriver(BundledSQLiteDriver())
-            .setQueryCoroutineContext(Dispatchers.IO)
-            .build()
-    }
-
+val databaseBindingsModule = module {
     single<ProjectDao> {
         get<TimeTrackerDatabase>().projectDao()
     }
@@ -44,14 +42,22 @@ val databaseModule = module {
         get<TimeTrackerDatabase>().timeEntryWithRelations()
     }
 
-    single<ProjectMapper> { ProjectMapper() }
-    single<TaskMapper> { TaskMapper() }
-    single<TimeEntryMapper> { TimeEntryMapper() }
+    single<ProjectMapper> { ProjectMapper(get()) }
+    single<TaskMapper> { TaskMapper(get()) }
+    single<TimeEntryMapper> { TimeEntryMapper(get()) }
     single {
         TimeEntryWithRelationsMapper(
             projectMapper = get(),
             taskMapper = get(),
             timeEntryMapper = get(),
+        )
+    }
+
+    single<GuestDataRepository> {
+        GuestDataRepositoryImpl(
+            projectDao = get(),
+            taskDao = get(),
+            timeEntryDao = get(),
         )
     }
 
@@ -81,4 +87,17 @@ val databaseModule = module {
     }
 
     includes(repositoryModule)
+}
+
+val standaloneDatabaseModule = module {
+    single<CurrentUserIdProvider> { GuestCurrentUserIdProvider() }
+
+    single<TimeTrackerDatabase> {
+        getDatabaseBuilder()
+            .addMigrations(*ALL_MIGRATIONS)
+            .setDriver(BundledSQLiteDriver())
+            .setQueryCoroutineContext(Dispatchers.IO)
+            .build()
+    }
+    includes(databaseBindingsModule)
 }

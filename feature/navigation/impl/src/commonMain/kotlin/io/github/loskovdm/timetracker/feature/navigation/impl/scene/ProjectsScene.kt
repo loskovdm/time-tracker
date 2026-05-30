@@ -247,6 +247,7 @@ private fun SplitTasksHeader(
                 modifier = Modifier.size(20.dp),
                 imageVector = vectorResource(Res.drawable.ic_close),
                 contentDescription = stringResource(Res.string.close),
+                tint = MaterialTheme.colorScheme.onSurface,
             )
         }
         Text(
@@ -261,6 +262,7 @@ private fun SplitTasksHeader(
             Icon(
                 imageVector = vectorResource(Res.drawable.ic_add_task_filled),
                 contentDescription = stringResource(Res.string.add_task),
+                tint = MaterialTheme.colorScheme.onSurface,
             )
         }
     }

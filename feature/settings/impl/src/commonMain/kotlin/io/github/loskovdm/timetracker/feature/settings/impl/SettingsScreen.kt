@@ -16,6 +16,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
@@ -27,19 +28,24 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.loskovdm.domain.model.AppLanguage
+import io.github.loskovdm.domain.model.AuthState
 import io.github.loskovdm.domain.model.ThemeMode
+import io.github.loskovdm.timetracker.feature.auth.api.AuthDestination
+import io.github.loskovdm.timetracker.feature.navigation.api.Navigator
 import io.github.loskovdm.timetracker.feature.settings.impl.presentation.SettingsViewModel
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 import timetracker.designsystem.generated.resources.Res
 import timetracker.designsystem.generated.resources.settings_account
-import timetracker.designsystem.generated.resources.settings_account_coming_soon
 import timetracker.designsystem.generated.resources.settings_account_description
+import timetracker.designsystem.generated.resources.settings_account_signed_in_description
 import timetracker.designsystem.generated.resources.settings_appearance
 import timetracker.designsystem.generated.resources.settings_language
 import timetracker.designsystem.generated.resources.settings_language_english
 import timetracker.designsystem.generated.resources.settings_language_russian
 import timetracker.designsystem.generated.resources.settings_open_auth
+import timetracker.designsystem.generated.resources.settings_sign_out
+import timetracker.designsystem.generated.resources.settings_signed_in_as
 import timetracker.designsystem.generated.resources.settings_theme_dark
 import timetracker.designsystem.generated.resources.settings_theme_light
 import timetracker.designsystem.generated.resources.settings_theme_system
@@ -47,10 +53,13 @@ import timetracker.designsystem.generated.resources.settings_theme_system
 @Composable
 internal fun SettingsScreen(
     contentPadding: PaddingValues = PaddingValues(),
+    navigator: Navigator,
     viewModel: SettingsViewModel = koinViewModel(),
 ) {
     val themeMode by viewModel.themeMode.collectAsStateWithLifecycle()
     val appLanguage by viewModel.appLanguage.collectAsStateWithLifecycle()
+    val authState by viewModel.authState.collectAsStateWithLifecycle()
+    val isAuthOperationInProgress by viewModel.isAuthOperationInProgress.collectAsStateWithLifecycle()
 
     Column(
         modifier = Modifier
@@ -61,7 +70,12 @@ internal fun SettingsScreen(
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
-        SettingsAccountStubSection()
+        SettingsAccountSection(
+            authState = authState,
+            isAuthOperationInProgress = isAuthOperationInProgress,
+            onOpenAuth = { navigator.goTo(AuthDestination) },
+            onSignOut = viewModel::onSignOut,
+        )
 
         SettingsSectionCard(title = stringResource(Res.string.settings_appearance)) {
             SettingsRadioGroup(
@@ -84,25 +98,58 @@ internal fun SettingsScreen(
 }
 
 @Composable
-private fun SettingsAccountStubSection() {
+private fun SettingsAccountSection(
+    authState: AuthState,
+    isAuthOperationInProgress: Boolean,
+    onOpenAuth: () -> Unit,
+    onSignOut: () -> Unit,
+) {
     SettingsSectionCard(title = stringResource(Res.string.settings_account)) {
         Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-            Text(
-                text = stringResource(Res.string.settings_account_description),
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
-            Text(
-                text = stringResource(Res.string.settings_account_coming_soon),
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
-            OutlinedButton(
-                onClick = {},
-                enabled = false,
-                modifier = Modifier.fillMaxWidth(),
-            ) {
-                Text(stringResource(Res.string.settings_open_auth))
+            when (authState) {
+                is AuthState.Authenticated -> {
+                    Text(
+                        text = stringResource(
+                            Res.string.settings_signed_in_as,
+                            authState.email,
+                        ),
+                        style = MaterialTheme.typography.bodyMedium,
+                    )
+                    Text(
+                        text = stringResource(Res.string.settings_account_signed_in_description),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                    OutlinedButton(
+                        onClick = onSignOut,
+                        modifier = Modifier.fillMaxWidth(),
+                        enabled = !isAuthOperationInProgress,
+                    ) {
+                        if (isAuthOperationInProgress) {
+                            CircularProgressIndicator(
+                                modifier = Modifier.padding(4.dp),
+                                strokeWidth = 2.dp,
+                            )
+                        } else {
+                            Text(stringResource(Res.string.settings_sign_out))
+                        }
+                    }
+                }
+
+                AuthState.Guest, AuthState.Loading -> {
+                    Text(
+                        text = stringResource(Res.string.settings_account_description),
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                    OutlinedButton(
+                        onClick = onOpenAuth,
+                        modifier = Modifier.fillMaxWidth(),
+                        enabled = !isAuthOperationInProgress,
+                    ) {
+                        Text(stringResource(Res.string.settings_open_auth))
+                    }
+                }
             }
         }
     }

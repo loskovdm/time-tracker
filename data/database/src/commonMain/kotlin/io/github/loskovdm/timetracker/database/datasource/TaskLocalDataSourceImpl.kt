@@ -13,15 +13,17 @@ internal class TaskLocalDataSourceImpl(
     private val mapper: TaskMapper,
 ) : TaskLocalDataSource {
     override suspend fun addTask(task: Task) {
-        dao.insertTask(mapper.toEntity(task))
+        dao.insertTask(mapper.toEntityForInsert(task))
     }
 
     override suspend fun updateTask(task: Task) {
-        dao.updateTask(mapper.toEntity(task))
+        val existing = dao.getTaskById(task.id) ?: return
+        dao.updateTask(mapper.toEntityForUpdate(task, existing))
     }
 
     override suspend fun deleteTask(task: Task) {
-        dao.deleteTask(mapper.toEntity(task))
+        val existing = dao.getTaskById(task.id) ?: return
+        dao.deleteTask(mapper.toEntityForUpdate(task, existing))
     }
 
     override suspend fun getTaskById(id: Uuid): Task? {

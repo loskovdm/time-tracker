@@ -11,15 +11,17 @@ internal class TimeEntryLocalDataSourceImpl(
     private val mapper: TimeEntryMapper,
 ) : TimeEntryLocalDataSource {
     override suspend fun addTimeEntry(timeEntry: TimeEntry) {
-        dao.insertTimeEntry(mapper.toEntity(timeEntry))
+        dao.insertTimeEntry(mapper.toEntityForInsert(timeEntry))
     }
 
     override suspend fun updateTimeEntry(timeEntry: TimeEntry) {
-        dao.updateTimeEntry(mapper.toEntity(timeEntry))
+        val existing = dao.getTimeEntryById(timeEntry.id) ?: return
+        dao.updateTimeEntry(mapper.toEntityForUpdate(timeEntry, existing))
     }
 
     override suspend fun deleteTimeEntry(timeEntry: TimeEntry) {
-        dao.deleteTimeEntry(mapper.toEntity(timeEntry))
+        val existing = dao.getTimeEntryById(timeEntry.id) ?: return
+        dao.deleteTimeEntry(mapper.toEntityForUpdate(timeEntry, existing))
     }
 
     override suspend fun deleteTimeEntryByTaskId(taskId: Uuid) {

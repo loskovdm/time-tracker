@@ -39,4 +39,13 @@ interface TimeEntryDao {
 
     @Query("UPDATE time_entries SET project_id = NULL, task_id = NULL WHERE project_id = :projectId")
     suspend fun unlinkTimeEntriesFromProject(projectId: Uuid)
+
+    @Query("DELETE FROM time_entries")
+    suspend fun deleteAllTimeEntries()
+
+    @Query("SELECT COUNT(*) FROM time_entries WHERE user_id = :guestUserId")
+    suspend fun countGuestTimeEntries(guestUserId: String): Int
+
+    @Query("SELECT * FROM time_entries WHERE user_id = :userId")
+    suspend fun getTimeEntriesByUserId(userId: String): List<TimeEntry>
 }

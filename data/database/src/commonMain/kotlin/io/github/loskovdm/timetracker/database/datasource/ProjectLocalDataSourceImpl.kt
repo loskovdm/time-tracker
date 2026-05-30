@@ -13,11 +13,12 @@ internal class ProjectLocalDataSourceImpl(
     private val mapper: ProjectMapper,
 ) : ProjectLocalDataSource {
     override suspend fun addProject(project: Project) {
-        dao.insertProject(mapper.toEntity(project))
+        dao.insertProject(mapper.toEntityForInsert(project))
     }
 
     override suspend fun updateProject(project: Project) {
-        dao.updateProject(mapper.toEntity(project))
+        val existing = dao.getProjectById(project.id) ?: return
+        dao.updateProject(mapper.toEntityForUpdate(project, existing))
     }
 
     override suspend fun getProjectById(id: Uuid): Project? {
@@ -29,6 +30,7 @@ internal class ProjectLocalDataSourceImpl(
     }
 
     override suspend fun deleteProject(project: Project) {
-        dao.deleteProject(mapper.toEntity(project))
+        val existing = dao.getProjectById(project.id) ?: return
+        dao.deleteProject(mapper.toEntityForUpdate(project, existing))
     }
 }

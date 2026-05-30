@@ -14,7 +14,9 @@ import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.navigation3.runtime.contains
@@ -22,6 +24,7 @@ import androidx.navigation3.runtime.get
 import androidx.navigation3.scene.Scene
 import androidx.navigation3.scene.SceneDecoratorStrategy
 import androidx.navigation3.scene.SceneDecoratorStrategyScope
+import io.github.loskovdm.timetracker.feature.navigation.api.AuthNavigationLock
 import io.github.loskovdm.timetracker.feature.navigation.api.AuthTopBarModeSource
 import io.github.loskovdm.timetracker.feature.navigation.api.SceneMetadata
 import io.github.loskovdm.timetracker.feature.navigation.api.SceneType
@@ -42,6 +45,7 @@ internal data class TopBarScene<T : TimeTrackerDestination>(
     private val scene: Scene<T>,
     private val scrollBehaviorStore: MutableMap<Any, TopAppBarScrollBehavior>,
     private val authTopBarModeSource: AuthTopBarModeSource,
+    private val authNavigationLock: AuthNavigationLock,
     private val onBack: () -> Unit,
     private val onSettings: () -> Unit,
     private val onAddEntry: () -> Unit,
@@ -57,6 +61,12 @@ internal data class TopBarScene<T : TimeTrackerDestination>(
             sceneKey = scene.key,
             scrollBehaviorStore = scrollBehaviorStore
         )
+        val isAuthNavigationBlocked by authNavigationLock.isBlockingBack.collectAsStateWithLifecycle()
+        val guardedOnBack = {
+            if (!isAuthNavigationBlocked) {
+                onBack()
+            }
+        }
 
         val topBar = @Composable {
             if (scene is ProjectsScene<*> && scene.showTasksInSplitPane) {
@@ -126,12 +136,14 @@ internal data class TopBarScene<T : TimeTrackerDestination>(
                 )
                 SceneType.Settings -> SettingsTopBar(
                     scrollBehavior = scrollBehavior,
-                    onBack = onBack,
+                    onBack = guardedOnBack,
+                    backEnabled = !isAuthNavigationBlocked,
                 )
                 SceneType.Auth -> AuthTopBar(
                     authTopBarModeSource = authTopBarModeSource,
                     scrollBehavior = scrollBehavior,
-                    onBack = onBack,
+                    onBack = guardedOnBack,
+                    backEnabled = !isAuthNavigationBlocked,
                 )
                 else -> {}
             }
@@ -159,6 +171,7 @@ internal data class TopBarScene<T : TimeTrackerDestination>(
 @Composable
 fun <T : TimeTrackerDestination> rememberTopBarSceneDecoratorStrategy(
     authTopBarModeSource: AuthTopBarModeSource,
+    authNavigationLock: AuthNavigationLock,
     onSettings: () -> Unit,
     onAddEntry: () -> Unit,
     onArchivedProjects: () -> Unit,
@@ -167,10 +180,12 @@ fun <T : TimeTrackerDestination> rememberTopBarSceneDecoratorStrategy(
     return remember(
         scrollBehaviorStore,
         authTopBarModeSource,
+        authNavigationLock,
     ) {
         TopBarSceneDecoratorStrategy(
             scrollBehaviorStore = scrollBehaviorStore,
             authTopBarModeSource = authTopBarModeSource,
+            authNavigationLock = authNavigationLock,
             onSettings = onSettings,
             onAddEntry = onAddEntry,
             onArchivedProjects = onArchivedProjects,
@@ -182,6 +197,7 @@ fun <T : TimeTrackerDestination> rememberTopBarSceneDecoratorStrategy(
 class TopBarSceneDecoratorStrategy<T : TimeTrackerDestination>(
     private val scrollBehaviorStore: MutableMap<Any, TopAppBarScrollBehavior>,
     private val authTopBarModeSource: AuthTopBarModeSource,
+    private val authNavigationLock: AuthNavigationLock,
     private val onSettings: () -> Unit,
     private val onAddEntry: () -> Unit,
     private val onArchivedProjects: () -> Unit,
@@ -194,6 +210,7 @@ class TopBarSceneDecoratorStrategy<T : TimeTrackerDestination>(
                 scene = scene,
                 scrollBehaviorStore = scrollBehaviorStore,
                 authTopBarModeSource = authTopBarModeSource,
+                authNavigationLock = authNavigationLock,
                 onBack = onBack,
                 onSettings = onSettings,
                 onAddEntry = onAddEntry,

@@ -6,8 +6,10 @@ import kotlin.time.Clock
  * Placeholder owner until Supabase Auth is wired on the client.
  * Replace with the signed-in user's id when creating local rows.
  */
+import io.github.loskovdm.domain.auth.GuestUserIds
+
 internal object SyncDefaults {
-    const val LOCAL_OWNER_ID: String = "00000000-0000-0000-0000-000000000000"
+    const val LOCAL_OWNER_ID: String = GuestUserIds.LOCAL
 
     fun nowIso(): String = Clock.System.now().toString()
 }

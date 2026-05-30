@@ -25,6 +25,7 @@ fun SettingsTopBar(
     modifier: Modifier = Modifier,
     scrollBehavior: TopAppBarScrollBehavior,
     onBack: () -> Unit,
+    backEnabled: Boolean = true,
 ) {
     val deviceConfiguration = LocalDeviceConfiguration.current
 
@@ -42,7 +43,8 @@ fun SettingsTopBar(
         ),
         navigationIcon = {
             IconButton(
-                onClick = onBack
+                onClick = onBack,
+                enabled = backEnabled,
             ) {
                 Icon(
                     imageVector = vectorResource(Res.drawable.ic_arrow_back),

@@ -24,6 +24,7 @@ kotlin {
             dependencies {
                 implementation(projects.feature.settings.api)
                 implementation(projects.feature.navigation.api)
+                implementation(projects.feature.auth.api)
                 implementation(projects.domain)
                 implementation(projects.designSystem)
 

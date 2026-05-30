@@ -1,0 +1,46 @@
+plugins {
+    alias(libs.plugins.kotlinMultiplatform)
+    alias(libs.plugins.androidKotlinMultiplatformLibrary)
+    alias(libs.plugins.androidLint)
+    alias(libs.plugins.composeMultiplatform)
+    alias(libs.plugins.composeCompiler)
+    alias(libs.plugins.composeHotReload)
+    alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.koin.compiler)
+}
+
+kotlin {
+    android {
+        namespace = "io.github.loskovdm.timetracker.feature.auth.impl"
+        compileSdk = 37
+        minSdk = 24
+    }
+
+    jvm()
+
+    sourceSets {
+        commonMain.dependencies {
+            implementation(projects.feature.auth.api)
+            implementation(projects.feature.navigation.api)
+            implementation(projects.domain)
+            implementation(projects.designSystem)
+
+            implementation(libs.kotlin.stdlib)
+            implementation(libs.compose.runtime)
+            implementation(libs.compose.foundation)
+            implementation(libs.compose.material3)
+            implementation(libs.compose.ui)
+            implementation(libs.compose.components.resources)
+            implementation(libs.compose.uiToolingPreview)
+            implementation(libs.androidx.lifecycle.viewmodelCompose)
+            implementation(libs.androidx.lifecycle.runtimeCompose)
+            implementation(libs.androidx.lifecycle.viewmodel)
+            implementation(libs.androidx.lifecycle.viewmodel.nav3)
+            implementation(libs.androidx.navigation3.ui)
+            implementation(libs.kotlinx.serialization.json)
+            implementation(libs.koin.core)
+            implementation(libs.koin.composeViewmodel)
+            implementation(libs.koin.navigation3)
+        }
+    }
+}

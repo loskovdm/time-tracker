@@ -31,6 +31,7 @@ fun AuthTopBar(
     modifier: Modifier = Modifier,
     scrollBehavior: TopAppBarScrollBehavior,
     onBack: () -> Unit,
+    backEnabled: Boolean = true,
 ) {
     val mode by authTopBarModeSource.mode.collectAsStateWithLifecycle()
     val deviceConfiguration = LocalDeviceConfiguration.current
@@ -52,7 +53,10 @@ fun AuthTopBar(
             scrolledContainerColor = MaterialTheme.colorScheme.surfaceContainer,
         ),
         navigationIcon = {
-            IconButton(onClick = onBack) {
+            IconButton(
+                onClick = onBack,
+                enabled = backEnabled,
+            ) {
                 Icon(
                     imageVector = vectorResource(Res.drawable.ic_arrow_back),
                     contentDescription = stringResource(Res.string.back),

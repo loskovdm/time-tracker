@@ -27,11 +27,29 @@ import io.github.loskovdm.domain.usecase.timeentry.GetCompletedTimeEntriesUseCas
 import io.github.loskovdm.domain.usecase.timeentry.GetTimeEntryByIdUseCase
 import io.github.loskovdm.domain.usecase.timeentry.StartTrackTimeUseCase
 import io.github.loskovdm.domain.usecase.timeentry.StopTrackTimeUseCase
+import io.github.loskovdm.domain.usecase.auth.DiscardGuestDataUseCase
+import io.github.loskovdm.domain.usecase.auth.HasGuestLocalDataUseCase
+import io.github.loskovdm.domain.usecase.auth.MigrateGuestDataUseCase
+import io.github.loskovdm.domain.usecase.auth.ObserveAuthStateUseCase
+import io.github.loskovdm.domain.usecase.auth.SignInUseCase
+import io.github.loskovdm.domain.usecase.auth.SignOutUseCase
+import io.github.loskovdm.domain.usecase.auth.SignUpUseCase
+import io.github.loskovdm.domain.usecase.auth.StartSyncUseCase
 import io.github.loskovdm.domain.usecase.timeentry.UpdateTimeEntryUseCase
 import org.koin.dsl.module
 import org.koin.plugin.module.dsl.factory
 
 val domainModule = module {
+
+    // Auth use cases
+    factory<ObserveAuthStateUseCase>()
+    factory<SignInUseCase>()
+    factory<SignUpUseCase>()
+    factory<SignOutUseCase>()
+    factory<StartSyncUseCase>()
+    factory<HasGuestLocalDataUseCase>()
+    factory<MigrateGuestDataUseCase>()
+    factory<DiscardGuestDataUseCase>()
 
     // Settings use cases
     factory<ObserveThemeModeUseCase>()

@@ -2,6 +2,7 @@ package io.github.loskovdm.timetracker.feature.settings.impl.di
 
 import io.github.loskovdm.domain.di.domainModule
 import io.github.loskovdm.timetracker.feature.navigation.api.EntryMetadataBuilder
+import io.github.loskovdm.timetracker.feature.navigation.api.Navigator
 import io.github.loskovdm.timetracker.feature.settings.api.SettingsDestination
 import io.github.loskovdm.timetracker.feature.settings.impl.SettingsScreen
 import io.github.loskovdm.timetracker.feature.settings.impl.presentation.SettingsViewModel
@@ -17,7 +18,7 @@ val settingsModule = module {
     navigation<SettingsDestination>(
         metadata = EntryMetadataBuilder.settings(),
     ) {
-        SettingsScreen()
+        SettingsScreen(navigator = get())
     }
 
     viewModel<SettingsViewModel>()

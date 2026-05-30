@@ -32,4 +32,13 @@ interface ProjectDao {
 
     @Delete
     suspend fun deleteProject(project: Project)
+
+    @Query("DELETE FROM projects")
+    suspend fun deleteAllProjects()
+
+    @Query("SELECT COUNT(*) FROM projects WHERE user_id = :guestUserId")
+    suspend fun countGuestProjects(guestUserId: String): Int
+
+    @Query("SELECT * FROM projects WHERE user_id = :userId")
+    suspend fun getProjectsByUserId(userId: String): List<Project>
 }
