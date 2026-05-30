@@ -2,16 +2,22 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "749002c70f71fb2d56607c01e61d81f2",
+    "identityHash": "1845a101ff889385f6e0717241b67f2e",
     "entities": [
       {
-        "tableName": "Project",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` BLOB NOT NULL, `name` TEXT NOT NULL, `color` INTEGER NOT NULL, `isArchived` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "tableName": "projects",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `user_id` TEXT NOT NULL, `name` TEXT NOT NULL, `color` INTEGER NOT NULL, `is_archived` INTEGER NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
             "columnName": "id",
-            "affinity": "BLOB",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "userId",
+            "columnName": "user_id",
+            "affinity": "TEXT",
             "notNull": true
           },
           {
@@ -28,7 +34,7 @@
           },
           {
             "fieldPath": "isArchived",
-            "columnName": "isArchived",
+            "columnName": "is_archived",
             "affinity": "INTEGER",
             "notNull": true
           }
@@ -41,13 +47,25 @@
         }
       },
       {
-        "tableName": "Task",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` BLOB NOT NULL, `name` TEXT NOT NULL, `projectId` BLOB NOT NULL, `isCompleted` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "tableName": "tasks",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `user_id` TEXT NOT NULL, `project_id` TEXT NOT NULL, `name` TEXT NOT NULL, `is_completed` INTEGER NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
             "columnName": "id",
-            "affinity": "BLOB",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "userId",
+            "columnName": "user_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "projectId",
+            "columnName": "project_id",
+            "affinity": "TEXT",
             "notNull": true
           },
           {
@@ -57,14 +75,8 @@
             "notNull": true
           },
           {
-            "fieldPath": "projectId",
-            "columnName": "projectId",
-            "affinity": "BLOB",
-            "notNull": true
-          },
-          {
             "fieldPath": "isCompleted",
-            "columnName": "isCompleted",
+            "columnName": "is_completed",
             "affinity": "INTEGER",
             "notNull": true
           }
@@ -77,41 +89,41 @@
         }
       },
       {
-        "tableName": "TimeEntry",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` BLOB NOT NULL, `startDateTime` INTEGER NOT NULL, `endDateTime` INTEGER, `projectId` BLOB, `taskId` BLOB, `isArchived` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "tableName": "time_entries",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `user_id` TEXT NOT NULL, `project_id` TEXT, `task_id` TEXT, `start_date_time` TEXT NOT NULL, `end_date_time` TEXT, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
             "columnName": "id",
-            "affinity": "BLOB",
+            "affinity": "TEXT",
             "notNull": true
           },
           {
+            "fieldPath": "userId",
+            "columnName": "user_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "projectId",
+            "columnName": "project_id",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "taskId",
+            "columnName": "task_id",
+            "affinity": "TEXT"
+          },
+          {
             "fieldPath": "startDateTime",
-            "columnName": "startDateTime",
-            "affinity": "INTEGER",
+            "columnName": "start_date_time",
+            "affinity": "TEXT",
             "notNull": true
           },
           {
             "fieldPath": "endDateTime",
-            "columnName": "endDateTime",
-            "affinity": "INTEGER"
-          },
-          {
-            "fieldPath": "projectId",
-            "columnName": "projectId",
-            "affinity": "BLOB"
-          },
-          {
-            "fieldPath": "taskId",
-            "columnName": "taskId",
-            "affinity": "BLOB"
-          },
-          {
-            "fieldPath": "isArchived",
-            "columnName": "isArchived",
-            "affinity": "INTEGER",
-            "notNull": true
+            "columnName": "end_date_time",
+            "affinity": "TEXT"
           }
         ],
         "primaryKey": {
@@ -124,7 +136,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '749002c70f71fb2d56607c01e61d81f2')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '1845a101ff889385f6e0717241b67f2e')"
     ]
   }
 }

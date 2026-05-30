@@ -18,8 +18,8 @@ import timetracker.designsystem.generated.resources.Res
 import timetracker.designsystem.generated.resources.add_entry
 import timetracker.designsystem.generated.resources.ic_add_entry
 import timetracker.designsystem.generated.resources.ic_settings_filled
+import timetracker.designsystem.generated.resources.log
 import timetracker.designsystem.generated.resources.settings
-import timetracker.designsystem.generated.resources.timer
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -34,7 +34,7 @@ fun TimerTopBar(
     TopAppBar(
         modifier = modifier,
         scrollBehavior = scrollBehavior,
-        title = { Text(stringResource(Res.string.timer)) },
+        title = { Text(stringResource(Res.string.log)) },
         actions = {
             IconButton(
                 onClick = onAddEntry

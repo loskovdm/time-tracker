@@ -1,9 +1,5 @@
 package io.github.loskovdm.timetracker.feature.timeentry.impl.presentation.timer
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
-import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.viewModelScope
 import io.github.loskovdm.domain.error.Result
 import io.github.loskovdm.domain.error.TrackTimeError

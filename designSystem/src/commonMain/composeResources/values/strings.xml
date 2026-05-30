@@ -5,6 +5,64 @@
     <string name="projects">Projects</string>
     <string name="reports">Reports</string>
     <string name="settings">Settings</string>
+    <string name="settings_appearance">Appearance</string>
+    <string name="settings_language">Language</string>
+    <string name="settings_theme_system">System</string>
+    <string name="settings_theme_light">Light</string>
+    <string name="settings_theme_dark">Dark</string>
+    <string name="settings_language_system">System</string>
+    <string name="settings_language_english">English</string>
+    <string name="settings_language_russian">Russian</string>
+    <string name="settings_account">Account</string>
+    <string name="settings_account_description">Sign in to sync your data across devices.</string>
+    <string name="settings_account_coming_soon">Sign-in is not available yet.</string>
+    <string name="settings_sign_in">Sign in</string>
+    <string name="settings_sign_up">Create account</string>
+    <string name="settings_sign_out">Sign out</string>
+    <string name="settings_email">Email</string>
+    <string name="settings_password">Password</string>
+    <string name="settings_signed_in_as">Signed in as %1$s</string>
+    <string name="settings_open_auth">Sign in or create account</string>
+    <string name="settings_account_signed_in_description">Your data is synced when you are signed in.</string>
+    <string name="auth_title_sign_in">Sign in</string>
+    <string name="auth_title_sign_up">Create account</string>
+    <string name="auth_subtitle">Sync projects, tasks, and time entries across your devices.</string>
+    <string name="auth_email_invalid">Enter a valid email address</string>
+    <string name="auth_sign_in">Sign in</string>
+    <string name="auth_sign_up">Create account</string>
+    <string name="auth_switch_to_sign_up">No account yet? Create one</string>
+    <string name="auth_switch_to_sign_in">Already have an account? Sign in</string>
+    <string name="auth_registration_email_sent_title">Confirm your email</string>
+    <string name="auth_registration_email_sent_message">We sent a confirmation link to %1$s. Open it in your mail app, then return here and sign in.</string>
+    <string name="auth_error_invalid_credentials">Incorrect email or password.</string>
+    <string name="auth_error_email_not_confirmed">Confirm your email using the link we sent, then sign in.</string>
+    <string name="auth_error_user_already_registered">An account with this email already exists. Try signing in.</string>
+    <string name="auth_error_weak_password">Password is too weak. Use at least 6 characters.</string>
+    <string name="auth_error_network">Could not reach the server. Check your connection and try again.</string>
+    <string name="auth_error_generic">Something went wrong. Please try again.</string>
+    <string name="auth_guest_migration_title">Local data found</string>
+    <string name="auth_guest_migration_message">You added data before signing in. Move it to your account to sync across devices, or delete it.</string>
+    <string name="auth_guest_migration_migrate">Move to my account</string>
+    <string name="auth_guest_migration_discard">Delete local data</string>
+    <string name="reports_period">Period</string>
+    <string name="reports_period_day">Day</string>
+    <string name="reports_period_week">Week</string>
+    <string name="reports_period_month">Month</string>
+    <string name="reports_period_year">Year</string>
+    <string name="reports_period_custom">Custom</string>
+    <string name="reports_custom_start">Start date</string>
+    <string name="reports_custom_end">End date</string>
+    <string name="reports_custom_hint">YYYY-MM-DD</string>
+    <string name="reports_date_range">Date range</string>
+    <string name="reports_projects">Projects</string>
+    <string name="reports_all_projects">All projects</string>
+    <string name="reports_select_projects">Select projects</string>
+    <string name="reports_time_by_day">Time by day</string>
+    <string name="reports_time_by_project">Time by project</string>
+    <string name="reports_total_time">Total time</string>
+    <string name="reports_no_data">No data for the selected period</string>
+    <string name="reports_unknown_project">Unknown project</string>
+
     <string name="project">Project</string>
     <string name="select_project">Select project</string>
     <string name="task">Task</string>
@@ -31,6 +89,7 @@
     <string name="error">Error</string>
     <string name="edit">Edit</string>
     <string name="archive">Archive</string>
+    <string name="archive_screen_title">Archive</string>
     <string name="unarchive">Unarchive</string>
     <string name="active">Active</string>
     <string name="completed">Completed</string>
@@ -38,6 +97,7 @@
     <string name="mark_as_active">Mark as active</string>
     <string name="active_timer">Active timer</string>
     <string name="more_options">More options</string>
+    <string name="log">Log</string>
 
     <string name="purple">Purple</string>
     <string name="pink">Pink</string>
@@ -65,6 +125,12 @@
     <string name="add_task_hint">Add first task using the button below</string>
 
     <string name="second_active_timer_error">A timer is already running. Stop it before starting a new one.</string>
+
+    <string name="delete_strategy_title">Choose deletion strategy</string>
+    <string name="delete_task_message">What should happen to time entries linked to \"%1$s\"?</string>
+    <string name="delete_project_message">What should happen to time entries linked to \"%1$s\"? All tasks in this project will be deleted.</string>
+    <string name="delete_time_entries_action">Delete time entries</string>
+    <string name="keep_time_entries_action">Keep time entries (unlink)</string>
 
     <string name="today">Today</string>
     <string name="yesterday">Yesterday</string>

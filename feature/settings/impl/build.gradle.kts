@@ -24,6 +24,7 @@ kotlin {
             dependencies {
                 implementation(projects.feature.settings.api)
                 implementation(projects.feature.navigation.api)
+                implementation(projects.domain)
                 implementation(projects.designSystem)
 
                 implementation(libs.kotlin.stdlib)
@@ -40,6 +41,7 @@ kotlin {
                 implementation(libs.androidx.navigation3.ui)
                 implementation(libs.kotlinx.serialization.json)
                 implementation(libs.koin.core)
+                implementation(libs.koin.composeViewmodel)
                 implementation(libs.koin.navigation3)
             }
         }
@@ -49,6 +51,7 @@ kotlin {
                 implementation(libs.kotlin.test)
             }
         }
+
     }
 
 }

@@ -11,7 +11,7 @@ import kotlin.uuid.Uuid
 internal class ProjectLocalDataSourceImpl(
     private val dao: ProjectDao,
     private val mapper: ProjectMapper,
-): ProjectLocalDataSource {
+) : ProjectLocalDataSource {
     override suspend fun addProject(project: Project) {
         dao.insertProject(mapper.toEntity(project))
     }
@@ -26,5 +26,9 @@ internal class ProjectLocalDataSourceImpl(
 
     override fun getProjects(isArchived: Boolean): Flow<List<Project>> {
         return dao.getProjects(isArchived).map { mapper.toRepo(it) }
+    }
+
+    override suspend fun deleteProject(project: Project) {
+        dao.deleteProject(mapper.toEntity(project))
     }
 }

@@ -52,14 +52,14 @@ internal class ActiveTasksListViewModelImpl(
         }
     }
 
-    fun deleteTask(task: Task) {
+    fun deleteTask(task: Task, deleteStrategy: DeleteStrategy) {
         viewModelScope.launch {
             deleteTaskUseCase(
                 id = task.id,
                 name = task.name,
                 projectId = task.projectId,
                 isCompleted = task.isCompleted,
-                deleteStrategy = DeleteStrategy.CASCADE,
+                deleteStrategy = deleteStrategy,
             )
         }
     }

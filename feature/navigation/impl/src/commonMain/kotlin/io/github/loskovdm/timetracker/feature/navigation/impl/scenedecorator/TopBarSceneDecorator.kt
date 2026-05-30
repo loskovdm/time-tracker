@@ -22,9 +22,11 @@ import androidx.navigation3.runtime.get
 import androidx.navigation3.scene.Scene
 import androidx.navigation3.scene.SceneDecoratorStrategy
 import androidx.navigation3.scene.SceneDecoratorStrategyScope
+import io.github.loskovdm.timetracker.feature.navigation.api.AuthTopBarModeSource
 import io.github.loskovdm.timetracker.feature.navigation.api.SceneMetadata
 import io.github.loskovdm.timetracker.feature.navigation.api.SceneType
 import io.github.loskovdm.timetracker.feature.navigation.api.TimeTrackerDestination
+import io.github.loskovdm.timetracker.feature.navigation.impl.component.topbar.AuthTopBar
 import io.github.loskovdm.timetracker.feature.navigation.impl.component.topbar.ActiveProjectsTopBar
 import io.github.loskovdm.timetracker.feature.navigation.impl.component.topbar.ArchivedProjectsTopBar
 import io.github.loskovdm.timetracker.feature.navigation.impl.component.topbar.CalendarTopBar
@@ -32,12 +34,14 @@ import io.github.loskovdm.timetracker.feature.navigation.impl.component.topbar.R
 import io.github.loskovdm.timetracker.feature.navigation.impl.component.topbar.SettingsTopBar
 import io.github.loskovdm.timetracker.feature.navigation.impl.component.topbar.TasksTopBar
 import io.github.loskovdm.timetracker.feature.navigation.impl.component.topbar.TimerTopBar
+import io.github.loskovdm.timetracker.feature.navigation.impl.scene.ProjectsScene
 import kotlin.uuid.ExperimentalUuidApi
 
 @OptIn(ExperimentalMaterial3Api::class)
 internal data class TopBarScene<T : TimeTrackerDestination>(
     private val scene: Scene<T>,
     private val scrollBehaviorStore: MutableMap<Any, TopAppBarScrollBehavior>,
+    private val authTopBarModeSource: AuthTopBarModeSource,
     private val onBack: () -> Unit,
     private val onSettings: () -> Unit,
     private val onAddEntry: () -> Unit,
@@ -55,7 +59,26 @@ internal data class TopBarScene<T : TimeTrackerDestination>(
         )
 
         val topBar = @Composable {
-            when (scene.metadata[SceneMetadata.SceneTypeKey]) {
+            if (scene is ProjectsScene<*> && scene.showTasksInSplitPane) {
+                if (scene.isArchived) {
+                    ArchivedProjectsTopBar(
+                        modifier = Modifier.consumeWindowInsets(
+                            WindowInsets.safeDrawing.only(WindowInsetsSides.Start)
+                        ),
+                        scrollBehavior = scrollBehavior,
+                        onBack = onBack,
+                    )
+                } else {
+                    ActiveProjectsTopBar(
+                        modifier = Modifier.consumeWindowInsets(
+                            WindowInsets.safeDrawing.only(WindowInsetsSides.Start)
+                        ),
+                        scrollBehavior = scrollBehavior,
+                        onArchivedProjects = onArchivedProjects,
+                        onSettings = onSettings,
+                    )
+                }
+            } else when (scene.metadata[SceneMetadata.SceneTypeKey]) {
                 SceneType.Timer -> TimerTopBar(
                     modifier = Modifier.consumeWindowInsets(
                         WindowInsets.safeDrawing.only(WindowInsetsSides.Start)
@@ -105,6 +128,11 @@ internal data class TopBarScene<T : TimeTrackerDestination>(
                     scrollBehavior = scrollBehavior,
                     onBack = onBack,
                 )
+                SceneType.Auth -> AuthTopBar(
+                    authTopBarModeSource = authTopBarModeSource,
+                    scrollBehavior = scrollBehavior,
+                    onBack = onBack,
+                )
                 else -> {}
             }
         }
@@ -130,6 +158,7 @@ internal data class TopBarScene<T : TimeTrackerDestination>(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun <T : TimeTrackerDestination> rememberTopBarSceneDecoratorStrategy(
+    authTopBarModeSource: AuthTopBarModeSource,
     onSettings: () -> Unit,
     onAddEntry: () -> Unit,
     onArchivedProjects: () -> Unit,
@@ -137,9 +166,11 @@ fun <T : TimeTrackerDestination> rememberTopBarSceneDecoratorStrategy(
     val scrollBehaviorStore = remember { mutableMapOf<Any, TopAppBarScrollBehavior>() }
     return remember(
         scrollBehaviorStore,
+        authTopBarModeSource,
     ) {
         TopBarSceneDecoratorStrategy(
             scrollBehaviorStore = scrollBehaviorStore,
+            authTopBarModeSource = authTopBarModeSource,
             onSettings = onSettings,
             onAddEntry = onAddEntry,
             onArchivedProjects = onArchivedProjects,
@@ -150,6 +181,7 @@ fun <T : TimeTrackerDestination> rememberTopBarSceneDecoratorStrategy(
 @OptIn(ExperimentalMaterial3Api::class)
 class TopBarSceneDecoratorStrategy<T : TimeTrackerDestination>(
     private val scrollBehaviorStore: MutableMap<Any, TopAppBarScrollBehavior>,
+    private val authTopBarModeSource: AuthTopBarModeSource,
     private val onSettings: () -> Unit,
     private val onAddEntry: () -> Unit,
     private val onArchivedProjects: () -> Unit,
@@ -161,6 +193,7 @@ class TopBarSceneDecoratorStrategy<T : TimeTrackerDestination>(
             TopBarScene(
                 scene = scene,
                 scrollBehaviorStore = scrollBehaviorStore,
+                authTopBarModeSource = authTopBarModeSource,
                 onBack = onBack,
                 onSettings = onSettings,
                 onAddEntry = onAddEntry,

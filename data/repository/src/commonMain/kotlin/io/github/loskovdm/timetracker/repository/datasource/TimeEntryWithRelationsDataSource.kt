@@ -8,5 +8,6 @@ import kotlin.uuid.Uuid
 @OptIn(ExperimentalUuidApi::class)
 interface TimeEntryWithRelationsDataSource {
     fun getTimeEntriesWithRelations(): Flow<List<TimeEntryWithRelations>>
+    fun watchActiveTimeEntry(): Flow<TimeEntryWithRelations?>
     suspend fun getTimeEntryWithRelationsById(id: Uuid): TimeEntryWithRelations?
 }

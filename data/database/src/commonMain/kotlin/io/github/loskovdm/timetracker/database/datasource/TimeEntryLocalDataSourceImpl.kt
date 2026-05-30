@@ -9,7 +9,7 @@ import kotlin.uuid.Uuid
 internal class TimeEntryLocalDataSourceImpl(
     private val dao: TimeEntryDao,
     private val mapper: TimeEntryMapper,
-): TimeEntryLocalDataSource {
+) : TimeEntryLocalDataSource {
     override suspend fun addTimeEntry(timeEntry: TimeEntry) {
         dao.insertTimeEntry(mapper.toEntity(timeEntry))
     }
@@ -28,5 +28,13 @@ internal class TimeEntryLocalDataSourceImpl(
 
     override suspend fun setTaskIdToNull(taskId: Uuid) {
         dao.setTaskIdToNull(taskId)
+    }
+
+    override suspend fun deleteTimeEntryByProjectId(projectId: Uuid) {
+        dao.deleteTimeEntryByProjectId(projectId)
+    }
+
+    override suspend fun unlinkTimeEntriesFromProject(projectId: Uuid) {
+        dao.unlinkTimeEntriesFromProject(projectId)
     }
 }

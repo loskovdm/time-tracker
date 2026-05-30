@@ -37,4 +37,8 @@ internal class TaskRepositoryImpl(
     override fun getCompletedTasks(projectId: Uuid): Flow<List<Task>> {
         return localDataSource.getCompletedTasks(projectId).map { mapper.toDomain(it)}
     }
+
+    override suspend fun deleteTasksByProjectId(projectId: Uuid) {
+        localDataSource.deleteTasksByProjectId(projectId)
+    }
 }

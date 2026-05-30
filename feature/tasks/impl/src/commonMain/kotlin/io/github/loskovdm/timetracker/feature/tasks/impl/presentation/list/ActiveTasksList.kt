@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.loskovdm.designsystem.component.EmptyScreen
+import io.github.loskovdm.domain.util.DeleteStrategy
 import io.github.loskovdm.designsystem.component.LoadingScreen
 import io.github.loskovdm.timetracker.feature.tasks.api.model.Task
 import io.github.loskovdm.timetracker.feature.tasks.api.presentation.TasksListState
@@ -37,7 +38,7 @@ internal fun ActiveTasksList(
                 onTaskClick(projectId, taskId)
             },
             onCompleteClick = viewModel::completeTask,
-            onDeleteClick = viewModel::deleteTask,
+            onDeleteClick = { task, strategy -> viewModel.deleteTask(task, strategy) },
         )
     }
 }
@@ -48,7 +49,7 @@ private fun LoadedActiveTasksList(
     tasksList: List<Task>,
     onTaskClick: (projectId: Uuid, taskId: Uuid) -> Unit,
     onCompleteClick: (Task) -> Unit,
-    onDeleteClick: (Task) -> Unit,
+    onDeleteClick: (Task, DeleteStrategy) -> Unit,
 ) {
     LoadedTasksList(
         tasksList = tasksList,

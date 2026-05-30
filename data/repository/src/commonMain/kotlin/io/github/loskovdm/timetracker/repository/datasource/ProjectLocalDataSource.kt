@@ -8,6 +8,7 @@ import kotlin.uuid.Uuid
 interface ProjectLocalDataSource {
     suspend fun addProject(project: Project)
     suspend fun updateProject(project: Project)
+    suspend fun deleteProject(project: Project)
     @OptIn(ExperimentalUuidApi::class)
     suspend fun getProjectById(id: Uuid): Project?
     fun getProjects(isArchived: Boolean): Flow<List<Project>>

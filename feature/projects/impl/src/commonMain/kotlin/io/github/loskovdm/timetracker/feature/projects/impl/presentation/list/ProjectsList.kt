@@ -22,8 +22,13 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.saveable.rememberSaveable
+import io.github.loskovdm.designsystem.component.DeleteWithTimeEntriesDialog
+import io.github.loskovdm.domain.util.DeleteStrategy
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -37,6 +42,7 @@ import org.jetbrains.compose.resources.vectorResource
 import timetracker.designsystem.generated.resources.Res
 import timetracker.designsystem.generated.resources.archive
 import timetracker.designsystem.generated.resources.delete
+import timetracker.designsystem.generated.resources.delete_project_message
 import timetracker.designsystem.generated.resources.edit
 import timetracker.designsystem.generated.resources.ic_archive_outlined
 import timetracker.designsystem.generated.resources.ic_delete_outlined
@@ -57,8 +63,25 @@ fun ProjectsList(
     onEditClick: (Uuid) -> Unit,
     onArchivedClick: ((Project) -> Unit)?,
     onUnarchiveClick: ((Project) -> Unit)?,
-    onDeleteClick: (Project) -> Unit,
+    onDeleteClick: (Project, DeleteStrategy) -> Unit,
 ) {
+    var pendingDeleteProject by remember { mutableStateOf<Project?>(null) }
+
+    pendingDeleteProject?.let { project ->
+        DeleteWithTimeEntriesDialog(
+            message = stringResource(Res.string.delete_project_message, project.name),
+            onDeleteTimeEntries = {
+                onDeleteClick(project, DeleteStrategy.CASCADE)
+                pendingDeleteProject = null
+            },
+            onKeepTimeEntries = {
+                onDeleteClick(project, DeleteStrategy.SET_NULL)
+                pendingDeleteProject = null
+            },
+            onDismiss = { pendingDeleteProject = null },
+        )
+    }
+
     LazyColumn(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(4.dp),
@@ -84,7 +107,7 @@ fun ProjectsList(
                     },
                     onArchivedClick = onArchivedClick?.let { { it(project) } },
                     onUnarchiveClick = onUnarchiveClick?.let { { it(project) } },
-                    onDeleteClick = { onDeleteClick(project) }
+                    onDeleteClick = { pendingDeleteProject = project }
                 )
             }
         }

@@ -10,7 +10,8 @@ enum class SceneType {
     ArchivedProjects,
     Tasks,
     Reports,
-    Settings
+    Settings,
+    Auth,
 }
 
 object SceneMetadata {
@@ -44,5 +45,9 @@ object SceneMetadataBuilder {
 
     fun settings() = metadata {
         put(SceneMetadata.SceneTypeKey, SceneType.Settings)
+    }
+
+    fun auth() = metadata {
+        put(SceneMetadata.SceneTypeKey, SceneType.Auth)
     }
 }

@@ -20,6 +20,12 @@ internal class TimeEntryWithRelationsRepositoryImpl(
         }
     }
 
+    override fun watchActiveTimeEntry(): Flow<TimeEntryWithRelations?> {
+        return localDataSource.watchActiveTimeEntry().map { entry ->
+            entry?.let { mapper.toDomain(it) }
+        }
+    }
+
     override suspend fun getTimeEntryWithRelationsById(id: Uuid): TimeEntryWithRelations? {
         return localDataSource.getTimeEntryWithRelationsById(id)?.let {
             mapper.toDomain(it)

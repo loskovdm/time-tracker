@@ -10,9 +10,12 @@ plugins {
 kotlin {
     dependencies {
         implementation(projects.shared)
+        implementation(projects.domain)
+        implementation(projects.designSystem)
 
         implementation(compose.desktop.currentOs)
         implementation(libs.kotlinx.coroutines.swing)
+        implementation(libs.androidx.lifecycle.runtimeCompose)
 
         implementation(libs.koin.core)
     }

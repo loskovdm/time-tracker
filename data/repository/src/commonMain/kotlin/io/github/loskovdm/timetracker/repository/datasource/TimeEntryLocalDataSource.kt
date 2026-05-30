@@ -11,4 +11,6 @@ interface TimeEntryLocalDataSource {
     suspend fun deleteTimeEntry(timeEntry: TimeEntry)
     suspend fun deleteTimeEntryByTaskId(taskId: Uuid)
     suspend fun setTaskIdToNull(taskId: Uuid)
+    suspend fun deleteTimeEntryByProjectId(projectId: Uuid)
+    suspend fun unlinkTimeEntriesFromProject(projectId: Uuid)
 }

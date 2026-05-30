@@ -49,6 +49,14 @@ kotlin {
                 implementation(libs.kotlin.test)
             }
         }
+
+        androidMain {
+            dependencies {
+                implementation(libs.androidx.appcompat)
+                implementation(libs.compose.runtime)
+                implementation(libs.compose.ui)
+            }
+        }
     }
 }
 

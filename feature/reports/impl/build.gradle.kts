@@ -15,6 +15,7 @@ kotlin {
         namespace = "io.github.loskovdm.timetracker.feature.reports.impl"
         compileSdk = 37
         minSdk = 24
+        withHostTest {}
     }
 
     jvm()
@@ -25,6 +26,8 @@ kotlin {
                 implementation(projects.feature.reports.api)
                 implementation(projects.feature.navigation.api)
                 implementation(projects.designSystem)
+                implementation(projects.feature.projects.api)
+                implementation(projects.domain)
 
                 implementation(libs.kotlin.stdlib)
                 implementation(libs.compose.runtime)
@@ -41,14 +44,12 @@ kotlin {
                 implementation(libs.kotlinx.serialization.json)
                 implementation(libs.koin.core)
                 implementation(libs.koin.navigation3)
+                implementation(libs.koin.composeViewmodel)
+                implementation(libs.kotlinx.datetime)
+                implementation(libs.koalaplot.core)
             }
         }
 
-        commonTest {
-            dependencies {
-                implementation(libs.kotlin.test)
-            }
-        }
     }
 
 }

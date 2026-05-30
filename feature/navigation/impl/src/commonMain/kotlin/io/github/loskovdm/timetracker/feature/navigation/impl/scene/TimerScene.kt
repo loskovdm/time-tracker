@@ -30,7 +30,6 @@ import io.github.loskovdm.timetracker.feature.navigation.api.EntryMetadata
 import io.github.loskovdm.timetracker.feature.navigation.api.Navigator
 import io.github.loskovdm.timetracker.feature.navigation.api.SceneMetadataBuilder
 import io.github.loskovdm.timetracker.feature.navigation.api.TimeTrackerDestination
-import io.github.loskovdm.timetracker.feature.navigation.api.TimerErrorDialogDestination
 import io.github.loskovdm.timetracker.feature.navigation.impl.component.timer.ExpandedTimer
 import io.github.loskovdm.timetracker.feature.navigation.impl.component.timer.MobileLandscapeTimer
 import io.github.loskovdm.timetracker.feature.navigation.impl.component.timer.MobilePortraitTimer
@@ -107,13 +106,9 @@ data class TimerScene<T : Any>(
                 }
             }
             is TimerState.Error -> {
-                val navigator: Navigator = koinInject()
-                navigator.goTo(
-                    TimerErrorDialogDestination(
-                        errorMessage = stringResource(currentTimerState.message),
-                        clearError = onClearTimerError,
-                    )
-                )
+                TimeEntriesListUnit(modifier = Modifier.fillMaxSize()) {
+                    timeEntriesListEntry.Content()
+                }
             }
             is TimerState.Loaded -> {
                 val activeTimeEntry = currentTimerState.timeEntryWithRelations

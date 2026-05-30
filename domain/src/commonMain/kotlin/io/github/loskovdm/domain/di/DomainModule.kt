@@ -8,6 +8,10 @@ import io.github.loskovdm.domain.usecase.project.GetArchivedProjectsUseCase
 import io.github.loskovdm.domain.usecase.project.GetProjectByIdUseCase
 import io.github.loskovdm.domain.usecase.project.UnarchiveProjectUseCase
 import io.github.loskovdm.domain.usecase.project.UpdateProjectUseCase
+import io.github.loskovdm.domain.usecase.settings.ObserveAppLanguageUseCase
+import io.github.loskovdm.domain.usecase.settings.ObserveThemeModeUseCase
+import io.github.loskovdm.domain.usecase.settings.SetAppLanguageUseCase
+import io.github.loskovdm.domain.usecase.settings.SetThemeModeUseCase
 import io.github.loskovdm.domain.usecase.task.ActivateTaskUseCase
 import io.github.loskovdm.domain.usecase.task.AddTaskUseCase
 import io.github.loskovdm.domain.usecase.task.CompleteTaskUseCase
@@ -28,6 +32,12 @@ import org.koin.dsl.module
 import org.koin.plugin.module.dsl.factory
 
 val domainModule = module {
+
+    // Settings use cases
+    factory<ObserveThemeModeUseCase>()
+    factory<ObserveAppLanguageUseCase>()
+    factory<SetThemeModeUseCase>()
+    factory<SetAppLanguageUseCase>()
 
     // Project use cases
     factory<AddProjectUseCase>()

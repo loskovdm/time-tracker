@@ -29,4 +29,8 @@ internal class ProjectRepositoryImpl(
     override fun getProjects(isArchived: Boolean): Flow<List<Project>> {
         return localDataSource.getProjects(isArchived).map { mapper.toDomain(it) }
     }
+
+    override suspend fun deleteProject(project: Project) {
+        localDataSource.deleteProject(mapper.toRepo(project))
+    }
 }

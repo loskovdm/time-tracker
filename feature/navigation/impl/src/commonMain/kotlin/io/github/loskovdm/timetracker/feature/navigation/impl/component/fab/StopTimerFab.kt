@@ -8,6 +8,7 @@ import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
 import timetracker.designsystem.generated.resources.Res
 import timetracker.designsystem.generated.resources.ic_stop_filled
+import timetracker.designsystem.generated.resources.stop
 import timetracker.designsystem.generated.resources.stop_timer
 
 @Composable
@@ -18,7 +19,7 @@ fun StopTimerFab(
     ExtendedFloatingActionButton(
         expanded = isExpanded,
         onClick = onClick,
-        text = { Text(stringResource(Res.string.stop_timer)) },
+        text = { Text(stringResource(Res.string.stop)) },
         icon = {
             Icon(
                 imageVector = vectorResource(Res.drawable.ic_stop_filled),

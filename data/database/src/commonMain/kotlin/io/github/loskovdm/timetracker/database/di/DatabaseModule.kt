@@ -22,7 +22,6 @@ import io.github.loskovdm.timetracker.repository.datasource.TimeEntryWithRelatio
 import io.github.loskovdm.timetracker.repository.di.repositoryModule
 import kotlinx.coroutines.Dispatchers
 import org.koin.dsl.module
-import org.koin.plugin.module.dsl.single
 
 val databaseModule = module {
     single<TimeTrackerDatabase> {
@@ -45,10 +44,16 @@ val databaseModule = module {
         get<TimeTrackerDatabase>().timeEntryWithRelations()
     }
 
-    single<ProjectMapper>()
-    single<TaskMapper>()
-    single<TimeEntryMapper>()
-    single<TimeEntryWithRelationsMapper>()
+    single<ProjectMapper> { ProjectMapper() }
+    single<TaskMapper> { TaskMapper() }
+    single<TimeEntryMapper> { TimeEntryMapper() }
+    single {
+        TimeEntryWithRelationsMapper(
+            projectMapper = get(),
+            taskMapper = get(),
+            timeEntryMapper = get(),
+        )
+    }
 
     single<ProjectLocalDataSource> {
         ProjectLocalDataSourceImpl(

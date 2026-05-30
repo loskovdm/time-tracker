@@ -8,6 +8,7 @@ import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
 import timetracker.designsystem.generated.resources.Res
 import timetracker.designsystem.generated.resources.ic_start_filled
+import timetracker.designsystem.generated.resources.start
 import timetracker.designsystem.generated.resources.start_timer
 
 @Composable
@@ -18,7 +19,7 @@ fun StartTimerFab(
     ExtendedFloatingActionButton(
         onClick = onClick,
         expanded = isExpanded,
-        text = { Text(stringResource(Res.string.start_timer)) },
+        text = { Text(stringResource(Res.string.start)) },
         icon = {
             Icon(
                 imageVector = vectorResource(Res.drawable.ic_start_filled),

@@ -11,7 +11,7 @@ import kotlin.uuid.Uuid
 internal class TaskLocalDataSourceImpl(
     private val dao: TaskDao,
     private val mapper: TaskMapper,
-): TaskLocalDataSource {
+) : TaskLocalDataSource {
     override suspend fun addTask(task: Task) {
         dao.insertTask(mapper.toEntity(task))
     }
@@ -29,10 +29,14 @@ internal class TaskLocalDataSourceImpl(
     }
 
     override fun getActiveTasks(projectId: Uuid): Flow<List<Task>> {
-        return dao.getActiveTasks(projectId).map { mapper.toRepo(it)}
+        return dao.getActiveTasks(projectId).map { mapper.toRepo(it) }
     }
 
     override fun getCompletedTasks(projectId: Uuid): Flow<List<Task>> {
-        return dao.getCompletedTasks(projectId).map { mapper.toRepo(it)}
+        return dao.getCompletedTasks(projectId).map { mapper.toRepo(it) }
+    }
+
+    override suspend fun deleteTasksByProjectId(projectId: Uuid) {
+        dao.deleteTasksByProjectId(projectId)
     }
 }

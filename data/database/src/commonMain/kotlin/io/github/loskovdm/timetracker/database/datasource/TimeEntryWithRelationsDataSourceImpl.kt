@@ -16,6 +16,12 @@ internal class TimeEntryWithRelationsDataSourceImpl(
         return dao.getTimeEntriesWithRelations().map { mapper.toRepo(it) }
     }
 
+    override fun watchActiveTimeEntry(): Flow<TimeEntryWithRelations?> {
+        return dao.watchActiveTimeEntry().map { entry ->
+            entry?.let { mapper.toRepo(it) }
+        }
+    }
+
     override suspend fun getTimeEntryWithRelationsById(id: Uuid): TimeEntryWithRelations? {
         return dao.getTimeEntryWithRelationsById(id)?.let { mapper.toRepo(it) }
     }

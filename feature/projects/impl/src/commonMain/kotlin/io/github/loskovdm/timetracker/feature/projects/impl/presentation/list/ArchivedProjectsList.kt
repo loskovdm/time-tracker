@@ -19,6 +19,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.loskovdm.designsystem.component.EmptyScreen
+import io.github.loskovdm.domain.util.DeleteStrategy
 import io.github.loskovdm.designsystem.component.LoadingScreen
 import io.github.loskovdm.timetracker.feature.projects.api.model.Project
 import io.github.loskovdm.timetracker.feature.projects.api.presentation.ProjectsListState
@@ -59,8 +60,8 @@ internal fun ArchivedProjectsList(
                 onUnarchivedClick = { project ->
                     viewModel.unarchiveProject(project)
                 },
-                onDeleteClick = { project ->
-                    viewModel.deleteProject(project)
+                onDeleteClick = { project, strategy ->
+                    viewModel.deleteProject(project, strategy)
                 },
             )
         }
@@ -108,7 +109,7 @@ private fun LoadedArchivedProjectsList(
     onProjectClick: (Project) -> Unit,
     onEditClick: (Uuid) -> Unit,
     onUnarchivedClick: (Project) -> Unit,
-    onDeleteClick: (Project) -> Unit,
+    onDeleteClick: (Project, DeleteStrategy) -> Unit,
 ) {
     ProjectsList(
         modifier = modifier,

@@ -37,8 +37,24 @@ class Navigator(
         }
     }
 
+    fun goToReplacingCurrentIfSameType(destination: TimeTrackerDestination) {
+        if (destination in backStack.keys) {
+            _currentTopLevelDestination.value = destination
+            return
+        }
+
+        val currentStack = backStack[_currentTopLevelDestination.value]
+            ?: error("Back stack for ${_currentTopLevelDestination.value} doesn't exist")
+        val currentDestination = currentStack.lastOrNull()
+
+        if (currentDestination != null && currentDestination::class == destination::class) {
+            currentStack[currentStack.lastIndex] = destination
+        } else {
+            currentStack.add(destination)
+        }
+    }
+
     fun goBack() {
-        println("GO BACK")
         val currentStack = backStack[_currentTopLevelDestination.value]
             ?: error("Back stack for ${_currentTopLevelDestination.value} doesn't exist")
         val currentDestination = currentStack.last()

@@ -16,7 +16,7 @@ import io.github.loskovdm.designsystem.util.DeviceConfiguration
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
 import timetracker.designsystem.generated.resources.Res
-import timetracker.designsystem.generated.resources.archive
+import timetracker.designsystem.generated.resources.archive_screen_title
 import timetracker.designsystem.generated.resources.back
 import timetracker.designsystem.generated.resources.ic_arrow_back
 
@@ -33,7 +33,7 @@ fun ArchivedProjectsTopBar(
         modifier = modifier,
         title = {
             Text(
-                text = stringResource(Res.string.archive),
+                text = stringResource(Res.string.archive_screen_title),
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )

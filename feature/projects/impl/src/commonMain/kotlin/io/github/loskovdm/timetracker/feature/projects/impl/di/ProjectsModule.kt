@@ -39,7 +39,7 @@ val projectsModule = module {
             },
             onProjectClick = { projectId, projectName ->
                 val tasksListDestination = TasksListDestination(projectId, projectName)
-                get<Navigator>().goTo(tasksListDestination)
+                get<Navigator>().goToReplacingCurrentIfSameType(tasksListDestination)
             }
         )
     }
@@ -55,7 +55,7 @@ val projectsModule = module {
             },
             onProjectClick = { projectId, projectName ->
                 val tasksListDestination = TasksListDestination(projectId, projectName)
-                get<Navigator>().goTo(tasksListDestination)
+                get<Navigator>().goToReplacingCurrentIfSameType(tasksListDestination)
             }
         )
     }

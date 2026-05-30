@@ -3,6 +3,7 @@ package io.github.loskovdm.timetracker.feature.navigation.impl.component.navbar
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -15,6 +16,7 @@ import androidx.compose.material3.WideNavigationRailState
 import androidx.compose.material3.WideNavigationRailValue
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import io.github.loskovdm.designsystem.local.LocalDeviceConfiguration
@@ -28,6 +30,9 @@ import org.jetbrains.compose.resources.vectorResource
 import timetracker.designsystem.generated.resources.Res
 import timetracker.designsystem.generated.resources.ic_menu
 import timetracker.designsystem.generated.resources.ic_menu_open
+
+/** Matches Material3 extended FAB height used in rail header actions. */
+private val RailFabSlotHeight = 56.dp
 
 @Composable
 fun NavigationRail(
@@ -148,7 +153,13 @@ fun RailFab(
     isExpanded: Boolean,
     extendedFab: @Composable (isExpanded: Boolean) -> Unit,
 ) {
-    Box(modifier = modifier.padding(20.dp)) {
+    // Reserve FAB height so nav items stay aligned when a screen has no rail FAB (e.g. Reports).
+    Box(
+        modifier = modifier
+            .padding(20.dp)
+            .heightIn(min = RailFabSlotHeight),
+        contentAlignment = Alignment.CenterStart,
+    ) {
         if (isExpanded) {
             extendedFab(true)
         } else {

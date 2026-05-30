@@ -5,8 +5,10 @@ import androidx.room.RoomDatabase
 import java.io.File
 
 actual fun getDatabaseBuilder(): RoomDatabase.Builder<TimeTrackerDatabase> {
-    val dbFile = File(System.getProperty("java.io.tmpdir"), "timetracker.db")
+    val dbDir = File(System.getProperty("user.home"), ".timetracker")
+    dbDir.mkdirs()
+    val dbFile = File(dbDir, "timetracker.db")
     return Room.databaseBuilder<TimeTrackerDatabase>(
-        name = dbFile.absolutePath
+        name = dbFile.absolutePath,
     )
 }

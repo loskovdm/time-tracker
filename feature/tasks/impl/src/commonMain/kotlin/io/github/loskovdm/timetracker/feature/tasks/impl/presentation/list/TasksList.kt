@@ -35,7 +35,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import io.github.loskovdm.designsystem.component.DeleteWithTimeEntriesDialog
 import io.github.loskovdm.designsystem.local.LocalDeviceConfiguration
+import io.github.loskovdm.domain.util.DeleteStrategy
 import io.github.loskovdm.designsystem.util.DeviceConfiguration
 import io.github.loskovdm.timetracker.feature.tasks.api.model.Task
 import org.jetbrains.compose.resources.stringResource
@@ -46,6 +48,7 @@ import timetracker.designsystem.generated.resources.Res
 import timetracker.designsystem.generated.resources.active
 import timetracker.designsystem.generated.resources.completed
 import timetracker.designsystem.generated.resources.delete
+import timetracker.designsystem.generated.resources.delete_task_message
 import timetracker.designsystem.generated.resources.ic_check
 import timetracker.designsystem.generated.resources.ic_complete
 import timetracker.designsystem.generated.resources.ic_delete_outlined
@@ -123,8 +126,25 @@ internal fun LoadedTasksList(
     onTaskClick: (projectId: Uuid, taskId: Uuid) -> Unit,
     onCompleteClick: ((Task) -> Unit)?,
     onActiveClick: ((Task) -> Unit)?,
-    onDeleteClick: (Task) -> Unit,
+    onDeleteClick: (Task, DeleteStrategy) -> Unit,
 ) {
+    var pendingDeleteTask by remember { mutableStateOf<Task?>(null) }
+
+    pendingDeleteTask?.let { task ->
+        DeleteWithTimeEntriesDialog(
+            message = stringResource(Res.string.delete_task_message, task.name),
+            onDeleteTimeEntries = {
+                onDeleteClick(task, DeleteStrategy.CASCADE)
+                pendingDeleteTask = null
+            },
+            onKeepTimeEntries = {
+                onDeleteClick(task, DeleteStrategy.SET_NULL)
+                pendingDeleteTask = null
+            },
+            onDismiss = { pendingDeleteTask = null },
+        )
+    }
+
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(0.dp),
         contentPadding = PaddingValues(
@@ -150,7 +170,7 @@ internal fun LoadedTasksList(
                     },
                     onComplete = onCompleteClick?.let { {it(task)} },
                     onActive = onActiveClick?.let { {it(task)} },
-                    onDelete = { onDeleteClick(task) }
+                    onDelete = { pendingDeleteTask = task }
                 )
                 if (tasksList.last() != task) {
                     HorizontalDivider(

@@ -20,6 +20,7 @@ kotlin {
                 implementation(projects.feature.navigation.api)
 
                 implementation(libs.kotlin.stdlib)
+                implementation(libs.kotlinx.coroutines.core)
             }
         }
 

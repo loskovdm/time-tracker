@@ -105,10 +105,10 @@ internal data class AdaptiveNavigationScene<T : TimeTrackerDestination>(
                     },
                     isExpanded = isExpanded,
                 )
-                SceneType.Reports -> ShareFab(
-                    onClick = onShareReport,
-                    isExpanded = isExpanded,
-                )
+//                SceneType.Reports -> ShareFab(
+//                    onClick = onShareReport,
+//                    isExpanded = isExpanded,
+//                )
                 else -> {}
             }
         }

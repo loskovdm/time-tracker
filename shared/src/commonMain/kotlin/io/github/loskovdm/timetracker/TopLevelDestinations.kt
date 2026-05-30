@@ -14,21 +14,22 @@ import timetracker.designsystem.generated.resources.ic_reports_filled
 import timetracker.designsystem.generated.resources.ic_reports_outlined
 import timetracker.designsystem.generated.resources.ic_timer_filled
 import timetracker.designsystem.generated.resources.ic_timer_outlined
+import timetracker.designsystem.generated.resources.log
 import timetracker.designsystem.generated.resources.projects
 import timetracker.designsystem.generated.resources.reports
 import timetracker.designsystem.generated.resources.timer
 
 val TOP_LEVEL_DESTINATIONS = mapOf(
     TimeEntriesListDestination to NavigationItem(
-        title = Res.string.timer,
+        title = Res.string.log,
         iconOutlined = Res.drawable.ic_timer_outlined,
         iconFilled = Res.drawable.ic_timer_filled
     ),
-    TimeEntryCalendarDestination to NavigationItem(
-        title = Res.string.calendar,
-        iconOutlined = Res.drawable.ic_calendar_outlined,
-        iconFilled = Res.drawable.ic_calendar_filled
-    ),
+//    TimeEntryCalendarDestination to NavigationItem(
+//        title = Res.string.calendar,
+//        iconOutlined = Res.drawable.ic_calendar_outlined,
+//        iconFilled = Res.drawable.ic_calendar_filled
+//    ),
     ActiveProjectsListDestination to NavigationItem(
         title = Res.string.projects,
         iconOutlined = Res.drawable.ic_projects_outlined,

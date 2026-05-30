@@ -20,7 +20,13 @@ val repositoryModule = module {
     single<ProjectMapper>()
     single<TaskMapper>()
     single<TimeEntryMapper>()
-    single<TimeEntryWithRelationsMapper>()
+    single {
+        TimeEntryWithRelationsMapper(
+            projectMapper = get(),
+            taskMapper = get(),
+            timeEntryMapper = get(),
+        )
+    }
 
     single<ProjectRepositoryImpl>() bind ProjectRepository::class
     single<TaskRepositoryImpl>() bind TaskRepository::class

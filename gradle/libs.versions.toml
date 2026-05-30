@@ -26,6 +26,7 @@ androidx-testExt = "1.3.0"
 composeBom = "2026.05.00"
 runner = "1.7.0"
 core = "1.7.0"
+androidx-datastore = "1.1.1"
 
 # Compose
 material3 = "1.10.0-alpha05"
@@ -41,6 +42,9 @@ ksp = "2.3.6"
 # Koin
 koin = "4.2.1"
 koin-plugin = "0.6.2"
+koalaplot = "0.6.0"
+supabase = "3.5.0"
+powersync = "1.12.0"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -78,6 +82,7 @@ androidx-compose-ui-graphics = { group = "androidx.compose.ui", name = "ui-graph
 androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3" }
 androidx-runner = { group = "androidx.test", name = "runner", version.ref = "runner" }
 androidx-core = { group = "androidx.test", name = "core", version.ref = "core" }
+androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "androidx-datastore" }
 
 # Compose
 compose-uiTooling = { module = "org.jetbrains.compose.ui:ui-tooling", version.ref = "composeMultiplatform" }
@@ -101,6 +106,19 @@ koin-composeViewmodel = { module = "io.insert-koin:koin-compose-viewmodel", vers
 koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin"}
 koin-navigation3 = { module = "io.insert-koin:koin-compose-navigation3", version.ref = "koin" }
 koin-annotations = { module = "io.insert-koin:koin-annotations", version.ref = "koin" }
+koalaplot-core = { module = "io.github.koalaplot:koalaplot-core", version.ref = "koalaplot" }
+
+# Supabase
+supabase-bom = { module = "io.github.jan-tennert.supabase:bom", version.ref = "supabase" }
+supabase-auth = { module = "io.github.jan-tennert.supabase:auth-kt" }
+supabase-postgrest = { module = "io.github.jan-tennert.supabase:postgrest-kt" }
+ktor-client-cio = { module = "io.ktor:ktor-client-cio", version.ref = "ktor" }
+ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" }
+
+# PowerSync
+powersync-core = { module = "com.powersync:core", version.ref = "powersync" }
+powersync-connector-supabase = { module = "com.powersync:connector-supabase", version.ref = "powersync" }
+powersync-integration-room = { module = "com.powersync:integration-room", version.ref = "powersync" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

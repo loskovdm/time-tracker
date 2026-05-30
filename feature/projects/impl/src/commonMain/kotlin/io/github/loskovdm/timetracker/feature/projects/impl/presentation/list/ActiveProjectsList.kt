@@ -5,6 +5,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.loskovdm.designsystem.component.EmptyScreen
+import io.github.loskovdm.domain.util.DeleteStrategy
 import io.github.loskovdm.designsystem.component.LoadingScreen
 import io.github.loskovdm.timetracker.feature.projects.api.model.Project
 import io.github.loskovdm.timetracker.feature.projects.api.presentation.ProjectsListState
@@ -43,8 +44,8 @@ internal fun ActiveProjectsList(
                 onArchivedClick = { project ->
                     viewModel.archiveProject(project)
                 },
-                onDeleteClick = { project ->
-                    viewModel.deleteProject(project)
+                onDeleteClick = { project, strategy ->
+                    viewModel.deleteProject(project, strategy)
                 },
             )
         }
@@ -59,7 +60,7 @@ private fun LoadedActiveProjectsList(
     onProjectClick: (Project) -> Unit,
     onEditClick: (Uuid) -> Unit,
     onArchivedClick: (Project) -> Unit,
-    onDeleteClick: (Project) -> Unit,
+    onDeleteClick: (Project, DeleteStrategy) -> Unit,
 ) {
     ProjectsList(
         modifier = modifier,

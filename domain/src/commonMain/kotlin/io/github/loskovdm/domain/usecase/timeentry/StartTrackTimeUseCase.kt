@@ -19,9 +19,8 @@ class StartTrackTimeUseCase(
         projectId: Uuid?,
         taskId: Uuid?,
     ): Result<Unit, TrackTimeError> {
-        val hasActiveTimeEntry = timeEntryWithRelationsRepository.getTimeEntriesWithRelations()
-            .first()
-            .any { timeEntryWithRelations -> timeEntryWithRelations.timeEntry.endDateTime == null }
+        val hasActiveTimeEntry = timeEntryWithRelationsRepository.watchActiveTimeEntry()
+            .first() != null
 
         if (hasActiveTimeEntry) {
             return Result.Failure(TrackTimeError.SecondActiveTimeEntry)

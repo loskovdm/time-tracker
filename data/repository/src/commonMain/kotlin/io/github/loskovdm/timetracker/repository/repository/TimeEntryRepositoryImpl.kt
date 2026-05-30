@@ -31,4 +31,12 @@ internal class TimeEntryRepositoryImpl (
     override suspend fun setTaskIdToNull(taskId: Uuid) {
         localDataSource.setTaskIdToNull(taskId)
     }
+
+    override suspend fun deleteTimeEntryByProjectId(projectId: Uuid) {
+        localDataSource.deleteTimeEntryByProjectId(projectId)
+    }
+
+    override suspend fun unlinkTimeEntriesFromProject(projectId: Uuid) {
+        localDataSource.unlinkTimeEntriesFromProject(projectId)
+    }
 }

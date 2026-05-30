@@ -15,19 +15,16 @@ kotlin {
         compileSdk = 37
         minSdk = 24
         experimentalProperties["android.experimental.kmp.enableAndroidResources"] = true
+        withHostTest {}
     }
     
     jvm()
     
     sourceSets {
         commonMain.dependencies {
-//            implementation(projects.feature.timer_deprecated)
-//            implementation(projects.feature.timer.api)
-//            implementation(projects.feature.calendar)
-//            implementation(projects.feature.reports)
-//            implementation(projects.feature.projects)
-//            implementation(projects.feature.settings)
             implementation(projects.designSystem)
+            implementation(projects.domain)
+            implementation(projects.data.datastore)
             implementation(projects.data.database)
             implementation(projects.feature.navigation.impl)
             implementation(projects.feature.navigation.api)

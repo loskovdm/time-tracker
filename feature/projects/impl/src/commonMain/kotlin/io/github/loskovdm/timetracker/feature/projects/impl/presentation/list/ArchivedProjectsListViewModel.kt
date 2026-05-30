@@ -4,6 +4,7 @@ import androidx.lifecycle.viewModelScope
 import io.github.loskovdm.domain.usecase.project.DeleteProjectUseCase
 import io.github.loskovdm.domain.usecase.project.GetArchivedProjectsUseCase
 import io.github.loskovdm.domain.usecase.project.UnarchiveProjectUseCase
+import io.github.loskovdm.domain.util.DeleteStrategy
 import io.github.loskovdm.timetracker.feature.projects.api.model.Project
 import io.github.loskovdm.timetracker.feature.projects.api.presentation.ProjectsListState
 import io.github.loskovdm.timetracker.feature.projects.api.presentation.ProjectsListViewModel
@@ -38,13 +39,14 @@ internal class ArchivedProjectsListViewModel(
             initialValue = ProjectsListState.Loading,
         )
 
-    fun deleteProject(project: Project) {
+    fun deleteProject(project: Project, deleteStrategy: DeleteStrategy) {
         viewModelScope.launch {
             deleteProjectUseCase(
                 id = project.id,
                 name = project.name,
                 color = project.color,
                 isArchived = project.isArchived,
+                deleteStrategy = deleteStrategy,
             )
         }
     }

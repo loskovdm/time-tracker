@@ -8,14 +8,14 @@ data class TimeEntryWithRelations(
     val timeEntry: TimeEntry,
 
     @Relation(
-        parentColumn = "projectId",
-        entityColumn = "id"
+        parentColumn = "project_id",
+        entityColumn = "id",
     )
     val project: Project?,
 
     @Relation(
-        parentColumn = "taskId",
-        entityColumn = "id"
+        parentColumn = "task_id",
+        entityColumn = "id",
     )
-    val task: Task?
+    val task: Task?,
 )

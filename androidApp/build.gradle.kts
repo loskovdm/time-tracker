@@ -1,7 +1,18 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.composeCompiler)
 }
+
+val localProperties = Properties().apply {
+    val file = rootProject.file("local.properties")
+    if (file.exists()) {
+        load(file.inputStream())
+    }
+}
+
+fun quote(value: String?): String = "\"${value.orEmpty()}\""
 
 android {
     namespace = "io.github.loskovdm.androidapp"
@@ -11,6 +22,14 @@ android {
         minSdk = 24
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField("String", "SUPABASE_URL", quote(localProperties.getProperty("SUPABASE_URL")))
+        buildConfigField("String", "SUPABASE_ANON_KEY", quote(localProperties.getProperty("SUPABASE_ANON_KEY")))
+        buildConfigField("String", "POWERSYNC_URL", quote(localProperties.getProperty("POWERSYNC_URL")))
+    }
+
+    buildFeatures {
+        buildConfig = true
     }
 
     buildTypes {
@@ -30,6 +49,9 @@ android {
 
 dependencies {
     implementation(projects.shared)
+    implementation(projects.domain)
+    implementation(projects.designSystem)
+    implementation(libs.kotlinx.coroutines.core)
 
     implementation(platform(libs.androidx.compose.bom))
     debugImplementation(libs.androidx.compose.ui.tooling)

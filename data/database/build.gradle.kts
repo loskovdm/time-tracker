@@ -15,6 +15,7 @@ kotlin {
         namespace = "io.github.loskovdm.timetracker.database"
         compileSdk = 37
         minSdk = 24
+        withHostTest {}
     }
 
     jvm()
@@ -22,17 +23,13 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
+                implementation(projects.domain)
                 implementation(projects.data.repository)
 
                 implementation(libs.koin.core)
+                implementation(libs.kotlinx.coroutines.core)
                 implementation(libs.androidx.room.runtime)
                 implementation(libs.androidx.sqlite.bundled)
-            }
-        }
-
-        commonTest {
-            dependencies {
-                implementation(libs.kotlin.test)
             }
         }
 
