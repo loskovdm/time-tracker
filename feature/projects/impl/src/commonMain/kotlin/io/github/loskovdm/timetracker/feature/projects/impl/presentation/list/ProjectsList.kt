@@ -43,6 +43,7 @@ import timetracker.designsystem.generated.resources.Res
 import timetracker.designsystem.generated.resources.archive
 import timetracker.designsystem.generated.resources.delete
 import timetracker.designsystem.generated.resources.delete_project_message
+import timetracker.designsystem.generated.resources.delete_project_title
 import timetracker.designsystem.generated.resources.edit
 import timetracker.designsystem.generated.resources.ic_archive_outlined
 import timetracker.designsystem.generated.resources.ic_delete_outlined
@@ -69,7 +70,8 @@ fun ProjectsList(
 
     pendingDeleteProject?.let { project ->
         DeleteWithTimeEntriesDialog(
-            message = stringResource(Res.string.delete_project_message, project.name),
+            title = stringResource(Res.string.delete_project_title, project.name),
+            message = stringResource(Res.string.delete_project_message),
             onDeleteTimeEntries = {
                 onDeleteClick(project, DeleteStrategy.CASCADE)
                 pendingDeleteProject = null

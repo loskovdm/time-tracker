@@ -126,11 +126,12 @@
 
     <string name="second_active_timer_error">Таймер уже запущен. Остановите его перед запуском нового.</string>
 
-    <string name="delete_strategy_title">Выберите стратегию удаления</string>
-    <string name="delete_task_message">Что сделать с записями времени, связанными с «%1$s»?</string>
-    <string name="delete_project_message">Что сделать с записями времени, связанными с «%1$s»? Все задачи проекта будут удалены.</string>
-    <string name="delete_time_entries_action">Удалить записи времени</string>
-    <string name="keep_time_entries_action">Сохранить записи (отвязать)</string>
+    <string name="delete_project_title">Удалить «%1$s»?</string>
+    <string name="delete_task_title">Удалить «%1$s»?</string>
+    <string name="delete_project_message">У проекта есть связанные записи времени. Все задачи проекта также будут удалены. Выберите, что сделать с записями времени:</string>
+    <string name="delete_task_message">У задачи есть связанные записи времени. Выберите, что с ними сделать:</string>
+    <string name="delete_time_entries_action">Удалить вместе с записями</string>
+    <string name="keep_time_entries_action">Сохранить записи</string>
 
     <string name="today">Сегодня</string>
     <string name="yesterday">Вчера</string>

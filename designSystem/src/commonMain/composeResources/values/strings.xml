@@ -126,11 +126,12 @@
 
     <string name="second_active_timer_error">A timer is already running. Stop it before starting a new one.</string>
 
-    <string name="delete_strategy_title">Choose deletion strategy</string>
-    <string name="delete_task_message">What should happen to time entries linked to \"%1$s\"?</string>
-    <string name="delete_project_message">What should happen to time entries linked to \"%1$s\"? All tasks in this project will be deleted.</string>
-    <string name="delete_time_entries_action">Delete time entries</string>
-    <string name="keep_time_entries_action">Keep time entries (unlink)</string>
+    <string name="delete_project_title">Delete \"%1$s\"?</string>
+    <string name="delete_task_title">Delete \"%1$s\"?</string>
+    <string name="delete_project_message">This project has linked time entries. All tasks in this project will also be deleted. Choose what to do with the time entries:</string>
+    <string name="delete_task_message">This task has linked time entries. Choose what to do with them:</string>
+    <string name="delete_time_entries_action">Delete with time entries</string>
+    <string name="keep_time_entries_action">Keep time entries</string>
 
     <string name="today">Today</string>
     <string name="yesterday">Yesterday</string>

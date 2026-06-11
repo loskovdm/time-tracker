@@ -49,6 +49,7 @@ import timetracker.designsystem.generated.resources.active
 import timetracker.designsystem.generated.resources.completed
 import timetracker.designsystem.generated.resources.delete
 import timetracker.designsystem.generated.resources.delete_task_message
+import timetracker.designsystem.generated.resources.delete_task_title
 import timetracker.designsystem.generated.resources.ic_check
 import timetracker.designsystem.generated.resources.ic_complete
 import timetracker.designsystem.generated.resources.ic_delete_outlined
@@ -132,7 +133,8 @@ internal fun LoadedTasksList(
 
     pendingDeleteTask?.let { task ->
         DeleteWithTimeEntriesDialog(
-            message = stringResource(Res.string.delete_task_message, task.name),
+            title = stringResource(Res.string.delete_task_title, task.name),
+            message = stringResource(Res.string.delete_task_message),
             onDeleteTimeEntries = {
                 onDeleteClick(task, DeleteStrategy.CASCADE)
                 pendingDeleteTask = null
