@@ -24,7 +24,6 @@ kotlin {
         commonMain {
             dependencies {
                 implementation(projects.domain)
-                implementation(projects.data.repository)
 
                 implementation(libs.koin.core)
                 implementation(libs.kotlinx.coroutines.core)

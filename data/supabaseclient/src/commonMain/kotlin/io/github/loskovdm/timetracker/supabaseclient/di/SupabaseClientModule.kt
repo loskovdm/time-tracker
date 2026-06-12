@@ -5,7 +5,7 @@ import io.github.jan.supabase.auth.Auth
 import io.github.jan.supabase.createSupabaseClient
 import io.github.jan.supabase.postgrest.Postgrest
 import io.github.loskovdm.domain.repository.AuthRepository
-import io.github.loskovdm.timetracker.remote.RemoteConfig
+import io.github.loskovdm.timetracker.supabaseclient.RemoteConfig
 import io.github.loskovdm.timetracker.supabaseclient.AuthRepositoryImpl
 import org.koin.dsl.module
 

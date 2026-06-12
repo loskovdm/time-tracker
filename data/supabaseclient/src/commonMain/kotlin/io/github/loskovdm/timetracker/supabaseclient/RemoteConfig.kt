@@ -1,4 +1,4 @@
-package io.github.loskovdm.timetracker.remote
+package io.github.loskovdm.timetracker.supabaseclient
 
 data class RemoteConfig(
     val supabaseUrl: String = "",

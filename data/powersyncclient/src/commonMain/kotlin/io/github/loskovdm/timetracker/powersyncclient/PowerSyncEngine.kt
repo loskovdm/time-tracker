@@ -13,6 +13,5 @@ interface PowerSyncEngine {
 
     suspend fun flushPendingRoomUploads()
 
-    /** Clears queued uploads after local-only data wipes (sign-out / discard guest data). */
     suspend fun clearPendingUploads()
 }

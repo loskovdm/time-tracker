@@ -5,16 +5,13 @@ import io.github.loskovdm.domain.repository.SyncRepository
 import io.github.loskovdm.timetracker.auth.CurrentUserIdProviderImpl
 import io.github.loskovdm.timetracker.database.di.databaseBindingsModule
 import io.github.loskovdm.timetracker.powersyncclient.di.powersyncClientModule
-import io.github.loskovdm.timetracker.remote.RemoteConfig
 import io.github.loskovdm.timetracker.supabaseclient.di.supabaseClientModule
-import io.github.loskovdm.timetracker.feature.navigation.api.AuthNavigationLock
 import io.github.loskovdm.timetracker.session.AppSessionCoordinator
 import io.github.loskovdm.timetracker.session.GuestMigrationCoordinator
 import io.github.loskovdm.timetracker.sync.SyncRepositoryImpl
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
-import org.koin.core.module.dsl.createdAtStart
 import org.koin.dsl.module
 
 val remoteIntegrationModule = module {

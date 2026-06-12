@@ -1,15 +1,15 @@
-package io.github.loskovdm.timetracker.database.datasource
+package io.github.loskovdm.timetracker.database.repository
 
+import io.github.loskovdm.domain.model.TimeEntry
+import io.github.loskovdm.domain.repository.TimeEntryRepository
 import io.github.loskovdm.timetracker.database.dao.TimeEntryDao
 import io.github.loskovdm.timetracker.database.mapper.TimeEntryMapper
-import io.github.loskovdm.timetracker.repository.datasource.TimeEntryLocalDataSource
-import io.github.loskovdm.timetracker.repository.model.TimeEntry
 import kotlin.uuid.Uuid
 
-internal class TimeEntryLocalDataSourceImpl(
+internal class TimeEntryRepositoryImpl(
     private val dao: TimeEntryDao,
     private val mapper: TimeEntryMapper,
-) : TimeEntryLocalDataSource {
+) : TimeEntryRepository{
     override suspend fun addTimeEntry(timeEntry: TimeEntry) {
         dao.insertTimeEntry(mapper.toEntityForInsert(timeEntry))
     }

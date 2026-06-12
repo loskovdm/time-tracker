@@ -18,10 +18,6 @@ internal class GuestDataRepositoryImpl(
             timeEntryDao.countGuestTimeEntries(guestId) > 0
     }
 
-    /**
-     * Re-inserts guest rows so PowerSync INSERT triggers enqueue full PUT operations.
-     * A bulk UPDATE of [user_id] alone does not upload rows that were never synced.
-     */
     override suspend fun migrateToUser(userId: String) {
         val guestId = GuestUserIds.LOCAL
         val projects = projectDao.getProjectsByUserId(guestId)

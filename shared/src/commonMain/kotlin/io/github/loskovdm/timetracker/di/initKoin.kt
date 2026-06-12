@@ -1,6 +1,6 @@
 package io.github.loskovdm.timetracker.di
 
-import io.github.loskovdm.timetracker.remote.RemoteConfig
+import io.github.loskovdm.timetracker.supabaseclient.RemoteConfig
 import org.koin.core.KoinApplication
 import org.koin.core.context.startKoin
 import org.koin.dsl.KoinAppDeclaration

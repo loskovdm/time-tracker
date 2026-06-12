@@ -1,17 +1,17 @@
-package io.github.loskovdm.timetracker.database.datasource
+package io.github.loskovdm.timetracker.database.repository
 
+import io.github.loskovdm.domain.model.Task
+import io.github.loskovdm.domain.repository.TaskRepository
 import io.github.loskovdm.timetracker.database.dao.TaskDao
 import io.github.loskovdm.timetracker.database.mapper.TaskMapper
-import io.github.loskovdm.timetracker.repository.datasource.TaskLocalDataSource
-import io.github.loskovdm.timetracker.repository.model.Task
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlin.uuid.Uuid
 
-internal class TaskLocalDataSourceImpl(
+internal class TaskRepositoryImpl(
     private val dao: TaskDao,
     private val mapper: TaskMapper,
-) : TaskLocalDataSource {
+) : TaskRepository {
     override suspend fun addTask(task: Task) {
         dao.insertTask(mapper.toEntityForInsert(task))
     }
@@ -26,19 +26,19 @@ internal class TaskLocalDataSourceImpl(
         dao.deleteTask(mapper.toEntityForUpdate(task, existing))
     }
 
+    override suspend fun deleteTasksByProjectId(projectId: Uuid) {
+        dao.deleteTasksByProjectId(projectId)
+    }
+
     override suspend fun getTaskById(id: Uuid): Task? {
-        return dao.getTaskById(id)?.let { mapper.toRepo(it) }
+        return dao.getTaskById(id)?.let { mapper.toDomain(it) }
     }
 
     override fun getActiveTasks(projectId: Uuid): Flow<List<Task>> {
-        return dao.getActiveTasks(projectId).map { mapper.toRepo(it) }
+        return dao.getActiveTasks(projectId).map { mapper.toDomain(it) }
     }
 
     override fun getCompletedTasks(projectId: Uuid): Flow<List<Task>> {
-        return dao.getCompletedTasks(projectId).map { mapper.toRepo(it) }
-    }
-
-    override suspend fun deleteTasksByProjectId(projectId: Uuid) {
-        dao.deleteTasksByProjectId(projectId)
+        return dao.getCompletedTasks(projectId).map { mapper.toDomain(it) }
     }
 }

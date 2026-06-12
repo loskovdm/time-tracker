@@ -1,6 +1,6 @@
 package io.github.loskovdm.timetracker.config
 
-import io.github.loskovdm.timetracker.remote.RemoteConfig
+import io.github.loskovdm.timetracker.supabaseclient.RemoteConfig
 import java.io.File
 import java.util.Properties
 

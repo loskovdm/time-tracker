@@ -5,10 +5,6 @@ import com.powersync.db.driver.SQLiteConnectionLease
 import com.powersync.db.schema.Schema
 import com.powersync.integrations.room.RoomConnectionPool
 
-/**
- * Raw Room tables need CRUD triggers so local writes are queued for upload.
- * See https://docs.powersync.com/client-sdks/advanced/raw-tables
- */
 internal suspend fun installRawTableCrudTriggers(
     connectionPool: RoomConnectionPool,
     schema: Schema,
