@@ -9,8 +9,6 @@ data class Task(
     @PrimaryKey
     @ColumnInfo(name = "id")
     val id: String,
-    @ColumnInfo(name = "user_id")
-    val userId: String,
     @ColumnInfo(name = "project_id")
     val projectId: String,
     @ColumnInfo(name = "name")

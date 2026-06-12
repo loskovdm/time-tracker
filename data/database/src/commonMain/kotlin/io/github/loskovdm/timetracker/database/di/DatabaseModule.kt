@@ -37,7 +37,7 @@ val databaseBindingsModule = module {
     }
 
     single<ProjectMapper> { ProjectMapper(get()) }
-    single<TaskMapper> { TaskMapper(get()) }
+    single<TaskMapper> { TaskMapper() }
     single<TimeEntryMapper> { TimeEntryMapper(get()) }
     single {
         TimeEntryWithRelationsMapper(

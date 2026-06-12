@@ -38,7 +38,7 @@ internal class GuestDataRepositoryImpl(
             projectDao.insertProject(project.copy(userId = userId))
         }
         for (task in tasks) {
-            taskDao.insertTask(task.copy(userId = userId))
+            taskDao.insertTask(task)
         }
         for (entry in timeEntries) {
             timeEntryDao.insertTimeEntry(entry.copy(userId = userId))
