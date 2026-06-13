@@ -20,6 +20,9 @@ internal object SupabaseAuthErrorMapper {
                 message.contains("rate_limit") ||
                 message.contains("\"code\":429") -> AuthError.RateLimited
 
+            message.contains("same_password") ||
+                message.contains("different from the old password") -> AuthError.SamePassword
+
             message.contains("invalid login credentials") ||
                 message.contains("invalid email or password") ||
                 message.contains("invalid_credentials") -> AuthError.InvalidCredentials

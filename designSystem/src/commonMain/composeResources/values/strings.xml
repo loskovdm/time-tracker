@@ -45,6 +45,7 @@
     <string name="auth_password_updated_message">Your password has been changed successfully.</string>
     <string name="auth_error_password_mismatch">Passwords do not match.</string>
     <string name="auth_error_rate_limit">Could not send the email. Please try again later.</string>
+    <string name="auth_error_same_password">The new password must be different from your current password.</string>
     <string name="auth_change_password_message">We will send a verification code to %1$s. Enter it to confirm the password change.</string>
     <string name="auth_subtitle">Sync projects, tasks, and time entries across your devices.</string>
     <string name="auth_email_invalid">Enter a valid email address</string>

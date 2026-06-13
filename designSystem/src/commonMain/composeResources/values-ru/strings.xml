@@ -45,6 +45,7 @@
     <string name="auth_password_updated_message">Пароль успешно обновлён.</string>
     <string name="auth_error_password_mismatch">Пароли не совпадают.</string>
     <string name="auth_error_rate_limit">Не удалось отправить письмо. Попробуйте позже.</string>
+    <string name="auth_error_same_password">Новый пароль должен отличаться от текущего.</string>
     <string name="auth_change_password_message">Мы отправим код подтверждения на %1$s. Введите его, чтобы подтвердить смену пароля.</string>
     <string name="auth_subtitle">Синхронизируйте проекты, задачи и записи времени между устройствами.</string>
     <string name="auth_email_invalid">Введите корректный email</string>

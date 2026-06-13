@@ -15,6 +15,8 @@ sealed class AuthError {
 
     data object RateLimited : AuthError()
 
+    data object SamePassword : AuthError()
+
     data object Network : AuthError()
 
     data object Generic : AuthError()

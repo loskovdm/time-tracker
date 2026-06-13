@@ -8,6 +8,7 @@ import timetracker.designsystem.generated.resources.auth_error_generic
 import timetracker.designsystem.generated.resources.auth_error_invalid_credentials
 import timetracker.designsystem.generated.resources.auth_error_invalid_otp
 import timetracker.designsystem.generated.resources.auth_error_password_mismatch
+import timetracker.designsystem.generated.resources.auth_error_same_password
 import timetracker.designsystem.generated.resources.auth_error_rate_limit
 import timetracker.designsystem.generated.resources.auth_error_network
 import timetracker.designsystem.generated.resources.auth_error_user_already_registered
@@ -22,6 +23,7 @@ internal fun AuthError.toMessageRes(): StringResource =
         AuthError.InvalidOtp -> Res.string.auth_error_invalid_otp
         AuthError.PasswordMismatch -> Res.string.auth_error_password_mismatch
         AuthError.RateLimited -> Res.string.auth_error_rate_limit
+        AuthError.SamePassword -> Res.string.auth_error_same_password
         AuthError.Network -> Res.string.auth_error_network
         AuthError.Generic -> Res.string.auth_error_generic
     }
