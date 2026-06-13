@@ -4,6 +4,8 @@ import io.github.loskovdm.timetracker.TOP_LEVEL_DESTINATIONS
 import io.github.loskovdm.timetracker.datastore.datastoreModule
 import io.github.loskovdm.timetracker.feature.navigation.api.AuthNavigationLock
 import io.github.loskovdm.timetracker.feature.navigation.api.AuthTopBarModeSource
+import io.github.loskovdm.timetracker.feature.navigation.api.ChangePasswordTopBarSource
+import io.github.loskovdm.timetracker.feature.navigation.api.DefaultChangePasswordTopBarSource
 import io.github.loskovdm.timetracker.feature.navigation.api.DefaultAuthNavigationLock
 import io.github.loskovdm.timetracker.feature.navigation.api.DefaultAuthTopBarModeSource
 import io.github.loskovdm.timetracker.feature.navigation.api.Navigator
@@ -29,6 +31,8 @@ val appModule = module {
     )
 
     single<AuthTopBarModeSource> { DefaultAuthTopBarModeSource() }
+
+    single<ChangePasswordTopBarSource> { DefaultChangePasswordTopBarSource() }
 
     single<AuthNavigationLock> { DefaultAuthNavigationLock() }
 

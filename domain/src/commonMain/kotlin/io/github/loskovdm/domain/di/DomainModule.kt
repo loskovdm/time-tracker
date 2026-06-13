@@ -31,9 +31,15 @@ import io.github.loskovdm.domain.usecase.auth.DiscardGuestDataUseCase
 import io.github.loskovdm.domain.usecase.auth.HasGuestLocalDataUseCase
 import io.github.loskovdm.domain.usecase.auth.MigrateGuestDataUseCase
 import io.github.loskovdm.domain.usecase.auth.ObserveAuthStateUseCase
+import io.github.loskovdm.domain.usecase.auth.RequestPasswordResetUseCase
+import io.github.loskovdm.domain.usecase.auth.ResendPasswordResetUseCase
+import io.github.loskovdm.domain.usecase.auth.ResendSignupConfirmationUseCase
 import io.github.loskovdm.domain.usecase.auth.SignInUseCase
 import io.github.loskovdm.domain.usecase.auth.SignOutUseCase
 import io.github.loskovdm.domain.usecase.auth.SignUpUseCase
+import io.github.loskovdm.domain.usecase.auth.UpdatePasswordUseCase
+import io.github.loskovdm.domain.usecase.auth.VerifyRecoveryOtpUseCase
+import io.github.loskovdm.domain.usecase.auth.VerifySignupOtpUseCase
 import io.github.loskovdm.domain.usecase.auth.StartSyncUseCase
 import io.github.loskovdm.domain.usecase.timeentry.UpdateTimeEntryUseCase
 import org.koin.dsl.module
@@ -45,6 +51,12 @@ val domainModule = module {
     factory<ObserveAuthStateUseCase>()
     factory<SignInUseCase>()
     factory<SignUpUseCase>()
+    factory<VerifySignupOtpUseCase>()
+    factory<ResendSignupConfirmationUseCase>()
+    factory<RequestPasswordResetUseCase>()
+    factory<VerifyRecoveryOtpUseCase>()
+    factory<ResendPasswordResetUseCase>()
+    factory<UpdatePasswordUseCase>()
     factory<SignOutUseCase>()
     factory<StartSyncUseCase>()
     factory<HasGuestLocalDataUseCase>()

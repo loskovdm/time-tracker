@@ -3,11 +3,7 @@ import io.github.loskovdm.timetracker.feature.navigation.impl.util.NavigationIte
 import io.github.loskovdm.timetracker.feature.projects.api.destination.ActiveProjectsListDestination
 import io.github.loskovdm.timetracker.feature.reports.api.ReportsDestination
 import io.github.loskovdm.timetracker.feature.timeentry.api.destination.TimeEntriesListDestination
-import io.github.loskovdm.timetracker.feature.timeentry.api.destination.TimeEntryCalendarDestination
 import timetracker.designsystem.generated.resources.Res
-import timetracker.designsystem.generated.resources.calendar
-import timetracker.designsystem.generated.resources.ic_calendar_filled
-import timetracker.designsystem.generated.resources.ic_calendar_outlined
 import timetracker.designsystem.generated.resources.ic_projects_filled
 import timetracker.designsystem.generated.resources.ic_projects_outlined
 import timetracker.designsystem.generated.resources.ic_reports_filled
@@ -17,7 +13,6 @@ import timetracker.designsystem.generated.resources.ic_timer_outlined
 import timetracker.designsystem.generated.resources.log
 import timetracker.designsystem.generated.resources.projects
 import timetracker.designsystem.generated.resources.reports
-import timetracker.designsystem.generated.resources.timer
 
 val TOP_LEVEL_DESTINATIONS = mapOf(
     TimeEntriesListDestination to NavigationItem(

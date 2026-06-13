@@ -31,6 +31,7 @@ import io.github.loskovdm.domain.model.AppLanguage
 import io.github.loskovdm.domain.model.AuthState
 import io.github.loskovdm.domain.model.ThemeMode
 import io.github.loskovdm.timetracker.feature.auth.api.AuthDestination
+import io.github.loskovdm.timetracker.feature.auth.api.ChangePasswordDestination
 import io.github.loskovdm.timetracker.feature.navigation.api.Navigator
 import io.github.loskovdm.timetracker.feature.settings.impl.presentation.SettingsViewModel
 import org.jetbrains.compose.resources.stringResource
@@ -43,6 +44,7 @@ import timetracker.designsystem.generated.resources.settings_appearance
 import timetracker.designsystem.generated.resources.settings_language
 import timetracker.designsystem.generated.resources.settings_language_english
 import timetracker.designsystem.generated.resources.settings_language_russian
+import timetracker.designsystem.generated.resources.settings_change_password
 import timetracker.designsystem.generated.resources.settings_open_auth
 import timetracker.designsystem.generated.resources.settings_sign_out
 import timetracker.designsystem.generated.resources.settings_signed_in_as
@@ -74,6 +76,9 @@ internal fun SettingsScreen(
             authState = authState,
             isAuthOperationInProgress = isAuthOperationInProgress,
             onOpenAuth = { navigator.goTo(AuthDestination) },
+            onChangePassword = { email ->
+                navigator.goTo(ChangePasswordDestination(prefilledEmail = email))
+            },
             onSignOut = viewModel::onSignOut,
         )
 
@@ -102,6 +107,7 @@ private fun SettingsAccountSection(
     authState: AuthState,
     isAuthOperationInProgress: Boolean,
     onOpenAuth: () -> Unit,
+    onChangePassword: (String) -> Unit,
     onSignOut: () -> Unit,
 ) {
     SettingsSectionCard(title = stringResource(Res.string.settings_account)) {
@@ -120,6 +126,13 @@ private fun SettingsAccountSection(
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
+                    OutlinedButton(
+                        onClick = { onChangePassword(authState.email) },
+                        modifier = Modifier.fillMaxWidth(),
+                        enabled = !isAuthOperationInProgress,
+                    ) {
+                        Text(stringResource(Res.string.settings_change_password))
+                    }
                     OutlinedButton(
                         onClick = onSignOut,
                         modifier = Modifier.fillMaxWidth(),

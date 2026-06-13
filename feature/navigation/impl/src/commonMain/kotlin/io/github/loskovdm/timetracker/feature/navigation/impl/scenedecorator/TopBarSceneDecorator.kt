@@ -26,9 +26,11 @@ import androidx.navigation3.scene.SceneDecoratorStrategy
 import androidx.navigation3.scene.SceneDecoratorStrategyScope
 import io.github.loskovdm.timetracker.feature.navigation.api.AuthNavigationLock
 import io.github.loskovdm.timetracker.feature.navigation.api.AuthTopBarModeSource
+import io.github.loskovdm.timetracker.feature.navigation.api.ChangePasswordTopBarSource
 import io.github.loskovdm.timetracker.feature.navigation.api.SceneMetadata
 import io.github.loskovdm.timetracker.feature.navigation.api.SceneType
 import io.github.loskovdm.timetracker.feature.navigation.api.TimeTrackerDestination
+import io.github.loskovdm.timetracker.feature.navigation.impl.component.topbar.ChangePasswordTopBar
 import io.github.loskovdm.timetracker.feature.navigation.impl.component.topbar.AuthTopBar
 import io.github.loskovdm.timetracker.feature.navigation.impl.component.topbar.ActiveProjectsTopBar
 import io.github.loskovdm.timetracker.feature.navigation.impl.component.topbar.ArchivedProjectsTopBar
@@ -45,6 +47,7 @@ internal data class TopBarScene<T : TimeTrackerDestination>(
     private val scene: Scene<T>,
     private val scrollBehaviorStore: MutableMap<Any, TopAppBarScrollBehavior>,
     private val authTopBarModeSource: AuthTopBarModeSource,
+    private val changePasswordTopBarSource: ChangePasswordTopBarSource,
     private val authNavigationLock: AuthNavigationLock,
     private val onBack: () -> Unit,
     private val onSettings: () -> Unit,
@@ -142,7 +145,21 @@ internal data class TopBarScene<T : TimeTrackerDestination>(
                 SceneType.Auth -> AuthTopBar(
                     authTopBarModeSource = authTopBarModeSource,
                     scrollBehavior = scrollBehavior,
-                    onBack = guardedOnBack,
+                    onBack = {
+                        if (!authTopBarModeSource.tryBack()) {
+                            guardedOnBack()
+                        }
+                    },
+                    backEnabled = !isAuthNavigationBlocked,
+                )
+                SceneType.ChangePassword -> ChangePasswordTopBar(
+                    changePasswordTopBarSource = changePasswordTopBarSource,
+                    scrollBehavior = scrollBehavior,
+                    onBack = {
+                        if (!changePasswordTopBarSource.tryBack()) {
+                            guardedOnBack()
+                        }
+                    },
                     backEnabled = !isAuthNavigationBlocked,
                 )
                 else -> {}
@@ -171,6 +188,7 @@ internal data class TopBarScene<T : TimeTrackerDestination>(
 @Composable
 fun <T : TimeTrackerDestination> rememberTopBarSceneDecoratorStrategy(
     authTopBarModeSource: AuthTopBarModeSource,
+    changePasswordTopBarSource: ChangePasswordTopBarSource,
     authNavigationLock: AuthNavigationLock,
     onSettings: () -> Unit,
     onAddEntry: () -> Unit,
@@ -180,11 +198,13 @@ fun <T : TimeTrackerDestination> rememberTopBarSceneDecoratorStrategy(
     return remember(
         scrollBehaviorStore,
         authTopBarModeSource,
+        changePasswordTopBarSource,
         authNavigationLock,
     ) {
         TopBarSceneDecoratorStrategy(
             scrollBehaviorStore = scrollBehaviorStore,
             authTopBarModeSource = authTopBarModeSource,
+            changePasswordTopBarSource = changePasswordTopBarSource,
             authNavigationLock = authNavigationLock,
             onSettings = onSettings,
             onAddEntry = onAddEntry,
@@ -197,6 +217,7 @@ fun <T : TimeTrackerDestination> rememberTopBarSceneDecoratorStrategy(
 class TopBarSceneDecoratorStrategy<T : TimeTrackerDestination>(
     private val scrollBehaviorStore: MutableMap<Any, TopAppBarScrollBehavior>,
     private val authTopBarModeSource: AuthTopBarModeSource,
+    private val changePasswordTopBarSource: ChangePasswordTopBarSource,
     private val authNavigationLock: AuthNavigationLock,
     private val onSettings: () -> Unit,
     private val onAddEntry: () -> Unit,
@@ -210,6 +231,7 @@ class TopBarSceneDecoratorStrategy<T : TimeTrackerDestination>(
                 scene = scene,
                 scrollBehaviorStore = scrollBehaviorStore,
                 authTopBarModeSource = authTopBarModeSource,
+                changePasswordTopBarSource = changePasswordTopBarSource,
                 authNavigationLock = authNavigationLock,
                 onBack = onBack,
                 onSettings = onSettings,

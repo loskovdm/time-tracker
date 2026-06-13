@@ -9,6 +9,12 @@ sealed class AuthError {
 
     data object WeakPassword : AuthError()
 
+    data object InvalidOtp : AuthError()
+
+    data object PasswordMismatch : AuthError()
+
+    data object RateLimited : AuthError()
+
     data object Network : AuthError()
 
     data object Generic : AuthError()

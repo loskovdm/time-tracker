@@ -23,6 +23,7 @@ import io.github.loskovdm.domain.usecase.settings.ObserveThemeModeUseCase
 import io.github.loskovdm.designsystem.util.DeviceConfiguration
 import io.github.loskovdm.timetracker.feature.navigation.api.AuthNavigationLock
 import io.github.loskovdm.timetracker.feature.navigation.api.AuthTopBarModeSource
+import io.github.loskovdm.timetracker.feature.navigation.api.ChangePasswordTopBarSource
 import io.github.loskovdm.timetracker.feature.navigation.api.Navigator
 import io.github.loskovdm.timetracker.feature.navigation.api.TimeTrackerDestination
 import io.github.loskovdm.timetracker.feature.navigation.api.toEntries
@@ -111,11 +112,13 @@ fun TimeTrackerApp() {
                         onShareReport = {},
                     )
                 val authTopBarModeSource: AuthTopBarModeSource = koinInject()
+                val changePasswordTopBarSource: ChangePasswordTopBarSource = koinInject()
                 val authNavigationLock: AuthNavigationLock = koinInject()
                 val isAuthNavigationBlocked by authNavigationLock.isBlockingBack.collectAsStateWithLifecycle()
                 val topBarSceneDecoratorStrategy =
                     rememberTopBarSceneDecoratorStrategy<TimeTrackerDestination>(
                         authTopBarModeSource = authTopBarModeSource,
+                        changePasswordTopBarSource = changePasswordTopBarSource,
                         authNavigationLock = authNavigationLock,
                         onSettings = { navigator.goTo(SettingsDestination) },
                         onAddEntry = { navigator.goTo(TimeEntryEditorDestination()) },

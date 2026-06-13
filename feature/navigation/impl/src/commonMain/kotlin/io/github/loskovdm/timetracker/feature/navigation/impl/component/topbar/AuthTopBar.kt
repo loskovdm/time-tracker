@@ -21,6 +21,7 @@ import org.jetbrains.compose.resources.vectorResource
 import timetracker.designsystem.generated.resources.Res
 import timetracker.designsystem.generated.resources.auth_title_sign_in
 import timetracker.designsystem.generated.resources.auth_title_sign_up
+import timetracker.designsystem.generated.resources.auth_title_verify_email
 import timetracker.designsystem.generated.resources.back
 import timetracker.designsystem.generated.resources.ic_arrow_back
 
@@ -38,6 +39,7 @@ fun AuthTopBar(
     val titleRes = when (mode) {
         AuthTopBarMode.SignIn -> Res.string.auth_title_sign_in
         AuthTopBarMode.SignUp -> Res.string.auth_title_sign_up
+        AuthTopBarMode.VerifyEmail -> Res.string.auth_title_verify_email
     }
 
     TopAppBar(

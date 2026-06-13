@@ -13,6 +13,7 @@ object EntryMetadata {
     object ReportsKey : NavMetadataKey<Boolean>
     object SettingsKey : NavMetadataKey<Boolean>
     object AuthKey : NavMetadataKey<Boolean>
+    object ChangePasswordKey : NavMetadataKey<Boolean>
 }
 
 object EntryMetadataBuilder {
@@ -43,5 +44,9 @@ object EntryMetadataBuilder {
 
     fun auth() = metadata {
         put(EntryMetadata.AuthKey, true)
+    }
+
+    fun changePassword() = metadata {
+        put(EntryMetadata.ChangePasswordKey, true)
     }
 }

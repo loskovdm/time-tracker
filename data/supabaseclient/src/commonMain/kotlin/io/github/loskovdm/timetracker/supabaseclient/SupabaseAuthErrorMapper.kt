@@ -7,13 +7,18 @@ import io.ktor.client.network.sockets.SocketTimeoutException
 
 internal object SupabaseAuthErrorMapper {
     fun map(throwable: Throwable): AuthException {
-        val message = throwable.message?.lowercase().orEmpty()
+        val message = collectMessages(throwable).lowercase()
         val error = when {
             throwable is HttpRequestTimeoutException ||
                 throwable is SocketTimeoutException ||
                 message.contains("network") ||
                 message.contains("connection") ||
                 message.contains("timeout") -> AuthError.Network
+
+            message.contains("over_email_send_rate_limit") ||
+                message.contains("rate limit") ||
+                message.contains("rate_limit") ||
+                message.contains("\"code\":429") -> AuthError.RateLimited
 
             message.contains("invalid login credentials") ||
                 message.contains("invalid email or password") ||
@@ -32,8 +37,22 @@ internal object SupabaseAuthErrorMapper {
                     message.contains("at least")
                 ) -> AuthError.WeakPassword
 
+            message.contains("invalid otp") ||
+                message.contains("otp_expired") ||
+                message.contains("token has expired") ||
+                message.contains("token is invalid") ||
+                message.contains("invalid token") -> AuthError.InvalidOtp
+
             else -> AuthError.Generic
         }
         return AuthException(error)
+    }
+
+    private fun collectMessages(throwable: Throwable): String = buildString {
+        var current: Throwable? = throwable
+        while (current != null) {
+            current.message?.let { appendLine(it) }
+            current = current.cause
+        }
     }
 }

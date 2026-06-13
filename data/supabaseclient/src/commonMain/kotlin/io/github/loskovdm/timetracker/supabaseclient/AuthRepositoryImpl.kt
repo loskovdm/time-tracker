@@ -1,6 +1,7 @@
 package io.github.loskovdm.timetracker.supabaseclient
 
 import io.github.jan.supabase.SupabaseClient
+import io.github.jan.supabase.auth.OtpType
 import io.github.jan.supabase.auth.SignOutScope
 import io.github.jan.supabase.auth.auth
 import io.github.jan.supabase.auth.providers.builtin.Email
@@ -54,6 +55,70 @@ class AuthRepositoryImpl(
             client.auth.signUpWith(Email) {
                 this.email = email
                 this.password = password
+            }
+        } catch (e: AuthException) {
+            throw e
+        } catch (e: Throwable) {
+            throw SupabaseAuthErrorMapper.map(e)
+        }
+    }
+
+    override suspend fun verifySignupOtp(email: String, token: String) {
+        try {
+            client.auth.verifyEmailOtp(
+                type = OtpType.Email.SIGNUP,
+                email = email,
+                token = token,
+            )
+        } catch (e: AuthException) {
+            throw e
+        } catch (e: Throwable) {
+            throw SupabaseAuthErrorMapper.map(e)
+        }
+    }
+
+    override suspend fun resendSignupConfirmation(email: String) {
+        try {
+            client.auth.resendEmail(OtpType.Email.SIGNUP, email)
+        } catch (e: AuthException) {
+            throw e
+        } catch (e: Throwable) {
+            throw SupabaseAuthErrorMapper.map(e)
+        }
+    }
+
+    override suspend fun requestPasswordReset(email: String) {
+        try {
+            client.auth.resetPasswordForEmail(email = email)
+        } catch (e: AuthException) {
+            throw e
+        } catch (e: Throwable) {
+            throw SupabaseAuthErrorMapper.map(e)
+        }
+    }
+
+    override suspend fun verifyRecoveryOtp(email: String, token: String) {
+        try {
+            client.auth.verifyEmailOtp(
+                type = OtpType.Email.RECOVERY,
+                email = email,
+                token = token,
+            )
+        } catch (e: AuthException) {
+            throw e
+        } catch (e: Throwable) {
+            throw SupabaseAuthErrorMapper.map(e)
+        }
+    }
+
+    override suspend fun resendPasswordReset(email: String) {
+        requestPasswordReset(email)
+    }
+
+    override suspend fun updatePassword(newPassword: String) {
+        try {
+            client.auth.updateUser {
+                password = newPassword
             }
         } catch (e: AuthException) {
             throw e

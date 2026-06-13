@@ -38,10 +38,11 @@ data class SettingsScene<T : Any>(
         }
     }
     override val metadata: Map<String, Any> =
-        if (settingsEntry.metadata.contains(EntryMetadata.AuthKey)) {
-            SceneMetadataBuilder.auth()
-        } else {
-            SceneMetadataBuilder.settings()
+        when {
+            settingsEntry.metadata.contains(EntryMetadata.AuthKey) -> SceneMetadataBuilder.auth()
+            settingsEntry.metadata.contains(EntryMetadata.ChangePasswordKey) ->
+                SceneMetadataBuilder.changePassword()
+            else -> SceneMetadataBuilder.settings()
         }
 }
 
@@ -56,7 +57,8 @@ class SettingsSceneStrategy<T : Any> : SceneStrategy<T> {
     override fun SceneStrategyScope<T>.calculateScene(entries: List<NavEntry<T>>): Scene<T>? {
         val lastEntry = entries.lastOrNull() ?: return null
         val isSettingsOrAuth = lastEntry.metadata.contains(EntryMetadata.SettingsKey) ||
-            lastEntry.metadata.contains(EntryMetadata.AuthKey)
+            lastEntry.metadata.contains(EntryMetadata.AuthKey) ||
+            lastEntry.metadata.contains(EntryMetadata.ChangePasswordKey)
         if (!isSettingsOrAuth) {
             return null
         }

@@ -12,6 +12,7 @@ enum class SceneType {
     Reports,
     Settings,
     Auth,
+    ChangePassword,
 }
 
 object SceneMetadata {
@@ -49,5 +50,9 @@ object SceneMetadataBuilder {
 
     fun auth() = metadata {
         put(SceneMetadata.SceneTypeKey, SceneType.Auth)
+    }
+
+    fun changePassword() = metadata {
+        put(SceneMetadata.SceneTypeKey, SceneType.ChangePassword)
     }
 }
