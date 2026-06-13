@@ -17,9 +17,9 @@ import androidx.compose.material3.ButtonGroupDefaults
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.ToggleButton
@@ -36,6 +36,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import io.github.loskovdm.designsystem.component.DeleteWithTimeEntriesDialog
+import io.github.loskovdm.designsystem.component.TooltipIconButton
 import io.github.loskovdm.designsystem.local.LocalDeviceConfiguration
 import io.github.loskovdm.domain.util.DeleteStrategy
 import io.github.loskovdm.designsystem.util.DeviceConfiguration
@@ -218,6 +219,7 @@ private fun TaskItem(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun TaskMenuButton(
     modifier: Modifier = Modifier,
@@ -228,9 +230,10 @@ private fun TaskMenuButton(
     val isVisibleMenu = rememberSaveable { mutableStateOf(false) }
 
     Box {
-        IconButton(
+        TooltipIconButton(
             modifier = modifier,
-            onClick = { isVisibleMenu.value = !isVisibleMenu.value }
+            onClick = { isVisibleMenu.value = !isVisibleMenu.value },
+            tooltip = stringResource(Res.string.more_options),
         ) {
             Icon(
                 imageVector = vectorResource(Res.drawable.ic_more_vert),

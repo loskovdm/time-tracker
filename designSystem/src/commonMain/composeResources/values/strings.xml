@@ -95,6 +95,8 @@
     <string name="task">Task</string>
     <string name="select_task">Select task</string>
     <string name="back">Back</string>
+    <string name="collapse_navigation_rail">Collapse navigation</string>
+    <string name="expand_navigation_rail">Expand navigation</string>
     <string name="start_timer">Start timer</string>
     <string name="stop_timer">Stop timer</string>
     <string name="start">Start</string>

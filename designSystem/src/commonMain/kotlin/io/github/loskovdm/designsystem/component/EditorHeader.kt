@@ -4,8 +4,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -20,6 +20,7 @@ import timetracker.designsystem.generated.resources.close
 import timetracker.designsystem.generated.resources.ic_close
 import timetracker.designsystem.generated.resources.save
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EditorHeader(
     modifier: Modifier = Modifier,
@@ -34,8 +35,9 @@ fun EditorHeader(
         ,
         horizontalArrangement = Arrangement.SpaceBetween,
     ) {
-        IconButton(
+        TooltipIconButton(
             onClick = onClose,
+            tooltip = stringResource(Res.string.close),
         ) {
             Icon(
                 imageVector = vectorResource(Res.drawable.ic_close),

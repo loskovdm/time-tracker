@@ -5,8 +5,8 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.WideNavigationRail
@@ -19,6 +19,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import io.github.loskovdm.designsystem.component.TooltipIconButton
 import io.github.loskovdm.designsystem.local.LocalDeviceConfiguration
 import io.github.loskovdm.designsystem.util.DeviceConfiguration
 import io.github.loskovdm.timetracker.feature.navigation.api.TimeTrackerDestination
@@ -28,12 +29,15 @@ import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
 import timetracker.designsystem.generated.resources.Res
+import timetracker.designsystem.generated.resources.collapse_navigation_rail
+import timetracker.designsystem.generated.resources.expand_navigation_rail
 import timetracker.designsystem.generated.resources.ic_menu
 import timetracker.designsystem.generated.resources.ic_menu_open
 
 /** Matches Material3 extended FAB height used in rail header actions. */
 private val RailFabSlotHeight = 56.dp
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NavigationRail(
     state: WideNavigationRailState,
@@ -77,19 +81,20 @@ fun NavigationRail(
 //        )
     ) {
         destinations.forEach { (destination, data) ->
+            val title = stringResource(data.title)
             WideNavigationRailItem(
                 selected = destination == selectedDestination,
                 onClick = { onSelectedDestination(destination) },
                 icon = {
                     Icon(
                         imageVector = vectorResource(data.icon(destination == selectedDestination)),
-                        contentDescription = stringResource(data.title)
+                        contentDescription = title,
                     )
                 },
                 label = {
-                    Text(stringResource(data.title))
+                    Text(title)
                 },
-                railExpanded = isExpanded
+                railExpanded = isExpanded,
             )
         }
     }
@@ -113,6 +118,7 @@ fun DesktopNavRailHeader(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RailMenu(
     modifier: Modifier = Modifier,
@@ -121,8 +127,15 @@ fun RailMenu(
 ) {
     val scope = rememberCoroutineScope()
 
-    IconButton(
+    val tooltip = if (isExpanded) {
+        stringResource(Res.string.collapse_navigation_rail)
+    } else {
+        stringResource(Res.string.expand_navigation_rail)
+    }
+
+    TooltipIconButton(
         modifier = modifier.padding(start = 24.dp),
+        tooltip = tooltip,
         onClick = {
             scope.launch {
                 if (isExpanded) {
@@ -131,17 +144,17 @@ fun RailMenu(
                     state.expand()
                 }
             }
-        }
+        },
     ) {
         if (isExpanded) {
             Icon(
                 painter = painterResource(Res.drawable.ic_menu_open),
-                contentDescription = "Collapse rail",
+                contentDescription = tooltip,
             )
         } else {
             Icon(
                 painter = painterResource(Res.drawable.ic_menu),
-                contentDescription = "Expand rail",
+                contentDescription = tooltip,
             )
         }
     }

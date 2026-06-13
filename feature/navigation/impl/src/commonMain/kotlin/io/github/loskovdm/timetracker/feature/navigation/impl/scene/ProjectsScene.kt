@@ -14,8 +14,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -30,6 +30,7 @@ import androidx.navigation3.runtime.contains
 import androidx.navigation3.scene.Scene
 import androidx.navigation3.scene.SceneStrategy
 import androidx.navigation3.scene.SceneStrategyScope
+import io.github.loskovdm.designsystem.component.TooltipIconButton
 import io.github.loskovdm.designsystem.local.LocalDeviceConfiguration
 import io.github.loskovdm.designsystem.util.DeviceConfiguration
 import io.github.loskovdm.timetracker.feature.navigation.api.EntryMetadata
@@ -228,6 +229,7 @@ private fun ProjectsScenePane(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun SplitTasksHeader(
     projectName: String?,
@@ -242,7 +244,10 @@ private fun SplitTasksHeader(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(8.dp),
     ) {
-        IconButton(onClick = onClose) {
+        TooltipIconButton(
+            onClick = onClose,
+            tooltip = stringResource(Res.string.close),
+        ) {
             Icon(
                 modifier = Modifier.size(20.dp),
                 imageVector = vectorResource(Res.drawable.ic_close),
@@ -258,7 +263,10 @@ private fun SplitTasksHeader(
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
         )
-        IconButton(onClick = onAddTask) {
+        TooltipIconButton(
+            onClick = onAddTask,
+            tooltip = stringResource(Res.string.add_task),
+        ) {
             Icon(
                 imageVector = vectorResource(Res.drawable.ic_add_task_filled),
                 contentDescription = stringResource(Res.string.add_task),

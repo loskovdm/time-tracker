@@ -2,7 +2,6 @@ package io.github.loskovdm.timetracker.feature.navigation.impl.component.topbar
 
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -10,6 +9,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import io.github.loskovdm.designsystem.component.TooltipIconButton
 import io.github.loskovdm.designsystem.local.LocalDeviceConfiguration
 import io.github.loskovdm.designsystem.util.DeviceConfiguration
 import org.jetbrains.compose.resources.painterResource
@@ -36,16 +36,18 @@ fun TimerTopBar(
         scrollBehavior = scrollBehavior,
         title = { Text(stringResource(Res.string.log)) },
         actions = {
-            IconButton(
-                onClick = onAddEntry
+            TooltipIconButton(
+                onClick = onAddEntry,
+                tooltip = stringResource(Res.string.add_entry),
             ) {
                 Icon(
                     painter = painterResource(Res.drawable.ic_add_entry),
                     contentDescription = stringResource(Res.string.add_entry)
                 )
             }
-            IconButton(
+            TooltipIconButton(
                 onClick = onSettings,
+                tooltip = stringResource(Res.string.settings),
             ) {
                 Icon(
                     painter = painterResource(Res.drawable.ic_settings_filled),

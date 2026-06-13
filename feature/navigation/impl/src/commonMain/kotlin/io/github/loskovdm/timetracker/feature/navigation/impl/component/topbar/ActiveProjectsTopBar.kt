@@ -2,7 +2,6 @@ package io.github.loskovdm.timetracker.feature.navigation.impl.component.topbar
 
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -11,6 +10,7 @@ import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
+import io.github.loskovdm.designsystem.component.TooltipIconButton
 import io.github.loskovdm.designsystem.local.LocalDeviceConfiguration
 import io.github.loskovdm.designsystem.util.DeviceConfiguration
 import org.jetbrains.compose.resources.painterResource
@@ -44,16 +44,18 @@ fun ActiveProjectsTopBar(
         },
         scrollBehavior = scrollBehavior,
         actions = {
-            IconButton(
+            TooltipIconButton(
                 onClick = onArchivedProjects,
+                tooltip = stringResource(Res.string.archive),
             ) {
                 Icon(
                     painter = painterResource(Res.drawable.ic_archive_filled),
                     contentDescription = stringResource(Res.string.archive)
                 )
             }
-            IconButton(
+            TooltipIconButton(
                 onClick = onSettings,
+                tooltip = stringResource(Res.string.settings),
             ) {
                 Icon(
                     painter = painterResource(Res.drawable.ic_settings_filled),
