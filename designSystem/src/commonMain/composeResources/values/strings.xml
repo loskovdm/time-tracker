@@ -149,9 +149,9 @@
     <string name="no_completed_tasks">No completed tasks yet</string>
     <string name="empty_archive">The archive is empty</string>
 
-    <string name="start_tracking_time_hint">Start tracking your time using the button below</string>
-    <string name="add_project_hint">Add your first project using the button below</string>
-    <string name="add_task_hint">Add first task using the button below</string>
+    <string name="start_tracking_time_hint">Start tracking your time using the button</string>
+    <string name="add_project_hint">Add your first project using the button</string>
+    <string name="add_task_hint">Add first task using the button</string>
 
     <string name="second_active_timer_error">A timer is already running. Stop it before starting a new one.</string>
 

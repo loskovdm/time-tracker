@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidKotlinMultiplatformLibrary)
@@ -6,6 +8,45 @@ plugins {
     alias(libs.plugins.composeHotReload)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.koin.compiler)
+}
+
+val generateJvmRemoteConfig = tasks.register("generateJvmRemoteConfig") {
+    val outputDirectory = layout.buildDirectory.dir("generated/remoteConfig/jvmMain/resources")
+    val localPropertiesFile = rootProject.file("local.properties")
+
+    inputs.file(localPropertiesFile).optional()
+    outputs.dir(outputDirectory)
+
+    doLast {
+        val localProperties = Properties()
+        if (localPropertiesFile.exists()) {
+            localPropertiesFile.inputStream().use { localProperties.load(it) }
+        }
+
+        fun resolveProperty(name: String): String =
+            localProperties.getProperty(name)
+                ?: System.getenv(name)
+                ?: ""
+
+        val supabaseUrl = resolveProperty("SUPABASE_URL")
+        val supabaseAnonKey = resolveProperty("SUPABASE_ANON_KEY")
+        val powerSyncUrl = resolveProperty("POWERSYNC_URL")
+
+        if (supabaseUrl.isBlank() || supabaseAnonKey.isBlank()) {
+            logger.warn(
+                "SUPABASE_URL and SUPABASE_ANON_KEY are missing. " +
+                    "Set them in local.properties or environment variables before building the desktop MSI.",
+            )
+        }
+
+        val propertiesFile = outputDirectory.get().file("remote-config.properties").asFile
+        propertiesFile.parentFile.mkdirs()
+        propertiesFile.bufferedWriter().use { writer ->
+            writer.appendLine("SUPABASE_URL=$supabaseUrl")
+            writer.appendLine("SUPABASE_ANON_KEY=$supabaseAnonKey")
+            writer.appendLine("POWERSYNC_URL=$powerSyncUrl")
+        }
+    }
 }
 
 kotlin {
@@ -66,5 +107,17 @@ kotlin {
         androidMain.dependencies {
             implementation(libs.koin.android)
         }
+
+        jvmMain {
+            resources.srcDir(
+                generateJvmRemoteConfig.map {
+                    layout.buildDirectory.dir("generated/remoteConfig/jvmMain/resources")
+                },
+            )
+        }
     }
+}
+
+tasks.matching { it.name == "jvmProcessResources" }.configureEach {
+    dependsOn(generateJvmRemoteConfig)
 }

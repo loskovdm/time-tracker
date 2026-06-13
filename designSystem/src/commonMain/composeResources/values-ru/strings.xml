@@ -149,9 +149,9 @@
     <string name="no_completed_tasks">Завершённых задач пока нет</string>
     <string name="empty_archive">Архив пуст</string>
 
-    <string name="start_tracking_time_hint">Начните отслеживать время с помощью кнопки ниже</string>
-    <string name="add_project_hint">Добавьте первый проект с помощью кнопки ниже</string>
-    <string name="add_task_hint">Добавьте первую задачу с помощью кнопки ниже</string>
+    <string name="start_tracking_time_hint">Начните отслеживать время с помощью кнопки</string>
+    <string name="add_project_hint">Добавьте первый проект с помощью кнопки</string>
+    <string name="add_task_hint">Добавьте первую задачу с помощью кнопки</string>
 
     <string name="second_active_timer_error">Таймер уже запущен. Остановите его перед запуском нового.</string>
 
