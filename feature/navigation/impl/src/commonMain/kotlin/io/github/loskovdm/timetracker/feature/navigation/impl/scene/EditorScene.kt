@@ -10,7 +10,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.ModalBottomSheetProperties
 import androidx.compose.material3.Surface
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
@@ -30,6 +29,8 @@ import androidx.navigation3.scene.Scene
 import androidx.navigation3.scene.SceneStrategy
 import androidx.navigation3.scene.SceneStrategyScope
 import io.github.loskovdm.designsystem.local.LocalDeviceConfiguration
+import io.github.loskovdm.designsystem.system.ApplyNavigationChromeSystemBarColor
+import io.github.loskovdm.designsystem.system.rememberNavigationChromeModalBottomSheetProperties
 import io.github.loskovdm.designsystem.util.DeviceConfiguration
 import io.github.loskovdm.timetracker.feature.navigation.api.EntryMetadata
 
@@ -39,7 +40,6 @@ internal data class EditorBottomSheetScene <T : Any> (
     override val previousEntries: List<NavEntry<T>>,
     override val overlaidEntries: List<NavEntry<T>>,
     private val editorEntry: NavEntry<T>,
-    private val modalBottomSheetProperties: ModalBottomSheetProperties,
     private val onBack: () -> Unit,
 ) : OverlayScene<T> {
     override val entries: List<NavEntry<T>> = listOf(editorEntry)
@@ -47,6 +47,7 @@ internal data class EditorBottomSheetScene <T : Any> (
     override val content: @Composable (() -> Unit) = {
         val lifecycleOwner = rememberLifecycleOwner()
         val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+        val modalBottomSheetProperties = rememberNavigationChromeModalBottomSheetProperties()
         ModalBottomSheet(
             modifier = if (LocalDeviceConfiguration.current == DeviceConfiguration.MOBILE_LANDSCAPE) {
                 Modifier
@@ -63,6 +64,7 @@ internal data class EditorBottomSheetScene <T : Any> (
             sheetState = sheetState,
             contentWindowInsets = { BottomSheetDefaults.windowInsets},
         ) {
+            ApplyNavigationChromeSystemBarColor()
             CompositionLocalProvider(LocalLifecycleOwner provides lifecycleOwner) {
                 editorEntry.Content()
             }
@@ -123,7 +125,6 @@ class TimeEntryEditorSceneStrategy<T: Any>(
                 previousEntries = entries.dropLast(1),
                 overlaidEntries = entries.dropLast(1),
                 editorEntry = lastEntry,
-                modalBottomSheetProperties = ModalBottomSheetProperties(),
                 onBack = onBack,
             )
         } else {

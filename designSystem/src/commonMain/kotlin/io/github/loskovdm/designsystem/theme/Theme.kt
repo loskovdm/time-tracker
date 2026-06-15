@@ -5,6 +5,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import io.github.loskovdm.designsystem.system.ApplyNavigationChromeSystemBarColor
 
 private val lightScheme = lightColorScheme(
     primary = primaryLight,
@@ -90,6 +91,8 @@ fun AppTheme(
     MaterialTheme(
         colorScheme = if (darkTheme) darkScheme else lightScheme,
         typography = AppTypography,
-        content = content,
-    )
+    ) {
+        content()
+        ApplyNavigationChromeSystemBarColor()
+    }
 }

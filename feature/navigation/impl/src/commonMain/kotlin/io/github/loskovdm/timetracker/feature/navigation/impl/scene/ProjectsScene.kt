@@ -181,7 +181,6 @@ private fun <T : Any> SplitProjectsTasksContent(
         Row(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = 16.dp),
         ) {
             ProjectsScenePane(
                 modifier = Modifier

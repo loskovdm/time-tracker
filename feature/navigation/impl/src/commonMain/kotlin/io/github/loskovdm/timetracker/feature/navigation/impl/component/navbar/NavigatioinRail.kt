@@ -21,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import io.github.loskovdm.designsystem.component.TooltipIconButton
 import io.github.loskovdm.designsystem.local.LocalDeviceConfiguration
+import io.github.loskovdm.designsystem.system.ApplyNavigationChromeSystemBarColor
 import io.github.loskovdm.designsystem.util.DeviceConfiguration
 import io.github.loskovdm.timetracker.feature.navigation.api.TimeTrackerDestination
 import io.github.loskovdm.timetracker.feature.navigation.impl.util.NavigationItem
@@ -80,6 +81,8 @@ fun NavigationRail(
 //
 //        )
     ) {
+        ApplyNavigationChromeSystemBarColor()
+
         destinations.forEach { (destination, data) ->
             val title = stringResource(data.title)
             WideNavigationRailItem(

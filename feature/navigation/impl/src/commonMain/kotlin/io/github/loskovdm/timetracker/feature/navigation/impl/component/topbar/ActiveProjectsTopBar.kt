@@ -17,6 +17,7 @@ import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import timetracker.designsystem.generated.resources.Res
 import timetracker.designsystem.generated.resources.archive
+import timetracker.designsystem.generated.resources.archive_screen_title
 import timetracker.designsystem.generated.resources.ic_archive_filled
 import timetracker.designsystem.generated.resources.ic_archive_outlined
 import timetracker.designsystem.generated.resources.ic_settings_filled
@@ -46,7 +47,7 @@ fun ActiveProjectsTopBar(
         actions = {
             TooltipIconButton(
                 onClick = onArchivedProjects,
-                tooltip = stringResource(Res.string.archive),
+                tooltip = stringResource(Res.string.archive_screen_title),
             ) {
                 Icon(
                     painter = painterResource(Res.drawable.ic_archive_filled),
