@@ -2,6 +2,7 @@ package io.github.loskovdm.timetracker.feature.navigation.impl.component.navbar
 
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -18,7 +19,11 @@ fun NavigationBar(
     onSelectedDestination: (TimeTrackerDestination)  -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    BottomAppBar(modifier = modifier) {
+    BottomAppBar(
+        modifier = modifier,
+        containerColor = MaterialTheme.colorScheme.surfaceContainer,
+        contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+    ) {
         destinations.forEach { (destination, data) ->
             NavigationBarItem(
                 selected = destination == selectedDestination,

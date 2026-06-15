@@ -24,6 +24,7 @@ import androidx.navigation3.scene.Scene
 import androidx.navigation3.scene.SceneDecoratorStrategy
 import androidx.navigation3.scene.SceneDecoratorStrategyScope
 import io.github.loskovdm.designsystem.local.LocalDeviceConfiguration
+import io.github.loskovdm.designsystem.system.ApplyNavigationChromeSystemBarColor
 import io.github.loskovdm.designsystem.util.DeviceConfiguration
 import io.github.loskovdm.timetracker.feature.navigation.api.Navigator
 import io.github.loskovdm.timetracker.feature.navigation.api.SceneMetadata
@@ -67,6 +68,10 @@ internal data class AdaptiveNavigationScene<T : TimeTrackerDestination>(
         val showRail = deviceConfiguration != DeviceConfiguration.MOBILE_PORTRAIT
         val showBottomBar = !showRail
         val timerIsActive = timerState.value is TimerState.Loaded
+
+        if (showBottomBar || showRail) {
+            ApplyNavigationChromeSystemBarColor()
+        }
 
         val extendedFab: @Composable (isExpanded: Boolean) -> Unit = { isExpanded ->
             val navigator: Navigator = koinInject()
@@ -154,6 +159,8 @@ internal data class NoNavigationScene<T : TimeTrackerDestination>(
     override val metadata = scene.metadata
 
     override val content = @Composable {
+        ApplyNavigationChromeSystemBarColor()
+
         Box(modifier = Modifier
             .background(MaterialTheme.colorScheme.surfaceContainer)
             .padding(start = 16.dp)
