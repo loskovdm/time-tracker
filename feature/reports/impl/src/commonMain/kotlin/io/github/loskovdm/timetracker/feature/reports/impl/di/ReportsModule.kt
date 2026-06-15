@@ -3,7 +3,7 @@ package io.github.loskovdm.timetracker.feature.reports.impl.di
 import io.github.loskovdm.domain.di.domainModule
 import io.github.loskovdm.timetracker.feature.navigation.api.EntryMetadataBuilder
 import io.github.loskovdm.timetracker.feature.reports.api.ReportsDestination
-import io.github.loskovdm.timetracker.feature.reports.impl.Reports
+import io.github.loskovdm.timetracker.feature.reports.impl.presentation.Reports
 import io.github.loskovdm.timetracker.feature.reports.impl.mapper.ProjectMapper
 import io.github.loskovdm.timetracker.feature.reports.impl.presentation.ReportsViewModel
 import org.koin.core.annotation.KoinExperimentalAPI

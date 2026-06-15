@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalUuidApi::class, ExperimentalMaterial3Api::class, ExperimentalKoalaPlotApi::class)
 
-package io.github.loskovdm.timetracker.feature.reports.impl
+package io.github.loskovdm.timetracker.feature.reports.impl.presentation
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
@@ -41,7 +41,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -57,20 +56,11 @@ import io.github.loskovdm.designsystem.component.LoadingScreen
 import io.github.loskovdm.designsystem.local.LocalDeviceConfiguration
 import io.github.loskovdm.designsystem.local.LocalFabPadding
 import io.github.loskovdm.designsystem.util.DeviceConfiguration
-import io.github.loskovdm.designsystem.util.formatDateToString
 import io.github.loskovdm.designsystem.util.formatTimeToHmsString
 import io.github.loskovdm.timetracker.feature.projects.api.model.Project
-import io.github.loskovdm.timetracker.feature.reports.impl.presentation.DateRange
-import io.github.loskovdm.timetracker.feature.reports.impl.presentation.ReportGranularity
-import io.github.loskovdm.timetracker.feature.reports.impl.presentation.ReportPeriod
-import io.github.loskovdm.timetracker.feature.reports.impl.presentation.ReportProjectSlice
-import io.github.loskovdm.timetracker.feature.reports.impl.presentation.ReportTaskSlice
-import io.github.loskovdm.timetracker.feature.reports.impl.presentation.ReportTimeBucket
-import io.github.loskovdm.timetracker.feature.reports.impl.presentation.ReportsState
-import io.github.loskovdm.timetracker.feature.reports.impl.presentation.ReportsUiState
-import io.github.loskovdm.timetracker.feature.reports.impl.presentation.ReportsViewModel
 import kotlinx.datetime.DayOfWeek
 import kotlinx.datetime.LocalDate
+import kotlinx.datetime.Month
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
 import org.koin.compose.viewmodel.koinViewModel
@@ -90,7 +80,6 @@ import timetracker.designsystem.generated.resources.month_october_short
 import timetracker.designsystem.generated.resources.month_september_short
 import timetracker.designsystem.generated.resources.ok
 import timetracker.designsystem.generated.resources.reports_all_projects
-import timetracker.designsystem.generated.resources.reports_date_range
 import timetracker.designsystem.generated.resources.reports_no_data
 import timetracker.designsystem.generated.resources.reports_period
 import timetracker.designsystem.generated.resources.reports_projects
@@ -803,18 +792,18 @@ private fun timeAxisLabel(
 @Composable
 private fun monthShortName(date: LocalDate): String {
     return when (date.month) {
-        kotlinx.datetime.Month.JANUARY -> stringResource(Res.string.month_january_short)
-        kotlinx.datetime.Month.FEBRUARY -> stringResource(Res.string.month_february_short)
-        kotlinx.datetime.Month.MARCH -> stringResource(Res.string.month_march_short)
-        kotlinx.datetime.Month.APRIL -> stringResource(Res.string.month_april_short)
-        kotlinx.datetime.Month.MAY -> stringResource(Res.string.month_may_short)
-        kotlinx.datetime.Month.JUNE -> stringResource(Res.string.month_june_short)
-        kotlinx.datetime.Month.JULY -> stringResource(Res.string.month_july_short)
-        kotlinx.datetime.Month.AUGUST -> stringResource(Res.string.month_august_short)
-        kotlinx.datetime.Month.SEPTEMBER -> stringResource(Res.string.month_september_short)
-        kotlinx.datetime.Month.OCTOBER -> stringResource(Res.string.month_october_short)
-        kotlinx.datetime.Month.NOVEMBER -> stringResource(Res.string.month_november_short)
-        kotlinx.datetime.Month.DECEMBER -> stringResource(Res.string.month_december_short)
+        Month.JANUARY -> stringResource(Res.string.month_january_short)
+        Month.FEBRUARY -> stringResource(Res.string.month_february_short)
+        Month.MARCH -> stringResource(Res.string.month_march_short)
+        Month.APRIL -> stringResource(Res.string.month_april_short)
+        Month.MAY -> stringResource(Res.string.month_may_short)
+        Month.JUNE -> stringResource(Res.string.month_june_short)
+        Month.JULY -> stringResource(Res.string.month_july_short)
+        Month.AUGUST -> stringResource(Res.string.month_august_short)
+        Month.SEPTEMBER -> stringResource(Res.string.month_september_short)
+        Month.OCTOBER -> stringResource(Res.string.month_october_short)
+        Month.NOVEMBER -> stringResource(Res.string.month_november_short)
+        Month.DECEMBER -> stringResource(Res.string.month_december_short)
     }
 }
 

@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3Api::class, ExperimentalUuidApi::class)
 
-package io.github.loskovdm.timetracker.feature.reports.impl
+package io.github.loskovdm.timetracker.feature.reports.impl.presentation
 
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
@@ -36,9 +36,6 @@ import androidx.compose.ui.unit.dp
 import io.github.loskovdm.designsystem.local.LocalDeviceConfiguration
 import io.github.loskovdm.designsystem.util.DeviceConfiguration
 import io.github.loskovdm.designsystem.util.formatDateToString
-import io.github.loskovdm.timetracker.feature.reports.impl.presentation.DateRange
-import io.github.loskovdm.timetracker.feature.reports.impl.presentation.ReportPeriod
-import io.github.loskovdm.timetracker.feature.reports.impl.presentation.ReportsUiState
 import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone

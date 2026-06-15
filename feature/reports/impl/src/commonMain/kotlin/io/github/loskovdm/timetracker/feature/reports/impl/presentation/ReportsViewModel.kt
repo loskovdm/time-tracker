@@ -264,7 +264,7 @@ internal class ReportsViewModel(
         return when (filter.periodType) {
             ReportPeriod.DAY -> DateRange(filter.anchorDate, filter.anchorDate)
             ReportPeriod.WEEK -> DateRange(
-                start = filter.anchorDate.minus(DatePeriod(days = 6)),
+                start = filter.anchorDate.startOfIsoWeek(),
                 end = filter.anchorDate,
             )
             ReportPeriod.MONTH -> DateRange(
@@ -289,7 +289,7 @@ internal class ReportsViewModel(
 
     private fun createInitialFilterState(): ReportsFilterState {
         val today = Clock.System.now().toLocalDateTime(timeZone).date
-        val weekStart = today.minus(DatePeriod(days = 6))
+        val weekStart = today.startOfIsoWeek()
 
         return ReportsFilterState(
             periodType = ReportPeriod.WEEK,
@@ -301,6 +301,9 @@ internal class ReportsViewModel(
         )
     }
 }
+
+private fun LocalDate.startOfIsoWeek(): LocalDate =
+    minus(DatePeriod(days = dayOfWeek.ordinal))
 
 @OptIn(ExperimentalUuidApi::class)
 private data class ReportsFilterState(
